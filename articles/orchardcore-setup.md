@@ -11,13 +11,13 @@ publication_name: zead
 [前回の記事](https://zenn.dev/zead/articles/f604f9ad31f941)では、Orchard Coreの概要を説明したので、今回はOrchard Coreをインストールし、起動するまでを説明します。
 
 前回の記事
-https://zenn.dev/zead/articles/f604f9ad31f941
+<https://zenn.dev/zead/articles/f604f9ad31f941>
 
 ## .NET 8 SDKのインストール
 
 以下のサイトからそれぞれの環境に合わせて.NET 8 SDKをインストールします。
 
-https://dotnet.microsoft.com/ja-jp/download/dotnet/8.0
+<https://dotnet.microsoft.com/ja-jp/download/dotnet/8.0>
 
 この記事では、Windowsでの環境構築を前提とします。
 
@@ -47,11 +47,9 @@ Orchard Core Theme        octheme      [C#]  Web/Orchard Core/CMS
 
 なお、最新のバージョンは、公式のドキュメントページに書いてあります。
 
-https://docs.orchardcore.net/en/latest/#status
-
+<https://docs.orchardcore.net/en/latest/#status>
 
 ![](https://storage.googleapis.com/zenn-user-upload/e3633662ed99-20240522.png)
-
 
 ## Lombiq Orchard Visual Studio 拡張機能のインストール（オプション）
 
@@ -69,7 +67,6 @@ Visual Studioを利用するC#開発者は、Visual Studioを起動し、Lombiq 
 
 プロジェクトを作成したいディレクトリへ移動し、以下のコマンドでOrchard Coreアプリケーションプロジェクトを作成します。
 
-
 ```cli
 dotnet new occms -n OrchardCoreSample
 ```
@@ -83,7 +80,6 @@ dotnet new occms -n OrchardCoreSample
 OrchardCoreSampledディレクトリには以下のようなファイルとフォルダが作成されます。
 
 ![](https://storage.googleapis.com/zenn-user-upload/7891f557c2c8-20240522.png)
-
 
 次のコマンドでOrchardCoreSampleフォルダへ移動します
 
@@ -129,4 +125,4 @@ https://localhost:5001/
 
 これで、Orchard Coreの環境設定は完了です。
 
-次の記事では、ここで作成したプロジェクトでサンプルのCMSサイトを構築します。
+次の記事では、ここで作成したプロジェクトでサンプルのCMSサイトを構築する予定です。
