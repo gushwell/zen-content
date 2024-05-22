@@ -8,7 +8,7 @@ published_at: 2024-05-23 08:00
 publication_name: zead
 ---
 
-前回の記事では、Orchard Coreの概要を説明したので、今回はOrchard Coreをインストールし、起動するまでを説明します。
+[前回の記事](https://zenn.dev/zead/articles/f604f9ad31f941)では、Orchard Coreの概要を説明したので、今回はOrchard Coreをインストールし、起動するまでを説明します。
 
 前回の記事
 https://zenn.dev/zead/articles/f604f9ad31f941
@@ -35,8 +35,6 @@ dotnet new install OrchardCore.ProjectTemplates::1.8.3
 次のパッケージがインストールされます:
    OrchardCore.ProjectTemplates::1.8.3
 
-OrchardCore.ProjectTemplates (バージョン 1.8.2) は既にインストールされているため、 バージョン 1.8.3 に置き換えられます。
-OrchardCore.ProjectTemplates::1.8.2 が正常にアンインストールされました。
 成功: OrchardCore.ProjectTemplates::1.8.3により次のテンプレートがインストールされました。
 テンプレート名            短い名前     言語  タグ
 ------------------------  -----------  ----  --------------------
