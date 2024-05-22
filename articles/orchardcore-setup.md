@@ -82,6 +82,11 @@ dotnet new occms -n OrchardCoreSample
 テンプレート "Orchard Core Cms Web App" が正常に作成されました。
 ```
 
+OrchardCoreSampledディレクトリには以下のようなファイルとフォルダが作成されます。
+
+![](https://storage.googleapis.com/zenn-user-upload/7891f557c2c8-20240522.png)
+
+
 次のコマンドでOrchardCoreSampleフォルダへ移動します
 
 ```cli
