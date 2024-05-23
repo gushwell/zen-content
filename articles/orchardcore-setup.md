@@ -11,7 +11,7 @@ publication_name: zead
 [前回の記事](https://zenn.dev/zead/articles/f604f9ad31f941)では、Orchard Coreの概要を説明したので、今回はOrchard Coreをインストールし、起動するまでを説明します。
 
 前回の記事
-<https://zenn.dev/zead/articles/f604f9ad31f941>
+https://zenn.dev/zead/articles/f604f9ad31f941
 
 ## .NET 8 SDKのインストール
 
