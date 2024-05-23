@@ -17,7 +17,7 @@ https://zenn.dev/zead/articles/f604f9ad31f941
 
 以下のサイトからそれぞれの環境に合わせて.NET 8 SDKをインストールします。
 
-<https://dotnet.microsoft.com/ja-jp/download/dotnet/8.0>
+https://dotnet.microsoft.com/ja-jp/download/dotnet/8.0
 
 この記事では、Windowsでの環境構築を前提とします。
 
