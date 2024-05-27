@@ -2,7 +2,7 @@
 title: "C#ベースのオープンソースCMS「Orchard Core」で作成する最初のWebサイト"
 emoji: "🍑"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics:  ["csharp", "aspnetcore", "orchardcore"]
+topics:  ["csharp", "aspnetcore", "orchardcore", "cms"]
 published: false
 published_at: 2024-06-29 08:12
 publication_name: zead
