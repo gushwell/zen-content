@@ -3,14 +3,14 @@ title: "C#ベースのオープンソースCMS「Orchard Core」で作成する�
 emoji: "🍑"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "aspnetcore", "orchardcore", "cms"]
-published: false
-published_at: 2024-06-29 08:12
+published: true
+published_at: 2024-06-30 08:12
 publication_name: zead
 ---
 
 
 [前回の記事](https://zenn.dev/zead/articles/orchardcore-setup)では、Orchard Coreの環境構築を行いました。
-今回は、既存のCMSレシピを使い、Orchard Coreのサイトを作成したいと思います。
+今回は、Orchard Core組み込みのCMSレシピを使い、ブログサイトを作成したいと思います。
 
 前回の記事
 https://zenn.dev/zead/articles/orchardcore-setup
@@ -41,7 +41,7 @@ dotnet run
 
 [セットアップを完了する]ボタンをクリックします。
 
-以下のページが表示されます。
+以下のページが表示されます。簡単ですね。
 
 ![](https://storage.googleapis.com/zenn-user-upload/862c6fff6ce2-20240523.png)
 
@@ -101,9 +101,13 @@ https://zenn.dev/zead/articles/f604f9ad31f941#3%E3%81%A4%E3%81%AEweb%E3%82%B5%E3
 ![](https://storage.googleapis.com/zenn-user-upload/f197d235286c-20240524.png)
 
 
-ここで記事を入力します。ページ下部には、[公開],[ドラフトの保存],[プレビュー]などのボタンがありますが、ここでは、[ドラフトの保存]ボタンをクリックし、下書き保存したいと思います。この段階ではまだ公開されていません。
+ここで記事を入力します。
 
-![](https://storage.googleapis.com/zenn-user-upload/a33c8eb48994-20240524.png)
+![](https://storage.googleapis.com/zenn-user-upload/b9c7813920a6-20240528.png)
+
+パーマリンクには、`blog/about-orchard-core` のように、先頭に`blog/`を指定します。
+
+ページ下部には、[公開],[ドラフトの保存],[プレビュー]などのボタンがありますが、ここでは、[ドラフトの保存]ボタンをクリックし、下書き保存したいと思います。この段階ではまだ公開されていません。
 
 [ドラフトの保存]ボタンをクリックすると、Blog投稿一覧画面に戻るので、ここで、先ほど入力した記事がどんなふうに表示されるのか、「Preview Draft」ボタンをクリックします。
 
@@ -131,9 +135,7 @@ https://localhost:5001
 
 記事のリンクをクリックすれば、個別記事に移動します。
 
-URLが、`/blog/<パーマリンク>`になっていることを確認してください。`<パーマリンク>`はブログ記事の入力時に指定した値です。
-
-![](https://storage.googleapis.com/zenn-user-upload/1da500157cd6-20240527.png)
+URLが、`/blog/<パーマリンク>`になっていることを確認してください。\<パーマリンク\>はブログ記事の入力時に指定した値です。
 
 
 ## Main Menuにメニュー項目を追加する
@@ -171,7 +173,7 @@ Categoriesページに遷移したのが確認できるはずです。
 
 ## Profileページを追加する
 
-次に独立した単一のページを作成し、上部メニューからアクセスできるようにします。
+次に独立した単一のページ(プロフィールページ)を作成し、上部メニューからアクセスできるようにします。
 
 管理者メニューの[コンテンツの項目]をクリックし、右側のペインから、[New]ボタンをクリックし、[Article]を選びます。
 
@@ -191,7 +193,7 @@ Categoriesページに遷移したのが確認できるはずです。
 
 ![](https://storage.googleapis.com/zenn-user-upload/c21899f068c3-20240527.png)
 
-Articeの編集ページに戻りますので、[公開]ボタンをクリックします。
+Articleの編集ページに戻りますので、[公開]ボタンをクリックします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/1563d01c5ace-20240527.png)
 
@@ -244,6 +246,24 @@ Categories の[Edit]ボタンをクリックします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/6e95a603dc7c-20240527.png)
 
+## ブログタイトルの変更
+
+
+順番が逆になってしまいましたが、ブログタイトルを変更します。
+
+管理者ページの左の[Blog]を選択し、右側の[Edit Blog]ボタンをクリックします。
+
+![](https://storage.googleapis.com/zenn-user-upload/966165dd41c2-20240528.png)
+
+
+ここで、タイトルとHtmlBodyを変更し、[公開]ボタンをクリックします。。
+
+![](https://storage.googleapis.com/zenn-user-upload/e75443bd3acc-20240528.png)
+
+
+サイトにアクセスすれば、以下のように変更されたのを確認できます。
+
+![](https://storage.googleapis.com/zenn-user-upload/52adaa6fe9d7-20240528.png)
 
 
 ## 終わりに
