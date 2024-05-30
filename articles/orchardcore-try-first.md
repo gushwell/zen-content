@@ -4,7 +4,7 @@ emoji: "🍑"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "aspnetcore", "orchardcore", "cms"]
 published: true
-published_at: 2024-06-30 08:12
+published_at: 2024-05-31 08:12
 publication_name: zead
 ---
 
@@ -13,7 +13,7 @@ publication_name: zead
 今回は、Orchard Core組み込みのCMSレシピを使い、ブログサイトを作成したいと思います。
 
 前回の記事
-https://zenn.dev/zead/articles/orchardcore-setup
+<https://zenn.dev/zead/articles/orchardcore-setup>
 
 ## Orchard Coreのサイト設定
 
@@ -24,7 +24,6 @@ dotnet run
 ```
 
 ブラウザで、`https://localhost:5001/`を開くと、以下のページが表示されます。
-
 
 ![](https://storage.googleapis.com/zenn-user-upload/e5d03bd64ccf-20240523.png)
 
@@ -57,7 +56,6 @@ https://localhost:5001/admin
 
 ![](https://storage.googleapis.com/zenn-user-upload/13977c405b82-20240523.png)
 
-
 管理者ページが開きます。
 
 ## 日本語表示に切り替える
@@ -68,7 +66,6 @@ https://localhost:5001/admin
 
 ![](https://storage.googleapis.com/zenn-user-upload/90e47764e58b-20240524.png)
 
-
 ここで、検索欄に、"Locali"と入力し、表示された[Localization]の[Enable]ボタンをクリックします。
 
 ボタンのラベル等が日本語になったのが確認できます。
@@ -78,11 +75,9 @@ https://localhost:5001/admin
 ただ、残念ながら日本語化されているのは全体の30%ほどのようです。
 翻訳されていない箇所を日本語化する方法は別の記事で紹介したいと思います。
 
-
 なお、今動いているOrchard Core CMSのモードは、"C#ベースのオープンソースCMS「Orchard Core」について"で紹介した「完全な CMS」モードです。このモードは、選択したテーマとテンプレートを使用してカスタム開発を行わずにサイトを構築することを目的としてます。
 
-https://zenn.dev/zead/articles/f604f9ad31f941#3%E3%81%A4%E3%81%AEweb%E3%82%B5%E3%82%A4%E3%83%88%E6%A7%8B%E7%AF%89%E3%83%A2%E3%83%BC%E3%83%89
-
+<https://zenn.dev/zead/articles/f604f9ad31f941#3%E3%81%A4%E3%81%AEweb%E3%82%B5%E3%82%A4%E3%83%88%E6%A7%8B%E7%AF%89%E3%83%A2%E3%83%BC%E3%83%89>
 
 ## ブログ記事を投稿してみる
 
@@ -99,7 +94,6 @@ https://zenn.dev/zead/articles/f604f9ad31f941#3%E3%81%A4%E3%81%AEweb%E3%82%B5%E3
 ページが切り替わりますので、右上の[Create Blog Post]ボタンをクリックします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/f197d235286c-20240524.png)
-
 
 ここで記事を入力します。
 
@@ -137,7 +131,6 @@ https://localhost:5001
 
 URLが、`/blog/<パーマリンク>`になっていることを確認してください。\<パーマリンク\>はブログ記事の入力時に指定した値です。
 
-
 ## Main Menuにメニュー項目を追加する
 
 次にページ上部のMain Menuにカテゴリーページへ遷移するメニュー項目を追加してみましょう。再度、管理者の画面に移動してください。
@@ -159,9 +152,7 @@ URLが、`/blog/<パーマリンク>`になっていることを確認してく�
 
 ![](https://storage.googleapis.com/zenn-user-upload/fc7be34b02ed-20240527.png)
 
-
 サイトが別タブで開きます。
-
 
 メニューに[CATEGORIES]が追加されたのが確認できますので、[CATEGORIES]リンクをクリックします。
 
@@ -233,7 +224,6 @@ Categories の[Edit]ボタンをクリックします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/76396da60c4f-20240527.png)
 
-
 タイトルやアイコンを入力し、[公開]ボタンを押します。
 
 ![](https://storage.googleapis.com/zenn-user-upload/949850070954-20240527.png)
@@ -248,23 +238,19 @@ Categories の[Edit]ボタンをクリックします。
 
 ## ブログタイトルの変更
 
-
 順番が逆になってしまいましたが、ブログタイトルを変更します。
 
 管理者ページの左の[Blog]を選択し、右側の[Edit Blog]ボタンをクリックします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/966165dd41c2-20240528.png)
 
-
 ここで、タイトルとHtmlBodyを変更し、[公開]ボタンをクリックします。。
 
 ![](https://storage.googleapis.com/zenn-user-upload/e75443bd3acc-20240528.png)
 
-
 サイトにアクセスすれば、以下のように変更されたのを確認できます。
 
 ![](https://storage.googleapis.com/zenn-user-upload/52adaa6fe9d7-20240528.png)
-
 
 ## 終わりに
 
@@ -273,4 +259,3 @@ Orchard CoreのBlogテーマを使うと、簡単にブログサイトを作成�
 さらに、記事を追加したり、カテゴリを追加したりして動きを確認してみてください。
 
 次回は、コンテンツの管理について、もう少し詳しく見ていきたいと思います。
-
