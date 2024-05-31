@@ -13,7 +13,7 @@ publication_name: zead
 今回は、Orchard Core組み込みのCMSレシピを使い、ブログサイトを作成したいと思います。
 
 前回の記事
-<https://zenn.dev/zead/articles/orchardcore-setup>
+https://zenn.dev/zead/articles/orchardcore-setup
 
 ## Orchard Coreのサイト設定
 
@@ -77,7 +77,7 @@ https://localhost:5001/admin
 
 なお、今動いているOrchard Core CMSのモードは、"C#ベースのオープンソースCMS「Orchard Core」について"で紹介した「完全な CMS」モードです。このモードは、選択したテーマとテンプレートを使用してカスタム開発を行わずにサイトを構築することを目的としてます。
 
-<https://zenn.dev/zead/articles/f604f9ad31f941#3%E3%81%A4%E3%81%AEweb%E3%82%B5%E3%82%A4%E3%83%88%E6%A7%8B%E7%AF%89%E3%83%A2%E3%83%BC%E3%83%89>
+https://zenn.dev/zead/articles/f604f9ad31f941#3%E3%81%A4%E3%81%AEweb%E3%82%B5%E3%82%A4%E3%83%88%E6%A7%8B%E7%AF%89%E3%83%A2%E3%83%BC%E3%83%89
 
 ## ブログ記事を投稿してみる
 
