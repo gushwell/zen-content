@@ -125,4 +125,6 @@ https://localhost:5001/
 
 これで、Orchard Coreの環境設定は完了です。
 
-次の記事では、ここで作成したプロジェクトでサンプルのCMSサイトを構築する予定です。
+次の記事では、ここで作成したプロジェクトでサンプルのCMSサイトを作成します。
+
+https://zenn.dev/zead/articles/orchardcore-try-first
