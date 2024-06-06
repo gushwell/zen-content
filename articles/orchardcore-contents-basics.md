@@ -4,7 +4,7 @@ emoji: "🍒"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "aspnetcore", "orchardcore", "cms"]
 published: true
-published_at: 2024-06-10 08:10
+published_at: 2024-06-09 21:10
 publication_name: zead
 ---
 
