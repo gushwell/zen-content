@@ -3,8 +3,8 @@ title: "C#ベースのオープンソースCMS「Orchard Core」のプロジェ�
 emoji: "🍐"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "aspnetcore", "orchardcore", "cms"]
-published: true
-published_at: 2024-06-12 08:10
+published: false
+published_at: 2024-06-20 08:10
 publication_name: zead
 ---
 
@@ -116,4 +116,4 @@ F5キーでデバッグ開始すれば、セットアップページが表示さ
 C#でWebアプリケーションを開発したことがあれば、何も難しいことはありませんね。
 
 
-次回は、Orchard Coreの日本語化の方法について紹介します。
+次回は、Orchard CoreをAzureにデプロイする方法について紹介します。
