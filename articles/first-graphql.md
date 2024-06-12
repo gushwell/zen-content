@@ -4,7 +4,7 @@ emoji: "🍒"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["graphql"]
 published: false
-published_at: 2024-09-09 21:10
+# published_at: 2024-09-09 21:10
 publication_name: zead
 ---
 
