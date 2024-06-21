@@ -2,9 +2,9 @@
 title: "Visual StudioからAzure App Serviceにプログラムをデプロイする"
 emoji: "🍋"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics:  ["azure", "visualstudio", "csharp", "aspnetcore", "orchardcore"]
+topics:  ["azure", "visualstudio","aspnetcore", "orchardcore", "csharp"]
 published: true
-published_at: 2024-06-24 08:00
+published_at: 2024-06-23 21:30
 publication_name: zead
 ---
 
@@ -22,7 +22,7 @@ https://zenn.dev/zead/articles/orchardcore-create-project-by-vs
 
 ## Azure Portalで App Serviceのリソースを作成する
 
-全てぼ作業をVisual Studioから行えるのですが、Azureのリソースの作成は、Azure Portalで行うこととします。
+全ての作業をVisual Studioから行えるのですが、Azureのリソースの作成は、Azure Portalで行うこととします。
 
 ### リソースの作成を開始する
 
