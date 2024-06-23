@@ -4,7 +4,7 @@ emoji: "🍋"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["azure", "visualstudio","aspnetcore", "orchardcore", "csharp"]
 published: true
-published_at: 2024-06-23 21:30
+published_at: 2024-06-25 21:30
 publication_name: zead
 ---
 
