@@ -12,17 +12,27 @@ publication_name: zead
 
 この記事では、Orchard Coreのプロジェクトを例に、Visual StudioからAzure App Serviceにデプロイする方法を説明します。
 
-Azure App Service は、WebアプリケーションやWebAPIをホストするためのフルマネージドPaaS (サービスとしてのプラットフォーム) です。
-サーバーレスコンピューティング環境を提供し、自動スケーリング、セキュリティ、統合認証などの機能が備わっています。デプロイはGit、GitHub、Docker、Visual Studioなどから行うことができ、効率的なアプリケーション管理が可能です。
+
+※ この記事は、C#ベースのオープンソースCMS「Orchard Core」の紹介する一連の記事のうちの一つですが、「Orchard Core」に依存した部分は、記事の中のほんの一部分なので、Azure App Serviceのリソース作成からデプロイまでの手順は一般的な内容となっています。
 
 Orchard Coreのプロジェクトを例にとりますが、C#で作成したWebアプリケーションならば、今回の方法でVisual Studioから簡単にデプロイすることが可能です。
 
 Orchard Coreのプロジェクトを作成する記事
 https://zenn.dev/zead/articles/orchardcore-create-project-by-vs
 
+## Azure App Serviceとは
+
+Azure App Service は、WebアプリケーションやWebAPIをホストするためのフルマネージドPaaS (サービスとしてのプラットフォーム) です。Linux, Windows両方に対応しています。
+
+サーバーレスコンピューティング環境を提供し、自動スケーリング、セキュリティ、統合認証などの機能が備わっています。
+
+.NET、Java、Node.js、PHP、Pythonなどのフレームワーク/言語に対応しており、これらのランタイム/フレームワークのパッチは自動で適用され、開発者はアプリ開発に専念できます。
+
+デプロイはGit、GitHub、Docker、Visual Studioなどから行うことができ、効率的なアプリケーション管理が可能です。
+
 ## Azure Portalで App Serviceのリソースを作成する
 
-全ての作業をVisual Studioから行えるのですが、Azureのリソースの作成は、Azure Portalで行うこととします。
+全ての作業をVisual Studioから行えるのですが、この記事ではAzureのリソースの作成は、Azure Portalで行うこととします。
 
 ### リソースの作成を開始する
 
@@ -61,7 +71,7 @@ MarketPlaceのページが開きますので、検索欄に"web"と入力し、�
 - Linuxプラン: そのままでもOK (新規作成で任意の名前指定することをオススメします)  
 - 価格プラン: 任意 (ここではFree F1を選択)   
 
-### Webアプリの情報確認と作成開始
+### Webアプリの情報確認
 
 "確認および作成"のタブページに移動します。エラーがなければ、作成ボタンをクリックします。
 
