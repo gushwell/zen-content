@@ -116,4 +116,6 @@ F5キーでデバッグ開始すれば、セットアップページが表示さ
 C#でWebアプリケーションを開発したことがあれば、何も難しいことはありませんね。
 
 
-次回は、Orchard CoreをAzureにデプロイする方法について紹介します。
+次回は、Orchard CoreをAzure App Serviceにデプロイする方法について紹介します。
+
+https://zenn.dev/zead/articles/orchardcore-app-service
