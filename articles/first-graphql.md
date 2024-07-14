@@ -1,10 +1,12 @@
 ---
-title: "ChatGptにGraphQLの概要を教えてもらった"
+title: "ChatGPTにGraphQLの概要を教えてもらった"
 emoji: "📚"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["graphql"]
-published: false
+published: true
+published_at: 2024-07-15 21:03
 publication_name: zead
+
 ---
 
 GraphQLについてど素人の僕がChatGPTに聞きながらGraphQLについて学んだことをまとめてみました。
