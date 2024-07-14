@@ -167,9 +167,10 @@ Azureへの公開が開始されます。
 確認した範囲では、このセットアップ画面でデータベースにSQLiteを選んでもそれなりに動いてくれているようでした。
 しかし、Azure App ServiceでのSQLiteの利用は推奨されていません。  
 
-次回は、今回作成したOrchard Coreのサイトで、Azure SQL Databaseを利用する方法について見ていこうと思います。
+次回は、今回作成したOrchard Coreのサイトで、Azure SQL Databaseを利用する方法について説明します。
 
 
+https://zenn.dev/zead/articles/orchardcore-sql-database
 
 
 
