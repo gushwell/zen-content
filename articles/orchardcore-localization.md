@@ -146,3 +146,6 @@ https://crowdin.com/project/orchard-core
 やってみてはいないのですが、実行環境でLocalizationを有効にした後に、オリジナルのpoファイルを編集し、実行環境にコピーすれば大丈夫かなとも思います。
 
 
+**Orchard Coreに関する記事一覧は以下のページで確認できます。**
+
+https://zenn.dev/zead/articles/orchardcore-list-of-article
