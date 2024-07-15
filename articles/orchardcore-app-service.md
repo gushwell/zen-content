@@ -173,5 +173,7 @@ Azureへの公開が開始されます。
 https://zenn.dev/zead/articles/orchardcore-sql-database
 
 
+**Orchard Coreに関する記事一覧は以下のページで確認できます。**
 
+https://zenn.dev/zead/articles/orchardcore-list-of-article
 

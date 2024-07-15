@@ -147,6 +147,6 @@ MarkdownBodyは、Markdown記法が可能なブログ記事の本文を提供し
 
 今回は、Orchard Coreのコンテンツ管理についての基礎を説明しました。
 
-次の記事では、Visual Studio を使ってプロジェクトを作成する方法を説明しています。
+**Orchard Coreに関する記事一覧は以下のページで確認できます。**
 
-https://zenn.dev/zead/articles/orchardcore-create-project-by-vs
+https://zenn.dev/zead/articles/orchardcore-list-of-article

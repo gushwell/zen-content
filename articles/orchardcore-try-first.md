@@ -258,6 +258,8 @@ Orchard CoreのBlogテーマを使うと、簡単にブログサイトを作成�
 
 さらに、記事を追加したり、カテゴリを追加したりして動きを確認してみてください。
 
-次の記事では、Orchar Coreのコンテンツ管理についてもう少し詳しく説明します。
+**Orchard Coreに関する記事一覧は以下のページで確認できます。**
 
-https://zenn.dev/zead/articles/orchardcore-contents-basics
+https://zenn.dev/zead/articles/orchardcore-list-of-article
+
+

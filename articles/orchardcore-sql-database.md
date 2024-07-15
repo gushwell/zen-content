@@ -156,6 +156,11 @@ https://zenn.dev/zead/articles/orchardcore-app-service
 ![](https://storage.googleapis.com/zenn-user-upload/a54a72e42f51-20240624.png)
 
 
+---
+
+**Orchard Coreに関する記事一覧は以下のページで確認できます。**
+
+https://zenn.dev/zead/articles/orchardcore-list-of-article
 
 
 
