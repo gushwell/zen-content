@@ -4,7 +4,7 @@ emoji: "📘"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "dotnet"]
 published: true
-published_at: 2024-07-21 21:10
+published_at: 2024-07-18 21:10
 ---
 
 
