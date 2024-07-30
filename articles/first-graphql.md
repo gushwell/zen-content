@@ -4,12 +4,12 @@ emoji: "📚"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["graphql"]
 published: true
-published_at: 2024-08-02 21:03
+published_at: 2024-08-04 21:03
 publication_name: zead
 
 ---
 
-GraphQLについてど素人の僕がChatGPTに聞きながらGraphQLについて学んだことをまとめてみました。
+GraphQLについて素人の僕がChatGPTに聞きながらGraphQLについて学んだことをまとめてみました。
 
 なお、この記事はChatGPTが作成した文章をそのまま掲載したものではありません。何回も質問しながら疑問点を解消し、それらを再構成、加筆、修正したものとなっています。
 
