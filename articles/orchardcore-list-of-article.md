@@ -4,7 +4,7 @@ emoji: "🍑"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "aspnetcore", "orchardcore", "cms"]
 published: true
-published_at: 2024-07-14 15:45
+published_at: 2024-07-21 21:12
 publication_name: zead
 ---
 
@@ -28,4 +28,5 @@ https://zenn.dev/zead/articles/orchardcore-app-service
 
 https://zenn.dev/zead/articles/orchardcore-sql-database
 
+https://zenn.dev/zead/articles/orchardcore-localization
 
