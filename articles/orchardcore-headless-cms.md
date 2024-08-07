@@ -2,7 +2,7 @@
 title: "C#ベースのオープンソースCMS「Orchard Core」をヘッドレスCMSとして利用する"
 emoji: "🌰"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics:  [ "orchardcore", "cms", "aspnetcore", "csharp"]
+topics:  [ "orchardcore", "cms", "headlesscms", "csharp", "graphql"]
 published: true
 published_at: 2024-08-18 21:10
 publication_name: zead
