@@ -304,3 +304,8 @@ OrchardをヘッドレスCMSとして使用することで、組織内で利用�
 ### 4.時間と資源の節約
 
 Orchardには、コンテンツを管理するための幅広い機能、ユーザーの役割、その他多くの機能が搭載されており、コストやリソースを節約することができます。
+
+**Orchard Coreに関する記事一覧は以下のページで確認できます。**
+
+https://zenn.dev/zead/articles/orchardcore-list-of-article
+
