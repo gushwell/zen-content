@@ -4,7 +4,7 @@ emoji: "🌰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  [ "orchardcore", "cms", "headlesscms", "csharp", "graphql"]
 published: true
-published_at: 2024-08-21 21:10
+published_at: 2024-08-26 08:20
 publication_name: zead
 ---
 
