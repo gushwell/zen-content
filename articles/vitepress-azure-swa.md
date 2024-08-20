@@ -4,7 +4,7 @@ emoji: "📘"
 type: "idea" # tech: 技術記事 / idea: アイデア
 topics:  ["vitepress", "ssg", "azure", "staticwebapps"]
 published: true
-published_at: 2024-00-02 21:00
+published_at: 2024-09-02 21:00
 publication_name: zead
 ---
 
