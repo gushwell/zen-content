@@ -30,3 +30,4 @@ https://zenn.dev/zead/articles/orchardcore-sql-database
 
 https://zenn.dev/zead/articles/orchardcore-localization
 
+https://zenn.dev/zead/articles/orchardcore-headless-cms
