@@ -1,10 +1,10 @@
 ---
-title: "VitePressで作成したサイトをAzure Static Web Appsにデプロイする"
+title: "VitePressで作成したサイトをGitHub Actionsを使ってAzure Static Web Appsにデプロイする"
 emoji: "📘"
 type: "idea" # tech: 技術記事 / idea: アイデア
-topics:  ["vitepress", "ssg", "azure", "staticwebapps"]
+topics:  ["vitepress", "githubactions", "azure", "staticwebapps"]
 published: true
-published_at: 2024-09-02 21:00
+published_at: 2024-09-09 21:00
 publication_name: zead
 ---
 
@@ -27,7 +27,7 @@ https://vitepress.dev/
 
 VitePressをインストイールします。
 
-以下のコマンドの実行します。（ここでは、vitepressというフォルダを作成しています。）
+以下のコマンドの実行します。（ここでは、vitepressというフォルダーを作成しています。）
 
 
 ```
@@ -79,7 +79,7 @@ npm run docs:dev
 ## Nodeのバージョンを v18に変更
 
 
-順番が逆かもしれませんが、この記事を書いている時点では、Azure Static Web AppsでサポートするNode v20 はプレビュー版なので、v18を利用するようにします。
+順番が逆かもしれませんが、この記事を書いている時点では、Azure Static Web AppsでサポートするNode v20はプレビュー版なので、v18を利用するようにします。
 
 ### nvm-windowsをインストールします。
 
@@ -131,7 +131,7 @@ Azureポータルを開いて、Azure Static Web Appsのリソースを作成し
 
 リソースを作成する「静的 Web アプリの作成」の画面では、
 
-「デプロイの詳細」の「ソース」 で GitHub を選択し、「組織」「リポジトリ」「分岐」で、デプロイ対象のGitHub リポジトリとブランチを選択します。  
+「デプロイの詳細」の「ソース」でGitHubを選択し、「組織」「リポジトリ」「分岐」で、デプロイ対象のGitHubリポジトリとブランチを選択します。  
 
 「ビルドの詳細」では、以下のように設定します。
 
@@ -146,7 +146,7 @@ Azureポータルを開いて、Azure Static Web Appsのリソースを作成し
 
 Azure Static Web Appsのリソースが作成されたら、GitHubのリポジトリをプルします。
 
-azure-static-web-apps-abcd-glacier-0d129700.ymlのようなファイル(ファイル名は同じではありませんが、ymlファイルは一つだけなので間違うことはないです)が、.github/workflowフォルダに作成されています。
+azure-static-web-apps-abcd-glacier-0d129700.ymlのようなファイル(ファイル名は同じではありませんが、ymlファイルは一つだけなので間違うことはないです)が、.github/workflowフォルダーに作成されています。
 
 このファイルに以下の行を追加します。
 
