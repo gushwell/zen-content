@@ -1,10 +1,10 @@
 ---
-title: "VitePressで作成したサイトをGitHub Actionsを使ってAzure Static Web Appsにデプロイする"
-emoji: "📘"
-type: "idea" # tech: 技術記事 / idea: アイデア
+title: "GitHub ActionsでVitePressサイトをAzure Static Web Appsに簡単デプロイ"
+emoji: "🚀"
+type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["vitepress", "githubactions", "azure", "staticwebapps"]
 published: true
-published_at: 2024-09-09 21:00
+published_at: 2024-09-12 21:02
 publication_name: zead
 ---
 
@@ -13,19 +13,22 @@ publication_name: zead
 - 開発環境: Windows 11
 - Node, npm、npxがインストール済み
 
-## Vitepressとは
+## VitePressとは
 
-VitePressは、VuePressの後継として開発された、Viteベースの静的サイトジェネレーター（SSG）です。VuePressと同様にMarkdownでコンテンツを作成できます。
+VitePressは、VuePressの後継として開発されたViteベースの静的サイトジェネレーター（SSG）です。
+
+VuePressと同様にMarkdownで簡単にコンテンツを作成できます。
+
 技術ドキュメントやブログを効率よく作成・管理するツールとして広く利用されています。
 
-カスタマイズ性も高く、軽量であるためパフォーマンスも優れているという評価を得ている静的サイトジェネレーターです。
+また、カスタマイズ性が高く、軽量であるためパフォーマンスにも優れていると評価されています。
 
 https://vitepress.dev/
 
 
 ## VitePressをインストール
 
-VitePressをインストイールします。
+まずは、VitePressをインストイールします。
 
 以下のコマンドの実行します。（ここでは、vitepressというフォルダーを作成しています。）
 
@@ -117,8 +120,7 @@ nodeのバージョンを指定します。
 
 
 ```json
-    "build": "vitepress build docs",
-    "build:azure": "vitepress build docs"
+    "build": "vitepress build docs"
 ```
 
 ### GitHubにプッシュする
