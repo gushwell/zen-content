@@ -4,7 +4,7 @@ emoji: "🏃‍♀️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["svelte", "sveltekit"]
 published: true
-published_at: 2024-09-29 21:20
+published_at: 2024-10-01 21:20
 publication_name: zead
 ---
 
@@ -123,9 +123,9 @@ Forced re-optimization of dependencies
 
 ## ソースコードを確認してみよう
 
-### 作成したプロジェクトのフォルダとファイル
+### 作成したプロジェクトのフォルダーとファイル
 
-VSCodeでmy-appフォルダを開いた時のフォルダです（src/routesを展開した状態）。
+VSCodeでmy-appフォルダーを開いた時のフォルダーです（src/routesを展開した状態）。
 
 ![](https://storage.googleapis.com/zenn-user-upload/d3b0acaf763d-20240911.png)
 
@@ -133,11 +133,11 @@ VSCodeでmy-appフォルダを開いた時のフォルダです（src/routesを�
 
 注目すべきは、app.html、+layout.svelte、および +page.svelte の３つのファイルです。
 
-### 注目すべきフォルダ
+### 注目すべきフォルダー
 
 #### src/lib
 
-ライブラリコード（ユーティリティとコンポーネント）が含まれており、$libエイリアス経由でインポート出来ます。
+ライブラリコード（ユーティリティとコンポーネント）が含まれており、$libエイリアス経由でインポートできます。
 
 #### src/routes
 
@@ -227,7 +227,8 @@ src/routesの直下の +page.svelte は、`/` のurlに対尾するページフ�
 このファイルが、+layout.svelte の`<slot />`の箇所に挿入されることになります。
 
 
-`export let data;` は、SvelteKitがこのページに渡すデータを受け取るための変数です。個人的にはこのexportがすごく気持ち悪いですが...
+`export let data;` は、SvelteKitがこのページに渡すデータを受け取るための変数です。個人的にはこのexportがすごく気持ち悪いですが...  
+（次期バージョンのSvelte5ではこのあたりが改善されるようです。）
 
 ### SvelteKitのルーティング
 
