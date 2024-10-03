@@ -8,6 +8,14 @@ published_at: 2024-10-01 21:20
 publication_name: zead
 ---
 
+## Svelteとは
+
+Svelteは、ReactやVue.jsと同様のフロントエンド開発用のJavaScriptフレームワークです。シンプルな構文と軽量なパフォーマンスが特徴で、学びやすく高速なウェブアプリケーションを作成できます。
+
+SvelteKitは、Next.js（React）やNuxt.js（Vue.js）に相当するフレームワークです。SSR,SSGなどを実現する際にSvelteとともに利用します。また、簡単にルーティング設定（ファイルベースルーティング）が行えますので、SPAでSvelteを利用する際にも、SvelteKitの利用が可能です。
+
+この記事では、Svelte,SvelteKitの環境構築手順、プロジェクトの作成手順、実行手順を示すともに、プロジェクトがどんなファイルで構成されているかを説明しています。
+
 ## 準備
 
 ### Node.jsのインストール
