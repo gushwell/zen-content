@@ -8,7 +8,7 @@ published_at: 2024-10-01 21:20
 publication_name: zead
 ---
 
-## Svelteとは
+## Svelte/SvelteKitとは
 
 Svelteは、ReactやVue.jsと同様のフロントエンド開発用のJavaScriptフレームワークです。シンプルな構文と軽量なパフォーマンスが特徴で、学びやすく高速なウェブアプリケーションを作成できます。
 
