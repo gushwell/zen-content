@@ -4,7 +4,7 @@ emoji: "🔔"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["github", "chrome拡張機能"]
 published: true
-published_at: 2024-10-20 21:20
+published_at: 2024-10-22 21:20
 publication_name: zead
 ---
 
