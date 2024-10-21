@@ -1,10 +1,10 @@
 ---
-title: "SvelteKit入門 簡単なWEBページの作成を作成してみよう"
+title: "SvelteKit5入門 ルーティングとローディングについて理解しよう"
 emoji: "🔰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["svelte", "sveltekit"]
 published: true
-published_at: 2024-11-03 21:20
+published_at: 2024-10-28 21:00
 publication_name: zead
 ---
 
@@ -18,44 +18,68 @@ https://zenn.dev/zead/articles/first-sveltekit
 
 ## スケルトンプロジェクトの作成
 
-npm createコマンドでプロジェクトを作成します。この記事では、最新のSvelte5（正式リリースはまだ）を利用したいと思います。
+2024年10月20日に待望のSvelte5が正式リリースされたので、この記事では、Svelte5を利用しています、
+
+まずは、以下のコマンドで、npxをインストールします。記事執筆時点のバージョンは10.8.2でした。
 
 ```
- npm create svelte@latest first-svelte
+npm install -g npx
 ```
 
-プロジェクト作成のための質問に答えます。
-
-テンプレートはSkeltonを選びます。
-
-![image](uploads/33ceebba3c5dbdb8e73a5fe6206a6e17/image.png)
-
-
-TypeScriptはNoを選びます。
-
-![image](uploads/ef48b5fb665e81e5ce895f942976c7f6/image.png)
-
-追加オプションは、以下のように上の3つをONにします。
-
-![image](uploads/926dfe9ca87f327152bde56336656de1/image.png)
-
-プロジェクトが作成されると、次に何をしたら良いかが表示されます。
+npxを使い、Svelte5のプロジェクトを作成します。
 
 ```
-Next steps:
-  1: cd first-svelte
-  2: npm install
-  3: git init && git add -A && git commit -m "Initial commit" (optional)
-  4: npm run dev -- --open
+npx sv create first-svelte5
 ```
 
-順に実行します。
+以下、実行例です。
 
-ローカルサーバーが起動時、ブラウザに作成したアプリが表示されます。
+```
+┌  Welcome to the Svelte CLI! (v0.5.7)
+│
+◇  Which template would you like?
+│  SvelteKit minimal
+│
+◇  Add type checking with Typescript?
+│  Yes, using Javascript with JSDoc comments
+│
+◆  Project created
+│
+◇  What would you like to add to your project?
+│  prettier, eslint
+│
+◇  Which package manager do you want to install dependencies with?
+│  npm
+│
+◆  Successfully setup integrations
+│
+◇  Successfully installed dependencies
+│
+◇  Successfully formatted modified files
+│
+◇  Project next steps ─────────────────────────────────────────────────────╮
+│                                                                          │
+│  1: cd first-svelte5                                                     │
+│  2: git init && git add -A && git commit -m "Initial commit" (optional)  │
+│  3: npm run dev -- --open                                                │
+│                                                                          │
+│  To close the dev server, hit Ctrl-C                                     │
+│                                                                          │
+│  Stuck? Visit us at https://svelte.dev/chat                              │
+│                                                                          │
+├──────────────────────────────────────────────────────────────────────────╯
+│
+└  You're all set!
+```
 
-![image](uploads/903b7ebb5208145b9b95886b8c9f68b7/image.png)
+メッセージ取り、first-svelte5ディレクトリへ移動し、`npm run dev -- --open`でアプリを起動してみます。
 
-コマンドラインで、q+[enter]でローカルサーバーを終了します。
+ブラウザが起動し、以下のようなページが表示されます。
+
+![](https://storage.googleapis.com/zenn-user-upload/83b8b35a3cd3-20241021.png)
+
+
+終了する場合は、コマンドラインで、q+[enter]とタイプします。
 
 ここでは、終了せずに以降も動かし続けておいてください。
 
@@ -63,9 +87,11 @@ Next steps:
 
 Visual Studio Codeで、プロジェクトのフォルダを開きます。
 
-![image](uploads/f097f7a67db1dd70ac968db989960648/image.png)
+![](https://storage.googleapis.com/zenn-user-upload/24bec997cec3-20241021.png)
 
-srcフォルダはアプリのソースコードを置く場所です。src/app.html はページのテンプレートで、src/routes はアプリのルート(routes) を定義します。
+srcフォルダはアプリのソースコードを置く場所です。
+src/app.html はページのテンプレートです。
+src/routes はアプリのルート(routes) を定義します。
 
 staticフォルダにはアプリをデプロイするときに含めるべきアセット (favicon.png や robots.txt など) を置きます。
 
@@ -81,15 +107,17 @@ app.htmlには、
 
 という記述がありますが、SvelteKit が %sveltekit.body% を適切に置き換えます。
 
-src/routes 内にあるすべての +page.svelte ファイルは、アプリのページを作成します。
+src/routes 内にあるすべての +page.svelte ファイルは、Webアプリのページを意味します。
 
-このアプリでは、現在ページが1つあり (src/routes/+page.svelte)ます。これは / にマッピングされます。
+このアプリでは、`src/routes/+page.svelte`ファイルが一つだけあり、これは / にマッピングされます。（src/routes直下のため）
 
-## aboutページを追加
+## SvelteKitのルーティングを理解する
+
+### aboutページを追加
 
 aboutページを追加してみます。 routesの下にaboutフォルダを作成し、その下に `+page.svelte`を作成し、以下のように記述します。
 
-```svelte
+```svelte:about/+page.svelte
 <nav>
     <a href="/">home</a>
     <a href="/about">about</a>
@@ -107,13 +135,13 @@ http://localhost:5173/about
 
 にアクセスすれば、aboutページが表示されます。
 
-![image](uploads/0a8ed1518b660bf6edf736edcc16f6a6/image.png)
+![](https://storage.googleapis.com/zenn-user-upload/731dfbeeab6d-20241021.png)
 
-## homeページを書き換える
+### homeページを書き換える
 
-ではルートのhomeページ（routes/+page.svelte）を書き変え、保存します。
+次にルートのhomeページ（`routes/+page.svelte`）を書き変え、保存します。
 
-```svelte
+```svelte:+page.svelte
 <nav>
     <a href="/">home</a>
     <a href="/about">about</a>
@@ -125,10 +153,9 @@ http://localhost:5173/about
 
 先ほどのaboutページのhomeリンクをクリックすると、`routes/+page.svelte`ページに遷移します。
 
-![image](uploads/70ce29305f13831d74c5c4d27c49a4df/image.png)
+![](https://storage.googleapis.com/zenn-user-upload/edd669be4a00-20241021.png)
 
-
-## +layout.svelteで共通化する
+### +layout.svelteでページを共通化する
 
 先ほど作成した2つのページには、
 
@@ -139,24 +166,28 @@ http://localhost:5173/about
 </nav>
 ```
 
-とまったく同じコードがあります。これをき+layout.svelteで共通化します。
+とまったく同じコードがあります。これをき`+layout.svelte`で共通化します。
 
-src/routesの下に、+layout.svelteを作成し、以下のように記述します。
+src/routesの下に、`+layout.svelte`を作成し、以下のように記述します。
 
-```svelte
+```svelte:+layout.svelte
+<script >
+  const { children } = $props();
+
+</script>
 <nav>
-    <a href="/">home</a>
-    <a href="/about">about</a>
+  <a href="/">home</a>
+  <a href="/about">about</a>
 </nav>
 
-<slot />
+{@render children()}
 
 ```
 
-こうすることで、+layout.svelteの内容が、そのディレクトリ内の全てのルート(routes)に適用されます。
-<slot /> の部分は、+page.svelteの内容に置き換わります。
+こうすることで、`+layout.svelte`の内容が、そのディレクトリ内の全てのルート(routes)に適用されます。
+`{@render children()}` の部分は、`+page.svelte`の内容に置き換わります。
 
-２つの+page.svelteファイルから、
+２つの`+page.svelte`ファイルから、
 
 ```svelte
 <nav>
@@ -169,14 +200,14 @@ src/routesの下に、+layout.svelteを作成し、以下のように記述し�
 
 homeとaboutのリンクをクリックし、ページが切り替わるか確認してください。
 
-もし、aboutフォルダにも、+layout.svelteがあれば、aboutページは、about/_layout.svelteが適用されます。
+もし、aboutフォルダにも、`+layout.svelte`があれば、aboutページは、`about/+layout.svelte`が適用されます。
 
-## Blog記事一覧ページを作成する
+## データのローディングについて理解する
 
 これまでみてきたページは、固定的でデータによって変更される箇所がありませんでした。
 次にデータによって変化するページを作成してみます。
 
-### data.js
+### データを用意する
 
 まずは、rouesにblogフォルダを作成し、そこにdata.jsを作成します。これは、SvelteKitのチュートリアルサイトで使われているデータです。
 
@@ -203,20 +234,20 @@ export const posts = [
 
 実際は、APIなどで取得し、postsにデータが設定されることになるでしょう。ここではこの3つのBlog記事がposts配列がexportされます。
 
-### blog/+page.server.js
+### サーバーでデータを取得する
 
 次に、blogフォルダに+page.server.jsファイルを作成します。
 
-```js
+```js:+page.server.js
 import { posts } from './data.js';
 
 export function load() {
-	return {
-		summaries: posts.map((post) => ({
-			slug: post.slug,
-			title: post.title
-		}))
-	};
+    return {
+        summaries: posts.map((post) => ({
+            slug: post.slug,
+            title: post.title
+        }))
+    };
 }
 ```
 
@@ -226,13 +257,13 @@ importで、先ほどのdata.jsを利用できるようにしています。
 load関数は、SvelteKitが自動で呼び出す関数です。そのページに遷移した時に呼び出されます。  
 ここでは、map関数を使って、blog記事一覧を表示するための、titleとその記事を識別するslugの一覧を作成してます。
 
-### blog/+page.svelte
+### 取得したデータをレンダリングする
 
-さらに、blogフォルダに_page.svelteファイルを作成します。
+さらに、blogフォルダに`+page.svelte`ファイルを作成します。
 
-```
+```svelte:+page.svelte
 <script>
-    export let data;
+    const { data } = $props();
 </script>
 
 <h1>blog</h1>
@@ -246,15 +277,15 @@ load関数は、SvelteKitが自動で呼び出す関数です。そのページ�
 
 先ほどのload関数で返されたデータが、
 
-```
+```html
 <script>
-    export let data;
+    const { data } = $props();
 </script>
 ```
 
-によって、dataという名前で利用できるようになります。このexportはJavaScriptのexportとは意味が異なります。  
+によって、dataという名前で利用できるようになります。
 コンポーネント（拡張子.svelteファイル）が外部から受け取ることができる「プロパティ」を定義するために使用されます。  
-load関数はデータの取得と準備を担当し、コンポーネントの`export let`で宣言されたプロパティはそのデータを受け取って表示する役割を果たします。
+load関数はデータの取得と準備を担当し、コンポーネントの`$props()`で宣言されたプロパティはそのデータを受け取って表示する役割を果たします。
 ちょっと違和感のある書き方ですが、そういうものだと思ってください。
 
 
@@ -266,7 +297,7 @@ load関数はデータの取得と準備を担当し、コンポーネントの`
     {/each}
 ```
 
-`{#each ...} {/each}`　がSvelteの制御文で、load関数で得たデータsummariesから一つずつデータを取り出し、slug, title変数に代入しています。
+`{#each ...} {/each}` がSvelteの制御文で、load関数で得たデータsummariesから一つずつデータを取り出し、slug, title変数に代入しています。
 
 以下のコードで、取り出したslug, titleの値は、{slug}, {title}で参照され置き換わります。
 
@@ -283,7 +314,7 @@ http://localhost:5173/blog
 
 にアクセスしてみましょう。誤りがなかれば以下のように表示されるはずです。
 
-![image](uploads/e12e52650b3d68a3b7ae33eb07db5629/image.png)
+![](https://storage.googleapis.com/zenn-user-upload/fce8bd94b216-20241021.png)
 
 ここで、ブラウザのディベロッパーツールを起動し、blogのリクエストに対し、どんなレスポンスが返ってきているのか確認してみます。
 
@@ -302,30 +333,36 @@ http://localhost:5173/blog
 
 ### +layout.svelteを書き換える
 
-routes/+layout.svelteを書き換えます。
+`routes/+layout.svelte`を書き換えます。
 
-```svelte
+```svelte:+layout.svelte
+<script >
+  const { children } = $props();
+
+</script>
 <nav>
-    <a href="/">home</a>
-    <a href="/about">about</a>
-    <a href="/blog">blog</a>
+  <a href="/">home</a>
+  <a href="/about">about</a>
+  <a href="/blog">blog</a>
 </nav>
 
-<slot />
+{@render children()}
 ```
 
 これで、全てのページで、
 
-![image](uploads/db2c68d203922627330ab00fdf78c3c5/image.png)
+![](https://storage.googleapis.com/zenn-user-upload/073682df2202-20241021.png)
 
 と表示されるようになるはずです。
 
 
-## Blogの個々の記事を表示する
+## 動的なパラメータ付きのルート(routes)を作成する
+
+### Blogの個々の記事を表示する
 
 この状態では、Blog記事一覧ページで、記事をクリックしても、404エラーになってしまいます。
 
-![image](uploads/f05f1ceecb4b61d94bc3254f7913119f/image.png)
+![](https://storage.googleapis.com/zenn-user-upload/6a60d304656e-20241021.png)
 
 この時のURLは、
 
@@ -341,22 +378,20 @@ http://localhost:5173/blog/{slug}
 
 この下に、`+page.server.js`と`+page.svelte`ファイルを作成します。
 
-
-##### +page.server.js
-
-```js
+```js:/blog/[slug]/+page.server.js
 import { error } from '@sveltejs/kit';
 import { posts } from '../data.js';
 
 export function load({ params }) {
-	const post = posts.find((post) => post.slug === params.slug);
+    const post = posts.find((post) => post.slug === params.slug);
 
-	if (!post) throw error(404);
+    if (!post) throw error(404);
 
-	return {
-		post
-	};
+    return {
+        post
+    };
 }
+
 ```
 
 load関数のparamsは、動的ルートパラメータが含まれます。例えば、/posts/[id]のようなルートがあり、/posts/123というURLがアクセスされた場合、paramsオブジェクトには`{ id: '123' }`が含まれます。
@@ -366,11 +401,10 @@ load関数のparamsは、動的ルートパラメータが含まれます。例�
 `params`という名前はSvelteKitが決めた名前で変更することはできません。
 
 
-##### +page.svelte
 
-```svelte
+```svelte:/blog/[slug]/+page.svelte
 <script>
-    export let data;
+  const { data } = $props();
 </script>
 
 <h1>{data.post.title}</h1>
@@ -381,93 +415,97 @@ load関数のparamsは、動的ルートパラメータが含まれます。例�
 
 なお、`{@html data.post.content}`は、`data.post.content`には、htmlの文字列がそのまま入っているので、そのままHTMLとしてレンダリングします。
 
+![](https://storage.googleapis.com/zenn-user-upload/461a56c5e0b4-20241021.png)
+
+
 ### ブログ記事ページのレイアウトを変更する
 
 今のままだと、`routes/+layout.svelte`の情報が、ブログ記事のページにも適用されます。これを変更し、`routes/blog/[slug]`に`+layout.svelte`ファイルを追加し、ブログ記事だけに別のレイアウトを適用してみましょう。
 
 
-```
+```svelte:/blog/[slug]/+layout.svelte
 <script>
-    export let data;
+    const { data, children } = $props();
 </script>
 
 <div class="layout">
-    <main>
-        <slot />
-    </main>
+  <main>
+    {@render children()}
+  </main>
 </div>
 
 <style>
-    @media (min-width: 640px) {
-        .layout {
+  @media (min-width: 640px) {
+      .layout {
             display: grid;
             gap: 2em;
             grid-template-columns: 1fr 16em;
         }
-    }
+      }
+  }
 </style>
-
 ```
 
-これは、幅が、640ピクセル以上の時に、右側に16em分の空白を確保し、残りでコンテンツを表示させる指定になります。
+これは、幅が640ピクセル以上の時に、右側に16em分の空白を確保し、残りでコンテンツを表示させる指定になります。
 
-## +layout.server.jsでServerの処理を共通化する
+![](https://storage.googleapis.com/zenn-user-upload/f775c9d4d4f4-20241021.png)
+
+
+### +layout.server.jsでServerの処理を共通化する
 
 今度は、ブログ記事の右側に以下のような記事一覧を表示してみましょう。
+すべての個別ページでも、ブログ記事の一覧データを取得する必要があります。
 
-![image](uploads/1aad5c43a869818431732d2d18982573/image.png)
+`src/routes/blog/+page.server.js` で行っているのと同じように、`src/routes/blog/[slug]/+page.server.js` の load 関数から summaries を返すこともできますが、これでは同じことを繰り返すことになってしまいます。
 
-このページでも、ブログ記事の一覧データを取得する必要があります。
+そこで、代わりに、`src/routes/blog/+page.server.js` を `src/routes/blog/+layout.server.js` にリネームします。
+こうすることで、`src/routes/blog/+layout.server.js`のload関数は、ブログ記事一覧のページ(`+page.svelte`)でもブログの個別記事(`+layout.svelte`)のページでも両方で動くようになります。
 
-src/routes/blog/+page.server.js で行っているのと同じように、src/routes/blog/[slug]/+page.server.js の load 関数から summaries を返すこともできますが、これでは同じことを繰り返すことになってしまいます。
+次に、個別記事のほうを修正します。全ての記事で共通ですので、`src/routes/blog/[slug]/+layout.svelte` を以下のように変更します。
 
-そこで、代わりに、src/routes/blog/+page.server.js を src/routes/blog/+layout.server.js にリネームします。
-こうすることで、src/routes/blog/+layout.server.jsのload関数は、ブログ記事一覧でもmブログの個別記事のページでも両方で動くようになります。
-
-次に、個別記事のほうを修正します。全ての記事で共通ですので、src/routes/blog/[slug]/+layout.svelte を以下のように変更します。
-
-```svelte
+```svelte:/blog/[slug]/+layout.svelte
 <script>
-    export let data;
+    const { data, children } = $props();
 </script>
 
 <div class="layout">
-    <main>
-        <slot />
-    </main>
-    <aside>
-        <h2>More posts</h2>
-        <ul>
-            {#each data.summaries as { slug, title }}
-                <li>
-                    <a href="/blog/{slug}">{title}</a>
-                </li>
-            {/each}
-        </ul>
-    </aside>
+  <main>
+    {@render children()}
+  </main>
+  <aside>
+    <h2>More posts</h2>
+    <ul>
+        {#each data.summaries as { slug, title }}
+            <li>
+                <a href="/blog/{slug}">{title}</a>
+            </li>
+        {/each}
+    </ul>
+</aside>
 </div>
 
 <style>
-    @media (min-width: 640px) {
-        .layout {
-            display: grid;
-            gap: 2em;
-            grid-template-columns: 1fr 16em;
-        }
-    }
+  @media (min-width: 640px) {
+      .layout {
+          display: grid;
+          gap: 2em;
+          grid-template-columns: 1fr 16em;
+      }
+  }
 </style>
 ```
 
 asideタグが追加したタグになります。他は変更はありません。
 
-先頭でdataプロパティを利用できるように宣言していますが、このdata経由で、+layout.server.jsで返る記事一覧が参照できるようになります。
+先頭でdataプロパティを利用できるように宣言していますが、このdata経由で、`+layout.server.js`で返る記事一覧が参照できるようになります。
 
 ```
   export let data;
 ```
 
-+page.server.jsで返すデータは、+page.svelteで参照し、+layout.server.jsで返すデータは、+layout.svelteで参照するという対応関係になっています。
+`+page.server.js`で返すデータは、`+page.svelte`で参照し、`+layout.server.js`で返すデータは、`+layout.svelte`で参照するという対応関係になっています。
 
 これで、再度Blogの個別記事を開くと、先ほど示したように、ページの右側に記事一覧が表示されます。
 
 
+![](https://storage.googleapis.com/zenn-user-upload/56633e2a3948-20241021.png)

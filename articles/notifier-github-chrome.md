@@ -4,7 +4,7 @@ emoji: "🔔"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["github", "chrome拡張機能"]
 published: true
-published_at: 2024-10-22 21:20
+published_at: 2024-10-21 21:20
 publication_name: zead
 ---
 
@@ -31,7 +31,7 @@ GitHubからの通知を受け取る方法として、Slackで受け取る方法
 
     ![](https://storage.googleapis.com/zenn-user-upload/45ac36553e9c-20241016.png)
 
-4. Expiration を設定する。ここでは「no expiration」にしています。
+4. Expiration を設定します。ここでは「no expiration」にしています。ここはお好みで自由に選択してください。
 
 5. 「Select Scopes」で通知の範囲を指定します。最低でも「repo」にはチェックを入れます。
 
@@ -43,12 +43,12 @@ GitHubからの通知を受け取る方法として、Slackで受け取る方法
 
     ![](https://storage.googleapis.com/zenn-user-upload/f17c5dcd3ce4-20241016.png)
 
-8. 拡張機能「Notifier for GitHub」のダイアログへ戻り、コピーしたtokenを「Token」欄に貼り付蹴ます。
+8. 拡張機能「Notifier for GitHub」のダイアログへ戻り、コピーしたtokenを「Token」欄に貼り付けます。
 
 ![](https://storage.googleapis.com/zenn-user-upload/e77b79864d8a-20241016.png)
 
 
-9. 上記スクショの通り、チェックを入れるて閉じます。
+9. 上記スクショの通り、チェックを入れて閉じます。
 
 10. Chromeの拡張機能アイコンをクリックします。
 
