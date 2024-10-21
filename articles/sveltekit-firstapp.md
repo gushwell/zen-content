@@ -1,8 +1,8 @@
 ---
-title: "SvelteKit5入門 ルーティングとローディングについて理解しよう"
+title: "SvelteKit入門 ルーティングとローディングについて理解しよう"
 emoji: "🔰"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics:  ["svelte", "sveltekit"]
+topics:  ["svelte", "svelte5", "sveltekit"]
 published: true
 published_at: 2024-10-28 21:00
 publication_name: zead
