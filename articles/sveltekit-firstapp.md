@@ -1,16 +1,16 @@
 ---
-title: "SvelteKit入門 ルーティングとローディングについて理解しよう"
+title: "SvelteKit入門: ルーティングとデータローディングについて理解しよう"
 emoji: "🔰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["svelte", "svelte5", "sveltekit"]
 published: true
-published_at: 2024-10-28 21:00
+published_at: 2024-11-05 20:00
 publication_name: zead
 ---
 
 ## はじめに
 
-以下の記事で、Svelte.SvelteKitの環境構築について説明したので、今度は簡単なWebページを作成して、Svelteへの理解を深めたいと思います。
+以下の記事で、Svelte/SvelteKitの環境構築について説明したので、今度は簡単なWebページを作成して、Svelteへの理解を深めたいと思います。
 
 
 https://zenn.dev/zead/articles/first-sveltekit
@@ -79,7 +79,7 @@ npx sv create first-svelte5
 ![](https://storage.googleapis.com/zenn-user-upload/83b8b35a3cd3-20241021.png)
 
 
-終了する場合は、コマンドラインで、q+[enter]とタイプします。
+終了する場合は、コマンドラインで Ctrl+C とタイプします。
 
 ここでは、終了せずに以降も動かし続けておいてください。
 
@@ -209,7 +209,7 @@ homeとaboutのリンクをクリックし、ページが切り替わるか確�
 
 ### データを用意する
 
-まずは、rouesにblogフォルダを作成し、そこにdata.jsを作成します。これは、SvelteKitのチュートリアルサイトで使われているデータです。
+まずは、rouesにblogフォルダを作成し、そこにdata.jsを作成します。ここでは、SvelteKitのチュートリアルサイトで使われているデータをそのまま流用しています。
 
 
 ```js:data.js
@@ -251,8 +251,8 @@ export function load() {
 }
 ```
 
-このJavaScriptのコードは、その名の通り、サーバー側で実行されるコードです。  
-importで、先ほどのdata.jsを利用できるようにしています。
+このJavaScriptのコードは、そのファイル名の通りサーバー側で実行されるコードです。ブラウザで実行されるコードではありません。  
+先頭行の import文で、先ほどのdata.jsを利用できるようにしています。
 
 load関数は、SvelteKitが自動で呼び出す関数です。そのページに遷移した時に呼び出されます。  
 ここでは、map関数を使って、blog記事一覧を表示するための、titleとその記事を識別するslugの一覧を作成してます。
@@ -284,10 +284,9 @@ load関数は、SvelteKitが自動で呼び出す関数です。そのページ�
 ```
 
 によって、dataという名前で利用できるようになります。
-コンポーネント（拡張子.svelteファイル）が外部から受け取ることができる「プロパティ」を定義するために使用されます。  
+$props()は、コンポーネント（拡張子.svelteファイル）が外部から受け取ることができる「プロパティ」を定義するために使用されます。  
 load関数はデータの取得と準備を担当し、コンポーネントの`$props()`で宣言されたプロパティはそのデータを受け取って表示する役割を果たします。
 ちょっと違和感のある書き方ですが、そういうものだと思ってください。
-
 
 以下のコードで、ブログ記事の一覧を表示しています。
 
@@ -481,7 +480,7 @@ load関数のparamsは、動的ルートパラメータが含まれます。例�
             </li>
         {/each}
     </ul>
-</aside>
+  </aside>
 </div>
 
 <style>
@@ -497,11 +496,13 @@ load関数のparamsは、動的ルートパラメータが含まれます。例�
 
 asideタグが追加したタグになります。他は変更はありません。
 
-先頭でdataプロパティを利用できるように宣言していますが、このdata経由で、`+layout.server.js`で返る記事一覧が参照できるようになります。
+先頭でdataプロパティを利用できるように宣言しています。
 
 ```
-  export let data;
+const { data, children } = $props();
 ```
+
+このdata経由で、`+layout.server.js`で返る記事一覧が参照できるようになります。
 
 `+page.server.js`で返すデータは、`+page.svelte`で参照し、`+layout.server.js`で返すデータは、`+layout.svelte`で参照するという対応関係になっています。
 
@@ -509,3 +510,10 @@ asideタグが追加したタグになります。他は変更はありません
 
 
 ![](https://storage.googleapis.com/zenn-user-upload/56633e2a3948-20241021.png)
+
+
+## 最後に
+
+文章だけだと、難しく感じるかもしれませんが、ぜひ実際に手を動かしてやってみてください。それほど難しくはないことがわかると思います。
+
+SvelteKitが定めたお約束がいくつかありますので、そこを理解してしまえば、簡単にルーティングとデータローディングを実現することができます。
