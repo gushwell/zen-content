@@ -4,7 +4,7 @@ emoji: "🔰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["svelte", "svelte5", "sveltekit"]
 published: true
-published_at: 2024-11-05 20:00
+published_at: 2024-11-06 20:45
 publication_name: zead
 ---
 
@@ -72,7 +72,7 @@ npx sv create first-svelte5
 └  You're all set!
 ```
 
-メッセージ取り、first-svelte5ディレクトリへ移動し、`npm run dev -- --open`でアプリを起動してみます。
+メッセージのとおり、first-svelte5ディレクトリへ移動し、`npm run dev -- --open`でアプリを起動してみます。
 
 ブラウザが起動し、以下のようなページが表示されます。
 
@@ -85,19 +85,19 @@ npx sv create first-svelte5
 
 ## 作成されたファイル群を見てみる
 
-Visual Studio Codeで、プロジェクトのフォルダを開きます。
+Visual Studio Codeで、プロジェクトのフォルダーを開きます。
 
 ![](https://storage.googleapis.com/zenn-user-upload/24bec997cec3-20241021.png)
 
-srcフォルダはアプリのソースコードを置く場所です。
+srcフォルダーはアプリのソースコードを置く場所です。
 src/app.html はページのテンプレートです。
 src/routes はアプリのルート(routes) を定義します。
 
-staticフォルダにはアプリをデプロイするときに含めるべきアセット (favicon.png や robots.txt など) を置きます。
+staticフォルダーにはアプリをデプロイするときに含めるべきアセット (favicon.png や robots.txt など) を置きます。
 
 その他詳しいプロジェクトの構成は以下のページををご覧ください。
 
-[プロジェクト構成](https://kit.svelte.jp/docs/project-structure)
+https://kit.svelte.jp/docs/project-structure
 
 app.htmlには、
 
@@ -115,7 +115,7 @@ src/routes 内にあるすべての +page.svelte ファイルは、Webアプリ�
 
 ### aboutページを追加
 
-aboutページを追加してみます。 routesの下にaboutフォルダを作成し、その下に `+page.svelte`を作成し、以下のように記述します。
+aboutページを追加してみます。 routesの下にaboutフォルダーを作成し、その下に `+page.svelte`を作成し、以下のように記述します。
 
 ```svelte:about/+page.svelte
 <nav>
@@ -184,7 +184,7 @@ src/routesの下に、`+layout.svelte`を作成し、以下のように記述し
 
 ```
 
-こうすることで、`+layout.svelte`の内容が、そのディレクトリ内の全てのルート(routes)に適用されます。
+こうすることで、`+layout.svelte`の内容が、そのディレクトリ内のすべてのルート(routes)に適用されます。
 `{@render children()}` の部分は、`+page.svelte`の内容に置き換わります。
 
 ２つの`+page.svelte`ファイルから、
@@ -200,7 +200,7 @@ src/routesの下に、`+layout.svelte`を作成し、以下のように記述し
 
 homeとaboutのリンクをクリックし、ページが切り替わるか確認してください。
 
-もし、aboutフォルダにも、`+layout.svelte`があれば、aboutページは、`about/+layout.svelte`が適用されます。
+もし、aboutフォルダーにも、`+layout.svelte`があれば、aboutページは、`about/+layout.svelte`が適用されます。
 
 ## データのローディングについて理解する
 
@@ -209,7 +209,7 @@ homeとaboutのリンクをクリックし、ページが切り替わるか確�
 
 ### データを用意する
 
-まずは、rouesにblogフォルダを作成し、そこにdata.jsを作成します。ここでは、SvelteKitのチュートリアルサイトで使われているデータをそのまま流用しています。
+まずは、rouesにblogフォルダーを作成し、そこにdata.jsを作成します。ここでは、SvelteKitのチュートリアルサイトで使われているデータをそのまま流用しています。
 
 
 ```js:data.js
@@ -236,7 +236,7 @@ export const posts = [
 
 ### サーバーでデータを取得する
 
-次に、blogフォルダに+page.server.jsファイルを作成します。
+次に、blogフォルダーに+page.server.jsファイルを作成します。
 
 ```js:+page.server.js
 import { posts } from './data.js';
@@ -259,7 +259,7 @@ load関数は、SvelteKitが自動で呼び出す関数です。そのページ�
 
 ### 取得したデータをレンダリングする
 
-さらに、blogフォルダに`+page.svelte`ファイルを作成します。
+さらに、blogフォルダーに`+page.svelte`ファイルを作成します。
 
 ```svelte:+page.svelte
 <script>
@@ -348,14 +348,14 @@ http://localhost:5173/blog
 {@render children()}
 ```
 
-これで、全てのページで、
+これで、すべてのページで、
 
 ![](https://storage.googleapis.com/zenn-user-upload/073682df2202-20241021.png)
 
 と表示されるようになるはずです。
 
 
-## 動的なパラメータ付きのルート(routes)を作成する
+## 動的なパラメーター付きのルート(routes)を作成する
 
 ### Blogの個々の記事を表示する
 
@@ -373,7 +373,7 @@ http://localhost:5173/blog/{slug}
 
 では、この`/blog/{slug}`のページを作成しましょう。
 
-まず、blogフォルダに下に`[slug]`フォルダを作成します。`[` `]` も含めたフォルダ名とします。
+まず、blogフォルダーの下に`[slug]`フォルダーを作成します。`[` `]` も含めたフォルダー名とします。
 
 この下に、`+page.server.js`と`+page.svelte`ファイルを作成します。
 
@@ -393,7 +393,7 @@ export function load({ params }) {
 
 ```
 
-load関数のparamsは、動的ルートパラメータが含まれます。例えば、/posts/[id]のようなルートがあり、/posts/123というURLがアクセスされた場合、paramsオブジェクトには`{ id: '123' }`が含まれます。
+load関数のparamsは、動的ルートパラメーターが含まれます。例えば、/posts/[id]のようなルートがあり、/posts/123というURLがアクセスされた場合、paramsオブジェクトには`{ id: '123' }`が含まれます。
 
 この場合は、`/blog/[slug]`というルートですから、paramsオブジェクトには、`{ slug : 'welcome' }`といったデータが渡ります。
 
@@ -412,7 +412,7 @@ load関数のparamsは、動的ルートパラメータが含まれます。例�
 
 `+page.svelte`ファイルは、load関数で取得したdataを `{xxxx}`でバインドしています。
 
-なお、`{@html data.post.content}`は、`data.post.content`には、htmlの文字列がそのまま入っているので、そのままHTMLとしてレンダリングします。
+なお、`{@html data.post.content}`の`data.post.content`には、htmlの文字列がそのまま入っているので、そのままHTMLとしてレンダリングします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/461a56c5e0b4-20241021.png)
 
@@ -439,7 +439,6 @@ load関数のparamsは、動的ルートパラメータが含まれます。例�
             display: grid;
             gap: 2em;
             grid-template-columns: 1fr 16em;
-        }
       }
   }
 </style>
@@ -455,12 +454,12 @@ load関数のparamsは、動的ルートパラメータが含まれます。例�
 今度は、ブログ記事の右側に以下のような記事一覧を表示してみましょう。
 すべての個別ページでも、ブログ記事の一覧データを取得する必要があります。
 
-`src/routes/blog/+page.server.js` で行っているのと同じように、`src/routes/blog/[slug]/+page.server.js` の load 関数から summaries を返すこともできますが、これでは同じことを繰り返すことになってしまいます。
+`src/routes/blog/+page.server.js` で行っているのと同じように、`src/routes/blog/[slug]/+page.server.js` の `load`関数から `summaries` を返すこともできますが、これでは同じことを繰り返すことになってしまいます。
 
 そこで、代わりに、`src/routes/blog/+page.server.js` を `src/routes/blog/+layout.server.js` にリネームします。
 こうすることで、`src/routes/blog/+layout.server.js`のload関数は、ブログ記事一覧のページ(`+page.svelte`)でもブログの個別記事(`+layout.svelte`)のページでも両方で動くようになります。
 
-次に、個別記事のほうを修正します。全ての記事で共通ですので、`src/routes/blog/[slug]/+layout.svelte` を以下のように変更します。
+次に、個別記事のほうを修正します。すべての記事で共通ですので、`src/routes/blog/[slug]/+layout.svelte` を以下のように変更します。
 
 ```svelte:/blog/[slug]/+layout.svelte
 <script>
@@ -516,4 +515,4 @@ const { data, children } = $props();
 
 文章だけだと、難しく感じるかもしれませんが、ぜひ実際に手を動かしてやってみてください。それほど難しくはないことがわかると思います。
 
-SvelteKitが定めたお約束がいくつかありますので、そこを理解してしまえば、簡単にルーティングとデータローディングを実現することができます。
+SvelteKitが定めたお約束がいくつかありますので、そこを押さえてしてしまえば、簡単にルーティングとデータローディングを実現できます。
