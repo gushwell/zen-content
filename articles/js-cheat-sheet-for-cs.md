@@ -235,7 +235,7 @@ class MyClass {
 #### C#
 
 ```cs
-throw new Exception('Parameter is not a number!');
+throw new Exception("Parameter is not a number!");
 ```
 
 #### JavaScript
