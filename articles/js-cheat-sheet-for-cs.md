@@ -208,6 +208,37 @@ class Person {
 }
 ```
 
+JavScriptでは、name, ageをプロパティとして実装したいなら厳密には以下のようなコードになる。
+
+```js
+class Person {
+  #name = '';
+  #age = -1;
+  constructor(name, age) {
+    this.#name = name;
+    this.#age = age;
+  }
+  get name(){ return this.#name }
+  set name(str) { this.#name = str }
+  get age() { return this.#age }
+  set age(num) {this.#age = num }
+  print() {
+    console.log(`${this.#name}(${this.#age}歳)`);
+  }
+}
+```
+
+上記getter/setterのコードは[いぬいぬさんのコメント](https://zenn.dev/link/comments/fc0d2ad91b942d)より追記
+
+Personクラスの使い方はpublicフィールドと同じ
+
+```js
+let p = new Person('Alice', 18);
+console.log(p.name); 
+console.log(p.age); 
+```
+
+
 JavaScriptのそれ以外のクラスの要素
 
 ```js
