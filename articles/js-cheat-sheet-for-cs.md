@@ -51,11 +51,12 @@ JavaScriptの特殊な値：
 数値 | `value is int` | `typeof value === "number" && !isNaN(value)`
 真偽値 | `value is bool` | `typeof value === "boolean"`
 日時 | `value is DateTime` | `value instanceof Date`
-配列 | `value is Array` | `value instanceof Array`
+配列 | `value is Array` | `Array.isArray(value)` 
 null | `value is null` | `value === null`
 
-JavaScriptの数値には、整数、実数の区別がない。
-isで統一されているC#は便利。
+- JavaScriptの数値には、整数、実数の区別がない。
+- 配列の判定は、`value instanceof Array`よりも、`Array.isArray`が推奨されている。
+- isで統一されているC#は便利。
 
 ## 関数
 
