@@ -4,7 +4,6 @@ emoji: "✍️"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "javascript"]
 published: true
-published_at: 2024-11-21 21:00
 publication_name: zead
 ---
 
