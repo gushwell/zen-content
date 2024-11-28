@@ -22,8 +22,9 @@ while | `while (n < 10) { … }` | `while (n < 10) { … }`
 等値判定 | `a == b` | `a === b`
 不一致判定 | `a != b` | `a !== b`
 
-C#ではローカル変数にreadonlyは使えない。
-JavaScript の場合 `a == b`, `a != b`は自動型変換をしてくれる。
+- C#ではローカル変数にreadonlyは使えない。
+- JavaScript の場合 `a == b`, `a != b`は自動型変換をしてくれる。
+
 
 ## 型と型システム
 
@@ -33,8 +34,10 @@ JavaScriptは動的型付け言語で、型を明示的に宣言しない。
 C# | JavaScript
 ----|---------------
 `int x = 10;` | `let x = 10;`
-`string name = "Hello";` | `let name = "Hello";`
+`string name = "Hello";` | `let name = 'Hello';`
 `bool isTrue = true;` | `let isTrue = true;`
+
+- JavaScriptでは、`"Hello"`, `'hello'` ともに文字列。これ以降は二重引用符を使用。
 
 JavaScriptの特殊な値：
 
@@ -55,7 +58,32 @@ null | `value is null` | `value === null`
 
 - JavaScriptの数値には、整数、実数の区別がない。
 - 配列の判定は、`value instanceof Array`よりも、`Array.isArray`が推奨されている。
+- `value == null` だと、`undefined` も trueになる
 - isで統一されているC#は便利。
+
+#### 真偽判定 (論理値への型強制)
+
+JavaScriptでは以下のように書くこともできるが注意が必要
+
+```js
+if (value) {
+
+}
+```
+
+JavaScript では、以下の値が「偽（false）」と評価される。（これら以外の値は「真（true）」と評価される）
+
+```
+false
+0、-0、NaN
+0n (BigIntのゼロ)
+'', "" (空文字列)
+null
+undefined
+```
+
+これらの値以外はすべて「真」と評価されます。
+
 
 ## 関数
 
@@ -100,20 +128,20 @@ const result = triple(5);
 文字列の連結 | `str1 + str2` | `str1 + str2`
 部分文字列の取得 | `str.Substring(startIndex, length)` | `str.substring(startIndex, endIndex)`
 文字列の長さ取得 | `str.Length` | `str.length`
-文字列の検索 | `str.IndexOf("searchString")` | `str.indexOf('searchString')`
-文字列の置換 | `str.Replace("old", "new")` | `str.replace('old', 'new')`
-文字列の分割 | `str.Split('delimiter')` | `str.split('delimiter')`
+文字列の検索 | `str.IndexOf("searchString")` | `str.indexOf("searchString")`
+文字列の置換 | `str.Replace("old", "new")` | `str.replace("old", "new")`
+文字列の分割 | `str.Split("delimiter")` | `str.split("delimiter")`
 大文字に変換 | `str.ToUpper()` | `str.toUpperCase()`
 小文字に変換 | `str.ToLower()` | `str.toLowerCase()`
 空白の削除 | `str.Trim()` | `str.trim()`
 先頭空白の削除 | `str.TrimStart()` | `str.trimStart()`
 末尾空白の削除 | `str.TrimEnd()` | `str.trimEnd()`
-特定文字列で始まるか? | `str.StartsWith("prefix")` | `str.startsWith('prefix')`
-特定文字列で終わるか? | `str.EndsWith("suffix")` | `str.endsWith('suffix')`
-特定文字列を含むか? | `str.Contains("substring")` | `str.includes('substring')`
-文字列の挿入 | `str.Insert(index, "newText")` | `str.slice(0, index) + 'newText' + str.slice(index)`
-文字列が空か? | `string.IsNullOrEmpty(str)` | `!str === \|\| str === ''`
-文字列が空または空白か? | `string.IsNullOrWhiteSpace(str)` | `!str \|\| str.trim() === ''`
+特定文字列で始まるか? | `str.StartsWith("prefix")` | `str.startsWith("prefix")`
+特定文字列で終わるか? | `str.EndsWith("suffix")` | `str.endsWith("suffix")`
+特定文字列を含むか? | `str.Contains("substring")` | `str.includes("substring")`
+文字列の挿入 | `str.Insert(index, "newText")` | `str.slice(0, index) + "newText" + str.slice(index)`
+文字列が空か? | `string.IsNullOrEmpty(str)` | `!str === \|\| str === ""`
+文字列が空または空白か? | `string.IsNullOrWhiteSpace(str)` | `!str \|\| str.trim() === ""`
 
 ## 数値に関わる操作
 
@@ -196,7 +224,7 @@ class Person {
 
 ```js
 class Person {
-  name = '';
+  name = "";
   age = -1;
   constructor(name, age) {
     this.name = name;
@@ -212,7 +240,7 @@ JavScriptでは、name, ageをプロパティとして実装したいなら厳�
 
 ```js
 class Person {
-  #name = '';
+  #name = "";
   #age = -1;
   constructor(name, age) {
     this.#name = name;
@@ -233,7 +261,7 @@ class Person {
 Personクラスの使い方はpublicフィールドと同じ
 
 ```js
-let p = new Person('Alice', 18);
+let p = new Person("Alice", 18);
 console.log(p.name); 
 console.log(p.age); 
 ```
@@ -272,7 +300,7 @@ throw new Exception("Parameter is not a number!");
 #### JavaScript
 
 ```js
-throw new Error('Parameter is not a number!');
+throw new Error("Parameter is not a number!");
 ```
 
 #### C#
@@ -316,8 +344,8 @@ async Task<string> EchoAsync(string msg) {
 
 ```js
 async function main() {
-  console.log('start');
-  const msg = await echo('hello');
+  console.log("start");
+  const msg = await echo("hello");
   console.log(msg);
 }
 
