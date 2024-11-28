@@ -236,7 +236,7 @@ class Person {
 }
 ```
 
-JavScriptでは、name, ageをプロパティとして実装したいなら厳密には以下のようなコードになる。
+JavaScriptでは、name, ageをプロパティとして実装したいなら厳密には以下のようなコードになる。
 
 ```js
 class Person {
