@@ -1,6 +1,6 @@
 ---
 title: "C#プログラマーのためのJavaScriptチートシート(LINQ編)"
-emoji: "✍️"
+emoji: "📔"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "JavaScript"]
 published: true
