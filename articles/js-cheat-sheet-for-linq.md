@@ -289,7 +289,7 @@ LINQに慣れたプログラマーの場合は、ix.jsなどのライブラリ�
 https://reactivex.io/IxJS/
 
 #### Linq.js
-http://linqjs.codeplex.com/
+https://github.com/mihaifm/linq
 
 #### remeda
 https://remedajs.com
