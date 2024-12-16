@@ -34,11 +34,12 @@ Polyglot Notebooksでは、各プログラミング言語ごとにセルを分�
 
 ## 準備
 
-1. .NET SDK をインストール
+1. .NET SDKをインストールしていない場合は、.NET SDK をインストールします。
 
     https://dotnet.microsoft.com/ja-jp/download/dotnet
 
-    筆者は、.NET8をインストールしています。
+    .NET9, .NET8どちらでもお好みの方をインストールしてください。
+
 
 2. .NET interactiveをインストール
 
