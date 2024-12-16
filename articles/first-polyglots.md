@@ -1,20 +1,21 @@
 ---
-title: "Polyglot NotebooksでC#をVS Code上で手軽に動かす"
+title: "Polyglot NotebooksでC#とJavaScriptをVS Code上で手軽に動かす"
 emoji: "🔔"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics:  ["csharp", "vscode", "polyglot", "polyglotnotebook"]
+topics:  ["csharp", "vscode", "polyglot", "polyglotnotebook", "javascript"]
 published: true
-published_at: 2024-12-16 21:10
+published_at: 2024-12-18 21:10
 publication_name: "zead"
 ---
 
 ## はじめに
 
-C#でプログラムを書いていて、コードの断片をちょっと動かしてみたいと思ったことありませんか？
+C#やJavaScriptなどでプログラムを書いていて、コードの断片をちょっと動かしてみたいと思ったことありませんか？
 
 そんな時に便利なのが、VS Codeの拡張機能である「Polyglot Notebooks」です。
 
 弊社のkotaprojさんが書いた記事「Semantic KernelのGetting Started」でもPolyglot Notebooksを利用しています。
+
 https://zenn.dev/zead/articles/semantic_kernel_getting_started
 
 この記事では、Polyglot Notebooksの環境構築と簡単な使い方について説明しています。
@@ -23,7 +24,13 @@ https://zenn.dev/zead/articles/semantic_kernel_getting_started
 
 Polyglot Notebooksは、簡単に言えば、Jupyter Notebookの.NET版といったところでしょうか。
 
-複数のプログラミング言語を1つのノートブック内でシームレスに使用できるツールで、.NET Interactiveを活用することでC#、F#、PowerShellなどを切り替えて利用可能です。Python、JavaScript、SQLなどにも対応しています。各言語ごとにセルを分けて記述でき、データの共有や連携も簡単に行えます。Visual Studio Codeと統合されていて、データ解析やスクリプト作成、マルチプラットフォーム開発に適しています。
+複数のプログラミング言語を1つのノートブック内でシームレスに使用できるツールで、.NET Interactiveを活用することでC#、F#、PowerShellなどを切り替えて利用可能です。Python、JavaScript、SQLなどにも対応しています。
+
+Visual Studio Codeと統合されており、データ解析やスクリプト作成、マルチプラットフォーム開発に適しています。
+
+Polyglot Notebooksでは、各プログラミング言語ごとにセルを分けて記述でき、異なる言語で書かれたコードを同じノートブック内で実行し、データを共有することができます。
+
+また、CSVやExcelファイル、データベースからのデータのインポートとエクスポート機能を使うことで、外部データソースとの連携も可能です。（この記事では触れていません）。
 
 ## 準備
 
@@ -154,5 +161,5 @@ Polyglot Notebooksは異なるプログラミング言語を統合して、1つ�
 
 ## 最後に
 
-.NET Interactive、Polyglot Notebooksはまだ知名度が低いと思いますが、簡単に環境構築できて、手軽にC#を実行できるので、C#のコード断片を動かすのに最適なツールだと思います。ドキュメントとして残せるのもいいですね。
+.NET Interactive、Polyglot Notebooksはまだ知名度が低いと思いますが、簡単に環境構築できて、手軽にC#やJavaScriptを実行できるので、コード断片を動かすのに最適なツールだと思います。ドキュメントとして残せるのもいいですね。
 
