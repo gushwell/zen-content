@@ -30,7 +30,7 @@ Visual Studio Codeと統合されており、データ解析やスクリプト�
 
 Polyglot Notebooksでは、各プログラミング言語ごとにセルを分けて記述でき、異なる言語で書かれたコードを同じノートブック内で実行し、データを共有することができます。
 
-また、CSVやExcelファイル、データベースからのデータのインポートとエクスポート機能を使うことで、外部データソースとの連携も可能です。（この記事では触れていません）。
+また、データ共有機能（`#!value`コマンド）を使うことで、セル間やノートブック間でデータを連携することも可能です（この記事では触れていません）。
 
 ## 準備
 
@@ -56,24 +56,31 @@ Polyglot Notebooksでは、各プログラミング言語ごとにセルを分�
 
 1. フォルダを作成し、そのフォルダをVS Codeで開く。
 
-2. Ctrl+Alt+Window+Nをタイプ
+2. Ctrl+Alt+Window+Nをタイプ（\[File\]-\[New File...\]メニューでも可）
+
+3. Polyglot Notebook を選択
 
     ![](https://storage.googleapis.com/zenn-user-upload/db7ad42b32bc-20241207.png)
 
-3. .dibを3択します。(.dib拡張子については後述します)
+
+4. .dibを選択します。
 
     ![](https://storage.googleapis.com/zenn-user-upload/fb05d13ae077-20241207.png)
 
-4. 言語を選択します。ここではC#を選びます。
+    :::message
+    .dib拡張子については後述の「.dibファイルと.ipynbファイルの違い」で説明しています。
+    :::
+
+5. 言語を選択します。ここではC#を選びます。
 
     ![](https://storage.googleapis.com/zenn-user-upload/2985c60d1351-20241207.png)
 
-5. ファイルが作成されます。適当な名前で保存しておきます。
+6. ファイルが作成されます。適当な名前で保存しておきます。
+
+7. コードを入力する欄(セル)がありますので、ここにC#のコードを入力します。
 
     ![](https://storage.googleapis.com/zenn-user-upload/1766ed2baca6-20241207.png)
 
-
-6. コードを入力する欄(セル)がありますので、ここにC#のコードを入力します。
     ここでは以下のコードを入力。
 
     ```cs
@@ -100,11 +107,11 @@ Polyglot Notebooksでは、各プログラミング言語ごとにセルを分�
 
 ### markdownを記入する
 
-1. コード欄以外にカーソルを移動すると、Markdownを追加するボタンが現れます。
+1. コード欄(セル)の外側にカーソルを移動すると、Markdownを追加するボタンが現れます。
 
     ![](https://storage.googleapis.com/zenn-user-upload/50544fbe9e86-20241207.png)
 
-2. このボタンをクリックするとMarkdownを記入できる欄が追加されますので、ここで、コードの説明文などを記入します。
+2. このボタンをクリックするとMarkdownを記入できる欄(セル)が追加されますので、ここで、コードの説明文などを記入します。
 
     ![](https://storage.googleapis.com/zenn-user-upload/221a5d055ead-20241207.png)
 
@@ -112,13 +119,15 @@ C#の動作をちょっと確認したい時とか、教育用に利用できそ
 
 ## 同じノートブック内でC#とJavaScriptを一緒に使う
 
-Polyglot Notebooksは異なるプログラミング言語を統合して、1つのノートブックで異なる言語のコードを実行できる環境を提供します。各言語はセルごとに分けて使用し、それぞれのセルに言語を指定することで、C#やJavaScriptを組み合わせて使えます。
+Polyglot Notebooksは、複数のプログラミング言語を統合し、1つのノートブック内で異なる言語のコードを実行できる環境を提供します。各セルごとに使用する言語を指定できるため、C#やJavaScriptなどを組み合わせて利用できます。
+
+
+手順を以下に示します。
 
 :::message
 すでに[Node.js](https://nodejs.org/en) がインストールされていることを前提にしています。
 :::
 
-手順を以下に示します。
 
 1. 前述同様、上部の 「＋Code」をクリックします。コードを入力する欄（セル）が追加されます。
 
@@ -132,8 +141,8 @@ Polyglot Notebooksは異なるプログラミング言語を統合して、1つ�
 
     ```js
     const numbers = [
-    [ 1,2,3 ],
-    [ 4,5,6]
+      [ 1,2,3 ],
+      [ 4,5,6]
     ];
     const results = numbers.flatMap(n => n);
     console.log(results);
@@ -166,5 +175,5 @@ Polyglot Notebooksは異なるプログラミング言語を統合して、1つ�
 
 ## 最後に
 
-.NET Interactive、Polyglot Notebooksはまだ知名度が低いと思いますが、簡単に環境構築できて、手軽にC#やJavaScriptを実行できるので、コード断片を動かすのに最適なツールだと思います。ドキュメントとして残せるのもいいですね。
+.NET InteractiveやPolyglot Notebooksはまだ知名度が高くないかもしれませんが、簡単に環境を構築でき、C#やJavaScriptなどのコードを手軽に実行できるため、コードスニペットを試したり共有したりするのに最適なツールだと思います。また、実行結果とともにコードをドキュメントとして保存できる点も大きな利点ですね。
 
