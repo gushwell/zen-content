@@ -7,9 +7,11 @@ published: true
 publication_name: zead
 ---
 
-タイトルの通り、C#プログラマーのためのJavaScriptチートシートです。
+タイトルの通り、C#プログラマーのためのJavaScriptチートシートです。C#に慣れているプログラマーがJavaScriptの書き方を効率的に学べるように、2つの言語の書き方をまとめています。
 
-C#に慣れているプログラマーがJavaScriptの書き方を効率的に学べるように、2つの言語の書き方をまとめています。LINQ編は別記事で公開します。
+LINQ編は別記事で公開しています。
+
+https://zenn.dev/zead/articles/js-cheat-sheet-for-linq
 
 ## 基本構文
 
