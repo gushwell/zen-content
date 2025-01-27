@@ -27,7 +27,7 @@ https://zenn.dev/zead/articles/sveltekit-aspnetcore
 
 ## Svelteのプロジェクトを追加
 
-1. タームナルを開いて、作成したC#のプロジェクトのフォルダに移動します。ソリューションフォルダではなく、プロジェクトフォルダなので間違えないようにしてください。
+1. タームナルを開いて、作成したC#のプロジェクトのフォルダーに移動します。ソリューションフォルダーではなく、プロジェクトフォルダーなので間違えないようにしてください。
 
 2. 以下のコマンドを実行します。
     
@@ -74,15 +74,15 @@ https://zenn.dev/zead/articles/sveltekit-aspnetcore
     })
    ```
 
-   これでビルド時の出力フォルダをwwwrootにしています。
+   これでビルド時の出力フォルダーをwwwrootにしています。
 
-7. ClientAppフォルダで、以下のコマンドでSvelteプロジェクトをビルドします。
+7. ClientAppフォルダーで、以下のコマンドでSvelteプロジェクトをビルドします。
 
     ```
     npm run build
     ```
 
-8. wwwrootフォルダが作成されたことを確認します。
+8. wwwrootフォルダーが作成されたことを確認します。
 
     ![](https://storage.googleapis.com/zenn-user-upload/6b7ee826d574-20250114.png)
 
@@ -134,7 +134,7 @@ C#のビルド時に、Svelte側もビルドするよう以下をSvelteAspNetCor
 
 F5キーでデバッグ実行してみます。
 
-PIの動作確認をするSwaggerのページが表示されますが、ブラウザのURLを 
+APIの動作確認をするSwaggerのページが表示されますが、ブラウザのURLを 
 
 ```
 https://localhost:7096/
@@ -160,7 +160,7 @@ https://localhost:7096/swagger/index.html
 ![](https://storage.googleapis.com/zenn-user-upload/edfe11d7ca3f-20250114.png)
 
 
-## ASP連携をしてみる
+## API連携をしてみる
 
 ### C#のWeatherForecastControllerを変更
 
@@ -200,7 +200,7 @@ npm i -D svelte-routing
 
 #### Menu.svelte
 
-ClientApp/src/pagesフォルダを作成し、その下に Menu.svelteファイルを新規作成します。これが最初に表示されるページとなります。
+ClientApp/src/pagesフォルダーを作成し、その下に Menu.svelteファイルを新規作成します。これが最初に表示されるページとなります。
 
 ```html
 <script>
@@ -218,7 +218,7 @@ ClientApp/src/pagesフォルダを作成し、その下に Menu.svelteファイ�
 
 続いて、WeatherForecast APIを呼び出し、その結果を表示するページを作成します。
 
-以下のように、ClientApp/src/pagesフォルダの下に WeatherForecast.svelteファイルを新規作成します。
+以下のように、ClientApp/src/pagesフォルダーの下に WeatherForecast.svelteファイルを新規作成します。
 
 ```html
 <script>
@@ -277,7 +277,7 @@ App.svelteを以下のように変更します。`<Router>`タグは、svelte-ro
 </style>
 ```
 
-SvelteKitの場合は、すべてのページのファイル名が`+page.svelte`になりますが、svelte-routingでは自由度が高いので、ルーティングとsvelteファイルの関係を自由に定義することができます。ページを追加するたびに`<Route>`タグを追加しないといけないのが面倒ですが、筆者はプログラムを作成しpagesフォルダのファイルから自動で`<Route>`タグを追加するようにしています。
+SvelteKitの場合は、すべてのページのファイル名が`+page.svelte`になりますが、svelte-routingでは自由度が高いので、ルーティングとsvelteファイルの関係を自由に定義することができます。ページを追加するたびに`<Route>`タグを追加しないといけないのが面倒ですが、筆者はプログラムを作成しpagesフォルダーのファイルから自動で`<Route>`タグを追加するようにしています。
 package.jsonを編集し、このプログラムを`npm run build`時に実行するようにすれば、自動化することも可能です。
 
 ### 動作確認
