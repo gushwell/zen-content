@@ -220,13 +220,19 @@ Modal.svelteを以下のように変更します。
   function closeModal() {
     showModal = false;
   }
+
+	function openModal() {
+		showModal = true;
+	}
 </script>
 
-<button onclick={() => { showModal = true;  }}>モーダルを開く</button>
-<Modal show={showModal} onClose={() => { showModal = false; }} >
-  <h2>モーダルのタイトル</h2>
-  <p>ここに好きなコンテンツを追加できます。</p>
-  <button onclick={closeModal}>閉じる</button>
+<button onclick={openModal}>モーダルを開く</button>
+<Modal show={showModal} >
+	<div class="modal">
+    <h2>モーダルのタイトル</h2>
+    <p>ここに好きなコンテンツを追加できます。</p>
+    <button class="button" onclick={closeModal}>閉じる</button>
+	</div>
 </Modal>
 ```
 
