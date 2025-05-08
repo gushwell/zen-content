@@ -2,7 +2,7 @@
 title: "GitHub Copilot の利用方法（Visual Studio 2022 向け）"
 emoji: "✈"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics:  ["VisualStudio", "githubcopilot"]
+topics:  ["visualstudio2022", "visualstudio", "githubcopilot"]
 published: true
 published_at: 2025-05-11 20:45
 publication_name: "zead"
