@@ -1,6 +1,6 @@
 ---
 title: "GitHub Copilot Editsの利用方法（Visual Studio 2022 向け）"
-emoji: "⌨"
+emoji: "🚀"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["visualstudio2022", "visualstudio", "githubcopilot"]
 published: true
