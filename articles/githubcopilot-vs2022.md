@@ -24,6 +24,10 @@ publication_name: "zead"
 セットアップがまだの方は、まず Visual Studio の拡張機能管理画面から
 「GitHub Copilot」を検索してインストールし、GitHub アカウントでサインインしてください。
 
+GitHub Copilot Editsの使い方については、こちらの記事を参照してください。
+
+https://zenn.dev/zead/articles/githubcopilot-edits-vs2022
+
 
 ## コード補完
 
