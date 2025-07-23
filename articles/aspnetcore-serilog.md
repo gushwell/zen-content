@@ -2,7 +2,7 @@
 title: "ASP.NET CoreにSerilogを導入する初心者向けガイド"
 emoji: "🥣"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics:  ["aspnetcore", "csharp", "serilog"]
+topics:  ["serilog", "aspnetcore", "csharp", "dotnet", "初心者向け"]
 published: true
 published_at: 2025-08-28 21:30
 publication_name: zead
@@ -13,8 +13,7 @@ publication_name: zead
 Serilogは、構造化されたログを簡単に記録できる強力なロギングライブラリです。これを使うことで、アプリケーションの動作を監視したり、問題をデバッグしたりする際に役立つ詳細なログを残せます。
 
 この記事では、ASP.NET CoreアプリケーションにSerilogを導入する方法を、わかりやすく解説します。
-
-なおこの記事は、Serilog公式サイトやSerilogのGitHubリポジトリのドキュメントを参考にしています。    
+Serilog公式サイトやSerilogのGitHubリポジトリのドキュメントを参考にしています。    
 
 https://serilog.net/
 
@@ -48,7 +47,7 @@ ASP.NET Coreには標準のロギング機能がありますが、Serilogは以�
    この記事では、WebAPIプロジェクトで説明しますが、Razor Pages、MVCでも手順は同じです。
 
 
-2. **プロジェクトをVisual Studioで開く**（必要に応じて）:
+2. **プロジェクトをVisual Studio or VS Codeで開く**:
    ```bash
    code .
    ```
@@ -57,7 +56,8 @@ ASP.NET Coreには標準のロギング機能がありますが、Serilogは以�
 
 ## ステップ2: SerilogのNuGetパッケージをインストール
 
-Serilogをプロジェクトに追加するには、必要なNuGetパッケージをインストールします。以下のコマンドをターミナルまたはVisual StudioのNuGetパッケージマネージャーで実行します。
+Serilogをプロジェクトに追加するには、必要なNuGetパッケージをインストールします。以下のコマンドをターミナルで実行します。あるいはVisual StudioのNuGetパッケージマネージャーでインストールします。
+
 
 ```bash
 dotnet add package Serilog.AspNetCore
@@ -71,7 +71,7 @@ dotnet add package Serilog.Sinks.File
 
 ## ステップ3: Serilogの設定
 
-Serilogを設定するには、`Program.cs`を編集します。以下は、基本的な設定例です。
+`Program.cs`を編集し、Serilogの設定をします。以下は、基本的な設定例です。
 
 
 ```csharp:program.cs
@@ -107,7 +107,7 @@ app.Run();
 ```
 
 
-### コードのポイント
+#### コードのポイント
 
 - **UseSerilog**: Serilogをホストに統合します。
 - **WriteTo.Console()**: ログをコンソールに出力。
@@ -153,7 +153,7 @@ namespace SerilogSample.Controllers
 ```
 
 
-### コードのポイント
+#### コードのポイント
 
 - **ILogger<T>**: ASP.NET Coreの標準ロギングインターフェースを使用。Serilogが裏で処理。
 - **LogInformation**: 通常の情報ログを記録。
@@ -183,9 +183,9 @@ dotnet run
    `Logs`フォルダに`log-YYYYMMDD.txt`が作成され、同じログが記録されます。
 
 
-## ステップ6: appsettings.jsonで設定を管理（オプション）
+## ステップ6: appsettings.jsonで設定を管理
 
-ログ設定をコードではなく`appsettings.json`で管理することもできます。以下は例です。
+ログ設定をコードではなく`appsettings.json`で管理することもできます。以下はその例です。
 
 ```json
 {
@@ -249,15 +249,14 @@ app.Run();
 ```
 
 
-### ポイント
+#### ポイント
 
 - **ReadFrom.Configuration**: `appsettings.json`のSerilogセクションを読み込み。
-- **JSONフォーマッタ**: ログをJSON形式で保存し、構造化ログを活用。
 
 
 ## ステップ7: 構造化ログをファイルに出力する
 
-Serilogで構造化ログをファイルに出力するには、ログをJSON形式などの構造化フォーマットで保存する設定を追加します。
+これで基本的なログ出力ができるようになりました。次に、ログをJSON形式（構造化フォーマット）で保存する設定を追加します。
 
 
 ### 1. 必要なNuGetパッケージのインストール
@@ -270,7 +269,7 @@ dotnet add package Serilog.Formatting.Compact
 
 ただし、すでにインストールしている Serilog.AspNetCore パッケージには、Serilog.Formatting.Compactパッケージが含まれていますので、上記コマンドは実行しなくても問題ありません。
 
-Serilog.Formatting.Compact: ログをコンパクトなJSON形式（CLEF: Compact Log Event Format）で出力。
+**Serilog.Formatting.Compact** : ログをコンパクトなJSON形式（CLEF: Compact Log Event Format）で出力。
 
 ### 2. 構成ファイルの設定
 
@@ -292,7 +291,7 @@ appsettings.jsonの"WriteTo"を以下のように書き換えます。
 
 ### 3. 構造化ログの記録
 
-コントローラーで構造化ログを記録するには、ILogger<T>を使用してオブジェクトをログに含めます。以下は例です：
+コントローラーで構造化ログを記録するには、ILogger<T>を使用して@付きプレースホルダーでオブジェクトをログに含めます。以下は例です：
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -324,7 +323,8 @@ namespace SerilogSample.Controllers
 
 #### ポイント
 
-**{@Forecast}**: プレースホルダーの@はオブジェクトを構造化データとしてログに記録します。これにより、forecastオブジェクトのプロパティ（Date, TemperatureC, Summary）がJSON形式で保持されます。
+**{@Forecast}**: プレースホルダーに{@}を付けてオブジェクトをログに埋め込むと、そのオブジェクトのプロパティが型情報付きで保存されます。示した例では、forecastオブジェクトのプロパティ（Date, TemperatureC, Summary）がJSON形式で保持されます。
+これにより、単なる文字列のログメッセージでは失われがちなデータの型や構造がそのまま保持され、後で詳細な解析や加工をしやすくなります。
 
 ### 4. ログファイルの確認
 
@@ -360,8 +360,9 @@ namespace SerilogSample.Controllers
 - @t: タイムスタンプ
 - @mt: メッセージテンプレート
 - Forecast: 構造化データとして保存されたオブジェクト
-  このJSON形式は、ログ分析ツール（例: Seq、ELK Stack）で簡単に解析できます。
+  このJSON形式は、Seqのようなログ解析ツールで分析できます。
 
+https://datalust.co/
 
 ### 5. コードでSerilogの設定をする（オプション）
 
@@ -408,21 +409,61 @@ app.Run();
 - **WriteTo.File**: Logs/log-.txtに日次でログファイルを作成（例: log-20250718.txt）。
 Enrich.FromLogContext: リクエストIDやカスタムプロパティをログに追加。
 
----
+## 補足情報: File シンクのオプション
 
-## 補足情報
-
-- カスタムプロパティ: LogContext.PushProperty("UserId", userId)でログにカスタムデータを追加可能。
-- エラーログ: Log.Error(ex, "エラーが発生: {@Details}", details)で例外情報を構造化ログとして記録。
-
-- ファイルサイズ: ログファイルが大きくなる場合、restrictedToMinimumLevelやfileSizeLimitBytesを設定して制御。
-
-- パフォーマンス: 構造化ログはテキストログより少し処理コストが高いので、ログレベル（例: Information以上）を適切に設定。
-
-- ログ解析ツール: JSONログは、SeqやElasticsearchなどのツールで簡単にインポートしてて分析可能。
-
-
+| オプション名                   | 説明                                                         |
+| ------------------------ | ---------------------------------------------------------- |
+| `path`                   | 出力ファイルのパス。`log-.txt` のように `-` を含めるとロールオーバー対応になります。         |
+| `rollingInterval`        | ログファイルをローテーションする周期（`Day`, `Hour`, `Minute`, `Infinite` など） |
+| `outputTemplate`         | 出力形式のテンプレート（ログの書式）    |
+| `retainedFileCountLimit` | 保持するファイルの最大数。デフォルト：最新の31ファイルを保持。                                    |
+| `fileSizeLimitBytes`     | 1ファイルあたりの最大サイズ（バイト単位）。超えるとローテーションされます。                     |
+| `rollOnFileSizeLimit`    | `true`にすると、`fileSizeLimitBytes`を超えたときにロールオーバーします。          |
+| `shared`                 | 複数プロセスでログファイルを共有する場合は`true`に。単一プロセスなら`false`でパフォーマンス向上。    |
+| `buffered`               | 'true'にすると、書き込みがバッファリングされる
 
 
+#### 構成ファイルのサンプル
 
+```json
+    "WriteTo": [
+      {
+        "Name": "File",
+        "Args": {
+          "path": "Logs/log-.txt",
+          "rollingInterval": "Day",
+          "outputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}",
+          "retainedFileCountLimit": 7,
+          "fileSizeLimitBytes": 10485760,
+          "rollOnFileSizeLimit": true,
+          "shared": false,
+          "buffered": true
+        }
+      }
+```      
+
+**outputTemplateについて**
+
+- {Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz}  
+  → 例: 2024-06-01 14:30:15.123 +09:00
+  → 日付と時刻（ミリ秒付き）、タイムゾーンオフセットを表示
+
+- [{Level:u3}]  
+  → 例: [INF], [WRN], [ERR]
+  → ログレベルを3文字で短縮表示（Information, Warning, Error）
+
+- {Message:lj}  
+  → ログメッセージ部分をプレーンテキストで表示
+  → :l フォーマット指定子は文字列の引用符を無効、
+  → :j 埋め込まれた構造化データにはJSON形式でレンダリング。
+
+- {NewLine}{Exception}  
+  → ログメッセージ改行の後に例外情報を出力（例外がある場合のみ）
+
+
+## まとめ
+
+本記事では、ASP.NET CoreにSerilogを導入する手順を初心者向けに丁寧に解説しました。Serilogを使うことで、構造化されたログを簡単に記録・管理でき、ログの分析やトラブルシューティングが格段に効率化します。構造化ログはログ解析ツールと連携しやすく、開発・運用双方で大きなメリットをもたらします。
+
+まずは基本の導入から始めて、徐々に設定を拡張しながら、自分のプロジェクトに最適なロギング環境を構築してみてください。
 
