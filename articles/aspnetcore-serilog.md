@@ -1,10 +1,10 @@
 ---
-title: "ASP.NET CoreにSerilogを導入する初心者向けガイド"
+title: "ASP.NET CoreにSerilogを導入する - 初心者向けガイド"
 emoji: "🥣"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["serilog", "aspnetcore", "csharp", "dotnet", "初心者向け"]
 published: true
-published_at: 2025-08-28 21:30
+published_at: 2025-08-03 21:15
 publication_name: zead
 ---
 
@@ -107,7 +107,7 @@ app.Run();
 ```
 
 
-#### コードのポイント
+#### コードの要点
 
 - **UseSerilog**: Serilogをホストに統合します。
 - **WriteTo.Console()**: ログをコンソールに出力。
@@ -153,7 +153,7 @@ namespace SerilogSample.Controllers
 ```
 
 
-#### コードのポイント
+#### コードの要点
 
 - **ILogger<T>**: ASP.NET Coreの標準ロギングインターフェースを使用。Serilogが裏で処理。
 - **LogInformation**: 通常の情報ログを記録。
@@ -217,7 +217,7 @@ dotnet run
 
 ```
 
-上記設定では、Microsoft, System名前空間のログは、Warning以上にフィルタリングしています。
+上記設定では、Microsoft, System名前空間のログは、Warning以上だけが出力されるようにフィルタリングしています。
 
 上記設定を読み込むように`Program.cs`を変更します。
 
@@ -240,7 +240,9 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+// Serilogのリクエストロギングミドルウェアを追加
 app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
@@ -249,7 +251,7 @@ app.Run();
 ```
 
 
-#### ポイント
+#### コードの要点
 
 - **ReadFrom.Configuration**: `appsettings.json`のSerilogセクションを読み込み。
 
@@ -261,7 +263,9 @@ app.Run();
 
 ### 1. 必要なNuGetパッケージのインストール
 
-構造化ログをJSON形式でファイルに出力するには、Serilog.Formatting.Compactパッケージが必要です。以下のコマンドでインストールします：
+Serilog にはいくつかのJSON フォーマッタが提供されていますが、この記事では、Serilog.Formatting.Compactパッケージを利用します。
+
+以下のコマンドでインストールします：
 
 ```
 dotnet add package Serilog.Formatting.Compact
@@ -395,7 +399,9 @@ builder.Services.AddControllers();
 
 var app = builder.Build();
 
+// Serilogのリクエストロギングミドルウェアを追加
 app.UseSerilogRequestLogging();
+
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
@@ -403,7 +409,7 @@ app.MapControllers();
 app.Run();
 ```
 
-#### コードのポイント
+#### コードの要点
 
 - **CompactJsonFormatter**: ログをコンパクトなJSON形式で出力。これにより、ログが構造化データとして解析しやすくなります。
 - **WriteTo.File**: Logs/log-.txtに日次でログファイルを作成（例: log-20250718.txt）。
@@ -463,7 +469,7 @@ Enrich.FromLogContext: リクエストIDやカスタムプロパティをログ�
 
 ## まとめ
 
-本記事では、ASP.NET CoreにSerilogを導入する手順を初心者向けに丁寧に解説しました。Serilogを使うことで、構造化されたログを簡単に記録・管理でき、ログの分析やトラブルシューティングが格段に効率化します。構造化ログはログ解析ツールと連携しやすく、開発・運用双方で大きなメリットをもたらします。
+本記事では、ASP.NET CoreにSerilogを導入する手順を初心者向けに丁寧に解説しました。Serilogを使うことで、構造化されたログを簡単に記録・管理でき、ログの分析やトラブルシューティングが格段に効率化します。構造化ログはログ解析ツールと連携しやすく、開発・運用双方で大きなメリットがあると言えます。
 
-まずは基本の導入から始めて、徐々に設定を拡張しながら、自分のプロジェクトに最適なロギング環境を構築してみてください。
+まずは基本の導入から始めて、徐々に設定を拡張しながら、自分のプロジェクトに最適なロギング環境を構築してみてはどうでしょう。
 
