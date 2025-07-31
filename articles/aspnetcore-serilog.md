@@ -4,7 +4,7 @@ emoji: "🥣"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["serilog", "aspnetcore", "csharp", "dotnet", "初心者向け"]
 published: true
-published_at: 2025-08-03 21:15
+published_at: 2025-08-06 21:15
 publication_name: zead
 ---
 
