@@ -12,6 +12,7 @@ publication_name: zead
 
 Microsoft Entra ID（旧称 Azure Active Directory）を使って、ASP.NET Core アプリケーションにシングルサインオン（SSO）認証を導入する方法を、Azure ポータル側の設定からアプリ側のコードまで、エラー対応も含めて解説します。
 
+
 ---
 
 ## 1. Entra ID 側の準備
@@ -35,15 +36,14 @@ Microsoft Entra ID（旧称 Azure Active Directory）を使って、ASP.NET Core
      https://localhost:5001/signin-oidc
      ```
 
-     ポート番号は環境によって異なります。これはデバッグ用のリダイレクトURLであり、本番時にはこの値を書き換える必要があります。
-
+    ポート番号は環境により異なります。これは開発用 URL なので、本番環境では必ず変更してください。
 
      ![](https://storage.googleapis.com/zenn-user-upload/789549d234dd-20250805.png)
 
 
 ---
 
-### 1.3. Authenticationの設定
+### 1-3. 認証設定（Authentication）
 
 1. 上記アプリの登録が完了するとアプリの詳細が見られるページに遷移。
 
@@ -53,7 +53,7 @@ Microsoft Entra ID（旧称 Azure Active Directory）を使って、ASP.NET Core
 
     ![](https://storage.googleapis.com/zenn-user-upload/cdb42008651e-20250805.png)
 
-    「ID トークン」にチェックががないと実行時に次のようなエラーになります。
+    これを有効化しないと、次のエラーが発生します。
 
     ```
     unsupported_response_type: AADSTS700054: response_type 'id_token' is not enabled for the application
@@ -63,13 +63,13 @@ Microsoft Entra ID（旧称 Azure Active Directory）を使って、ASP.NET Core
 
 :::message
 再びこのアプリ登録の詳細ページを開くには、以下の手順に従ってください。
-1. 「Microsoft EntraID」を選択
+1. 「Microsoft Entra ID」を選択
 2. 左メニューから「アプリの登録」を選択
 3. 「ディレクトリ内のすべてのアプリケーションを表示」ボタンをクリック
 4. 一覧から該当アプリを選択
 :::
 
-### 1.4 設定値をメモ
+### 1-4 設定値をメモ
 
 1. 概要ページで `TenantId`、`ClientId` をメモ
 
@@ -77,7 +77,7 @@ Microsoft Entra ID（旧称 Azure Active Directory）を使って、ASP.NET Core
 
     赤で囲んだ上が、ClientID,下がTenantIdです。
 
-2. Domeinを調べる
+2. Domainを調べる
 
     Azure ポータル → Microsoft Entra ID → **カスタムドメイン名** に表示される
     例：`contoso.onmicrosoft.com`
@@ -89,7 +89,7 @@ Microsoft Entra ID（旧称 Azure Active Directory）を使って、ASP.NET Core
 
 ## 2. ASP.NET Core アプリの設定
 
-### 2.1. appsettings.json の構成
+### 2-1. appsettings.json の構成
 
 appsettings.jsonに”AzureAD”セクションを追加します。`Domain`, `TenantId`, `ClientId` の値は、Azure Portalでメモしていた値を使います。
 
@@ -104,15 +104,16 @@ appsettings.jsonに”AzureAD”セクションを追加します。`Domain`, `T
 }
 ```
 
+- CallbackPath の既定値 /signin-oidc は OpenIdConnect の標準
 
-実運用では環境変数、KeyVaultなどを利用してください。
+- 実運用では、これらの値はappsettings.jsonではなく環境変数や Azure Key Vault に置き換えましょう
 
 
 ---
 
-### 2.2. Program.cs 設定
+### 2-2. Program.cs 設定
 
-EntraID認証を使用するよう、Program.csを変更します。
+Entra ID認証を使用するよう、Program.csを変更します。
 
 
 ```csharp:Program.cs
@@ -127,35 +128,43 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 
 // 認可とUIの構成
 builder.Services.AddAuthorization();
-builder.Services.AddRazorPages(); // または AddControllersWithViews()
+builder.Services.AddRazorPages(); // MVCの場合は AddControllersWithViews()
 
 var app = builder.Build();
 
-app.UseAuthentication();
+app.UseAuthentication();　 // 必ず Authorization の前に
 app.UseAuthorization();
 
-app.MapRazorPages(); // または app.MapControllers()
+app.MapRazorPages(); // MVCの場合は app.MapControllers()
 
 app.Run();
 ```
 
-### 2.3 Authorize属性の付加
+### 2-3 Authorize属性の付加
 
+認証が必要なページやコントローラーに [Authorize] 属性を付けます。
 
-ControllerやPageModelに `[Authorize]`属性を付加します。
-
+```csharp
+[Authorize]
+public class MyPageModel : PageModel
+{
+    public void OnGet() { }
+}
+```
 
 
 ---
 
 ## まとめ
 
-Microsoft Entra ID を ASP.NET Core に統合するのは、次の 3 ステップだけです：
+Microsoft Entra ID を ASP.NET Core に統合する手順は以下の3ステップです。
 
 1. Azure ポータルでアプリを登録し、リダイレクトURIとトークン設定を行う
-2. `appsettings.json` に認証設定を記述
-3. `Program.cs` に認証・認可・UIの構成を記述
 
-この方法で、セキュアなシングルサインオン（SSO）を簡単に実装できます。
+2. appsettings.json に認証情報を追加
 
-Roleによる許可を行うことも可能ですが、この記事では扱っていません。
+3. Program.cs で認証と認可を有効化
+
+これで安全なシングルサインオン（SSO）が実現できます。
+Role ベースのアクセス制御も可能ですが、本記事では割愛しました。
+

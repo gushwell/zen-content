@@ -14,14 +14,16 @@ publication_name: zead
 
 ### なぜ Azure Key Vault を使うのか？
 
-Azure Key Vault はクラウド環境でシークレットや証明書、鍵を安全に管理できるサービスです。
-App Service で動くアプリがデータベース接続文字列やAPIキーなどの機密情報を扱う場合、直接コードや環境変数に書くのではなく、Key Vault に格納し必要な時に取得するのが推奨されます。
+Azure Key Vault は、クラウド環境でシークレットや証明書、暗号鍵を安全に管理できるサービスです。
+App Service で動くアプリがデータベース接続文字列や API キーなどの機密情報を扱う場合、コードや環境変数に直接書き込むのではなく、Key Vault に格納して必要な時に取得するのが推奨されます。
 
 
 ### 認証するためにマネージドIDを使う
 
-App Service から Key Vault に安全にアクセスするには、Entra ID の「マネージドID（Managed Identity）」を利用します。
-マネージドIDは、Azure リソースに自動で割り当てられるIDで、これを使うとパスワード不要の認証が可能です。
+App Service から Key Vault に安全にアクセスするには、Microsoft Entra ID（旧 Azure AD）の**マネージド ID（Managed Identity）**を利用します。
+マネージド ID は Azure リソースに自動で割り当てられる ID で、パスワード不要の認証が可能です。
+
+※マネージド ID には「システム割り当て」と「ユーザー割り当て」の2種類がありますが、本記事では「システム割り当てマネージド ID」を使用します。
 
 
 ---
@@ -30,12 +32,15 @@ App Service から Key Vault に安全にアクセスするには、Entra ID の
 
 ### Step 0: 前提条件
 
-同一の Azure テナント内のサブスクリプションで App Service と Key Vault が存在することが前提です。
+- App Service と Key Vault が同一の Azure テナント内に存在していること
+
+- App Service の実行環境が Azure（ローカル開発では動作方法が異なる）であること
+
 
 
 ### Step 1: App Service のマネージドIDを有効化
 
-1. Azure Portal で対象 App Service を開く
+1. Azure Portal で対象の App Service を開く
 
 2. 左のメニュ－から「設定」-「ID」を選択
 
@@ -43,13 +48,22 @@ App Service から Key Vault に安全にアクセスするには、Entra ID の
 
     ![](https://storage.googleapis.com/zenn-user-upload/94f2c631eb78-20250808.png)
 
-4. これにより App Service の Azure AD 上にサービスプリンシパルが自動作成される
+4. 保存後、自動的に Entra ID 上にサービス プリンシパルが作成される
 
     ![](https://storage.googleapis.com/zenn-user-upload/4450405eed2b-20250808.png)
 
 ---
 
 ### Step 2: Key Vault にマネージドIDのアクセス権を付与
+
+Key Vault ではアクセス権の付与方法が2種類あります。
+
+- Azure ロールベースのアクセス制御 (RBAC) … 「アクセス制御 (IAM)」で設定
+
+- Key Vault アクセス ポリシー(レガシー) … Key Vault 独自のアクセス設定
+
+この記事では Azure RBAC を使用します。
+
 
 1. Azure Portal で Key Vault を開く
 
@@ -62,6 +76,9 @@ App Service から Key Vault に安全にアクセスするには、Entra ID の
 1. 「ロールの割り当て」から「キー コンテナー シークレット責任者」等の適切なロールを選択
 
     ![](https://storage.googleapis.com/zenn-user-upload/acfd83d0d4c4-20250808.png)
+
+    - 読み取り専用なら「キー コンテナー シークレット ユーザー」
+    - 読み書き両方なら「キー コンテナー シークレット責任者」
 
 1. 「次へ」ボタンをクリック
 
@@ -78,10 +95,8 @@ App Service から Key Vault に安全にアクセスするには、Entra ID の
 1. 検索された一覧から、該当するApp Serviceを選択し、「選択」ボタンをクリック
     ![](https://storage.googleapis.com/zenn-user-upload/19c870c053b4-20250808.png)
 
-1. 「次へ」をクリック
+1. 「次へ」→「レビューと割り当て」をクリック
 
-1. 「レビューと割り当て」ボタンをクリック
-  
 
 以上で、Key Vault にマネージドIDのアクセス権を付与できました。
 
@@ -89,7 +104,7 @@ App Service から Key Vault に安全にアクセスするには、Entra ID の
 
 ### Step 3: アプリケーションコードの変更
 
-1. パッケージをインストール
+1. 必要な NuGet パッケージを追加します
 
 ```xml
     <PackageReference Include="Azure.Identity" Version="1.14.2" />
@@ -115,7 +130,12 @@ KeyVaultSecret secret = await client.GetSecretAsync("MySecret");
 string secretValue = secret.Value;
 ```
 
-- `DefaultAzureCredential` は App Service のマネージドIDを自動的に検出して使用
+**ポイント：**
+
+- DefaultAzureCredential はローカル開発時は開発者アカウントを使用し、Azure 上ではマネージド ID を自動で使用します。
+
+- 実運用では SetSecretAsync は管理用のスクリプトで実行し、アプリ側は GetSecretAsync のみにすることが多いです。
+
 
 :::message
 .NETのアプリケーション構成として利用することが可能ですが、この記事では扱っていません。
@@ -131,7 +151,10 @@ string secretValue = secret.Value;
 
 アプリケーションをデプロイし、Key Vault からシークレットを書き込み、読み込みができるかテストしてください。
 
-もし、403 Forbidden エラーが出る場合は、マネージドIDのロール割り当てを再確認してください。
+**よくあるエラー:**
+- 403 Forbidden → Key Vault のアクセス許可を再確認
+
+- KeyVaultReferenceException → URL や権限設定の誤りを確認
 
 なお、Azure Portalで、KeyVaultのシークレットの値を確認してプログラムで値を設定できたかも確認してみてください。
 
@@ -140,3 +163,14 @@ string secretValue = secret.Value;
 
 
 ![](https://storage.googleapis.com/zenn-user-upload/8eae1a887de5-20250808.png)
+
+
+## まとめ
+
+- Key Vault を使うと、App Service から機密情報を安全に扱える
+
+- マネージド ID を利用すると、パスワードレスで認証可能
+
+- Azure RBAC を使えば権限管理が一元化できる
+
+これで、同一テナント内の App Service から安全に Key Vault のシークレットを取得できるようになります

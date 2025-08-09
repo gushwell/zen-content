@@ -10,15 +10,14 @@ publication_name: zead
 
 ## はじめに
 
-ASP.NET Core で作成したアプリケーションを Azure App Service にデプロイしつつ、**SQLite** を使いたいというニーズは意外と多くあります。
+ASP.NET Core で作成したアプリケーションを Azure App Service にデプロイしつつ、SQLite を使いたいというニーズは意外と多くあります。
 
-「軽量でファイルベース」「手軽に始められる」という魅力のある SQLite ですが、通常の使い方とは少し異なる工夫が必要です。
+SQLite は「軽量でファイルベース」「手軽に始められる」という魅力がありますが、クラウド環境、特に Azure App Service 上では通常のローカル環境とは異なる制約があります。
 
-この記事では、**Azure App Service 上で SQLite を安全に使う方法**について解説します。
+この記事では、Azure App Service 上で SQLite を利用する際の注意点と構成方法について解説します。
 
-:::message
-Microsoftでは、App ServiceでのSQLiteの利用は推奨していないようですので、利用する場合は自己責任でお願いします。
-:::
+Microsoft では App Service での SQLite 利用を公式には推奨していません。理由は、永続性の保証やスケーラビリティの問題、複数インスタンス間でのファイル共有不可などです。利用する場合は自己責任で検証・運用してください。
+
 
 ---
 
@@ -26,37 +25,37 @@ Microsoftでは、App ServiceでのSQLiteの利用は推奨していないよう
 
 ### 結論：
 
-**技術的には可能**ですが、本番利用には注意が必要です。
+技術的には利用可能ですが、本番利用には制約があります。
 
-App Service には「永続的ストレージを利用しない」が基本原則であるため、アプリが保存したファイルは **再起動・スケールアウト・再デプロイで消える可能性があります**。
+App Service は基本的に アプリケーションファイルとデータをインスタンスごとに分離しており、スケールアウト（複数インスタンス化）やインスタンス再作成時にファイルが失われたり共有できなかったりします。
 
-そのため、SQLite の `.db` ファイルをそのまま `wwwroot` などに置いてしまうと、データが消えてしまうリスクがあります。
+特に、.db ファイルを wwwroot 直下に置くと再デプロイで消えるため危険です。
+
 
 ---
 
 ## 2. 一時的に使う方法（非永続）
 
-### /home フォルダを使う
+### /home フォルダの利用
 
-App Service の `/home`ディレクトリ（Windowsでは、`D:\home`）配下は **一時的な書き込み領域**として使用可能です。
+App Service の `/home`（Windowsでは、`D:\home`）は 単一インスタンス内では永続的ですが、複数インスタンス間では共有されません。スケールアウトやインスタンス再作成時にデータが失われる可能性があるため、本番用途には不向きです。
 
-例えば以下のように SQLite のファイルパスを指定すれば、一応動作します。
+キャッシュやセッションデータなど、消えても問題ない用途なら以下のように設定可能です。
+
 
 ```csharp
 var dbPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "myapp.sqlite");
 options.UseSqlite($"Data Source={dbPath}");
 ```
 
-SQLiteをキャッシュ的な用途で利用するならばこれでOKですが、このファイルは **App Service の再起動などで消える可能性がある**ため、通常のデータベースと同じような使い方はできません。
-
 ---
 
 ## 3. 永続化するには？（Azure File Storage を活用）
 
-本番利用を想定して SQLite を使いたい場合は、**Azure File Storage（Azure Files）を App Service にマウントして使う構成**が有効です。
+本番利用を想定して SQLite を使う場合は、**Azure File Storage（Azure Files）を App Service にマウントする方法**があります。
 
 :::message
-`/home`を永続化するオプションもありますが、本記事では扱いません。
+`/home`を永続化する構成（App Service Storage 永続化設定）もありますが、本記事では Azure Files マウントを解説します。
 :::
 
 
@@ -116,30 +115,42 @@ App Serviceはすでに作成済みとします。
 
 #### ③ SQLite の接続文字列を設定
 
+App Service(Linuxプランの場合)
+
 ```csharp
 builder.Services.AddDbContext<MyBoxContext>(options =>
     options.UseSqlite("Data Source=/mount/sqlitedb/myapp.db");
 );
-
 ```
 
 > Windows プランでは `D:\home\mounts\sqlitedb\myapp.db` のようなパスになります。
+
+:::message
+Azure Files はネットワーク経由でアクセスするため、ローカルディスクに比べて遅延があります。高頻度の書き込みが発生するワークロードでは性能低下に注意してください。
+:::
 
 ---
 
 ### Azure File Storage を利用するメリット
 
-* **永続化**：再起動・再デプロイでもデータが保持される
-* **簡単にマウント**できる（App Service の設定画面だけで完結）
+**永続化:**
+App Service の再起動・再デプロイ・スケールインでもデータが保持される
 
-SQLiteは以下のようなデメリットがあるため、大規模かつ高負荷な用途には適していませんが、少人数で利用する小規模なWebアプリケーションや、テスト・開発用途であれば、十分に実用に耐えうる性能を備えています。
+**インスタンス間共有:**
+スケールアウト構成でも全インスタンスから同じ DB ファイルにアクセス可能
 
-#### デメリット
+**管理の容易さ:**
+Azure Portal から容量やスナップショットの管理ができる
 
-- 同時接続が多いとパフォーマンスが劣化（ファイルベースでロックがかかる）
-- スケーラビリティが低い（クライアント／サーバー型ではない）
-- ユーザー管理や細かな権限管理ができない
-- 常時書き込みが発生するシステムでは不利
+**設定の簡便さ:**
+App Service の設定画面で数クリックでマウント可能、コード変更は最小限
+
+**バックアップ・復元が容易:**
+Azure Files のスナップショット機能で DB ファイルを簡単にバックアップ可能
+
+:::message alert
+注意点：Azure Files はネットワーク経由のため、ローカルディスクよりも遅延があります。書き込み頻度が高い場合は性能に注意してください。
+:::
 
 
 ---
@@ -179,7 +190,11 @@ services.AddDbContext<MyDbContext>(options =>
 
 ## まとめ
 
-Azure App Service で SQLite を使うには、「ファイルの置き場所」と「運用の前提」をしっかり理解することが重要です。
+- App Service でも SQLite は利用可能だが、永続性・スケーラビリティの制限を理解する必要がある
 
-SQLite にこだわりがない場合は、**Azure SQL Database** や **Azure Database for PostgreSQL/MySQL** といったマネージドDBサービスへの移行も検討しましょう。
+- 本番利用では Azure Files をマウントする方法が有効
+
+- 高頻度書き込みや大規模アクセスには不向き
+
+SQLite にこだわらない場合は、Azure SQL Database や Azure Database for PostgreSQL/MySQL の利用を検討するのが望ましいです。
 
