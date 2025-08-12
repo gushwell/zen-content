@@ -89,11 +89,12 @@ Key Vault ではアクセス権の付与方法が2種類あります。
 
 1. マネージドIDで、「すべてのシステム割り当てマネージドID」を選択
 
-    ![](https://storage.googleapis.com/zenn-user-upload/7ab4ee4e1aa7-20250808.png)
+   ![](https://storage.googleapis.com/zenn-user-upload/3079d93b2bcb-20250812.png)
 
 
 1. 検索された一覧から、該当するApp Serviceを選択し、「選択」ボタンをクリック
-    ![](https://storage.googleapis.com/zenn-user-upload/19c870c053b4-20250808.png)
+
+    ![](https://storage.googleapis.com/zenn-user-upload/add05873ed1b-20250812.png)
 
 1. 「次へ」→「レビューと割り当て」をクリック
 
@@ -162,7 +163,7 @@ string secretValue = secret.Value;
 ![](https://storage.googleapis.com/zenn-user-upload/3d244810bbd0-20250808.png)
 
 
-![](https://storage.googleapis.com/zenn-user-upload/8eae1a887de5-20250808.png)
+![](https://storage.googleapis.com/zenn-user-upload/5da6b3c4f19b-20250812.png)
 
 
 ## まとめ
