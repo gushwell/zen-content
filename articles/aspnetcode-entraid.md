@@ -1,5 +1,5 @@
 ---
-title: "ASP.NET Core で Azure Entra ID 認証を設定する方法"
+title: "ASP.NET Core で Microsoft Entra ID 認証を設定する方法"
 emoji: "🪪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "aspnetcore", "azure",  "entraid"]
