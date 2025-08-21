@@ -20,7 +20,7 @@ App Service で動くアプリがデータベース接続文字列や API キー
 
 ### 認証するためにマネージドIDを使う
 
-App Service から Key Vault に安全にアクセスするには、Microsoft Entra ID（旧 Azure AD）の**マネージド ID（Managed Identity）**を利用します。
+App Service から Key Vault に安全にアクセスするには、Microsoft Entra ID（旧 Azure AD）の **マネージド ID（Managed Identity）** を利用します。
 マネージド ID は Azure リソースに自動で割り当てられる ID で、パスワード不要の認証が可能です。
 
 ※マネージド ID には「システム割り当て」と「ユーザー割り当て」の2種類がありますが、本記事では「システム割り当てマネージド ID」を使用します。
