@@ -165,7 +165,6 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 # 必要なパッケージをインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
-    curl \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
