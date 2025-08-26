@@ -1,20 +1,20 @@
 ---
-title: "OpenWebUIでMCPを活用する手順 ～Microsoft Learn MCP Serverの導入・活用ガイド～"
+title: "Open WebUIでMCPを活用する手順 ～Microsoft Learn MCP Serverの導入・活用ガイド～"
 emoji: "🤝"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["openwebui", "生成ai", "mcp", "docker", "python"]
 published: true
-published_at: 2025-10-07 20:10
+published_at: 2025-09-02 20:10
 publication_name: zead
 ---
 
 
 ## はじめに
 
-OpenWebUIは、ChatGPTのような対話型AIをブラウザから利用できるOSSです。
+Open WebUIは、ChatGPTのような対話型AIをブラウザから利用できるOSSです。
 大きな特徴のひとつが **MCP（Model Context Protocol）** への対応で、これを利用することでAIが外部APIや独自ツールを自然に呼び出せるようになります。
 
-本記事では、特に **Microsoft Learn MCP Server** をOpenWebUIに組み込む方法を、**Docker Compose** を使って初心者でも迷わないように解説します。
+本記事では、特に **Microsoft Learn MCP Server** をOpen WebUIに組み込む方法を、**Docker Compose** を使って初心者でも迷わないように解説します。
 
 ---
 
@@ -36,13 +36,13 @@ MCP（Model Context Protocol）は、**AIと外部ツールをつなぐための
 ```mermaid
 flowchart 
     User[ユーザー]
-    OpenWebUI[OpenWebUI<br>（AIアシスタント）]
+    Open_WebUI[Open WebUI<br>（AIアシスタント）]
     mcpo[mcpo（MCP-to-OpenAPIプロキシサーバー）]
     MCPServer[MCPサーバー群<br>（mslearn, time, fetch など）]
     MicrosoftLearn[Microsoft Learn API]
 
-    User -- Webアクセス --> OpenWebUI
-    OpenWebUI -- MCPリクエスト --> mcpo
+    User -- Webアクセス --> Open_WebUI
+    Open_WebUI -- MCPリクエスト --> mcpo
     mcpo -- MCPリクエスト --> MCPServer
     MCPServer -- HTTPリクエスト --> MicrosoftLearn
 ```
@@ -203,7 +203,7 @@ CMD ["--help"]
 * `python:3.12-slim-bookworm` をベースに最小限の環境を構築
 * 必要なLinuxツール（`git`, `curl` など）を追加
     * curlはデバッグ用としてインストール
-* OpenWebUI公式の `mcpo` リポジトリをクローン
+* Open WebUI公式の `mcpo` リポジトリをクローン
 * `requirements.txt` と `config.json` をコピー
 
 これで「独自のMCPサーバー」を含めた環境がDocker上に整います。
@@ -356,7 +356,7 @@ flowchart TD
 
 ## 9. 利用例
 
-OpenWebUIのチャット欄で
+Open WebUIのチャット欄で
 
 ```
 Azureの公式ドキュメントを検索して、Entra IDのユーザー管理についてまとめて
@@ -384,7 +384,7 @@ Azureの公式ドキュメントを検索して、Entra IDのユーザー管理�
 
 ### 参考リンク
 
-* [OpenWebUI公式リポジトリ](https://github.com/open-webui/open-webui)
+* [Open WebUI公式リポジトリ](https://github.com/open-webui/open-webui)
 * [mcpo公式リポジトリ](https://github.com/open-webui/mcpo)
 * [Microsoft Learn API](https://learn.microsoft.com/api/mcp)
 
