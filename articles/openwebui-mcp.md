@@ -4,7 +4,7 @@ emoji: "🤝"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["openwebui", "生成ai", "mcp", "docker", "python"]
 published: true
-published_at: 2025-09-02 20:10
+published_at: 2025-09-02 12:05
 publication_name: zead
 ---
 
@@ -15,6 +15,10 @@ Open WebUIは、ChatGPTのような対話型AIをブラウザから利用でき�
 大きな特徴のひとつが **MCP（Model Context Protocol）** への対応で、これを利用することでAIが外部APIや独自ツールを自然に呼び出せるようになります。
 
 本記事では、特に **Microsoft Learn MCP Server** をOpen WebUIに組み込む方法を、**Docker Compose** を使って初心者でも迷わないように解説します。
+
+https://github.com/open-webui/open-webui
+
+https://learn.microsoft.com/ja-jp/training/support/mcp
 
 ---
 
@@ -208,7 +212,9 @@ CMD ["--help"]
 
 これで「独自のMCPサーバー」を含めた環境がDocker上に整います。
 
-**image: u1and0/mcpoを利用すると、Python環境がうまくコンテナ内に構築できなかった、mcpoをGitHubからCloneして構築するようにしている。**
+:::message
+**image: u1and0/mcpo** を利用すると、Python環境がうまくコンテナ内に構築できなかったため、mcpoをGitHubからCloneして構築するようにしています。
+:::
 
 ### requirements.txtは、requests だけを指定。
 
@@ -222,7 +228,7 @@ requests
 
 ---
 
-## 6. Microsoft Learn MCPサーバー（`mslearn_mcp.py`）
+## 6. Microsoft Learn MCP 中継ツール
 
 Microsoft Learn APIと通信する中継役のPythonプログラムです。
 
@@ -233,7 +239,7 @@ Microsoft Learn APIと通信する中継役のPythonプログラムです。
 - サーバーからのレスポンスを標準出力（stdout）にそのまま返す
 
 
-```python
+```python:mslearn_mcp.py
 #!/usr/bin/env python3
 import sys
 import json
@@ -273,21 +279,21 @@ if __name__ == "__main__":
 
 👉 仕組み
 
-1. メイン処理
+1. **メイン処理**
 
 - main() 関数がエントリーポイント
 - 標準入力から1行ずつJSONリクエストを受け取る
 - それを send_to_learn_mcp() でMicrosoft Learn MCPサーバーにPOST送信
 - サーバーのレスポンスをそのまま標準出力に返す
 
-2. サーバーへのリクエスト
+2. **サーバーへのリクエスト**
 - send_to_learn_mcp() 関数で
 - 受け取ったJSONをAPIにPOST
 - レスポンス内容やリクエスト内容を /tmp/mslearn_mcp_proxy.log に記録（ログ出力）
 - レスポンスが「SSE形式（data: ...）」ならその部分だけ抽出してJSONとして返す
 - それ以外は普通のJSONとして返す
 
-3. エラー処理
+3. **エラー処理**
 - もしエラーが起きたら
 - エラー内容やレスポンステキストをログに記録
 - エラー情報をJSON形式で標準出力に返す(これは必要ないかも)
