@@ -35,7 +35,7 @@ Elasticsearch などと比べてシンプルで導入が容易であり、開発
 
 以下を用意しておきます。
 
-* Node.js が動作する環境
+* Node.js が動作する環境（バージョン18以上）
 * Docker / docker-compose が使える環境
 
 ---
@@ -68,12 +68,19 @@ Cloneすると、wikiフォルダが作成され `.md` ファイルが取得で�
 
 ```env
 # Meilisearch設定
+MEILI_HOST=http://localhost:7700
 MEILI_MASTER_KEY=masterKey
 MEILI_PORT=7700
 
 # GitLab Wiki の clone URL
 GITLAB_WIKI_URL=https://gitlab.example.com/mygroup.wiki.git
 ```
+
+**セキュリティ注意（重要）**
+- `MEILI_MASTER_KEY`（管理用キー）は絶対にフロントエンドや公開リポジトリに含めないでください。管理操作（インデックス作成・更新・削除など）はサーバー側でのみ実行し、キーは安全に保管してください。
+- フロントエンドから検索を行う場合は、読み取り専用の Search API Key（Meilisearch の検索専用キー）を作成して使用してください。Search API Key は検索のみを許可し、書き込みや管理操作は行えません。
+- デプロイ時や Docker 設定では、環境変数を平文で埋め込まず、環境変数ファイル（env_file）やシークレット管理機能を活用してください。
+- もし Master Key が漏洩した場合は直ちにローテーション（新しいキーの発行）を行い、既存のキーを無効化してください。
 
 MEILI_MASTER_KEYは任意の文字列を与えてください。
 
@@ -107,7 +114,7 @@ services:
 
 ```bash
 npm init -y
-npm install meilisearch gray-matter dotenv crypto
+npm install meilisearch gray-matter dotenv
 ```
 
 作成されたpackage.jso"type"の行を以下のように書き換えます。
