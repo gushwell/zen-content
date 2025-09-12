@@ -12,7 +12,7 @@ publication_name: zead
 
 ASP.NET Core で作成したアプリケーションを Azure App Service にデプロイしつつ、SQLite を使いたいというニーズは意外と多くあります。
 
-SQLite は「軽量でファイルベース」「手軽に始められる」という魅力がありますが、クラウド環境、特に Azure App Service 上では通常のローカル環境とは異なる制約があります。
+SQLite は「軽量でファイルベース」「手軽に始められる」「なんといっても低コスト」という魅力がありますが、クラウド環境、特に Azure App Service 上では通常のローカル環境とは異なる制約があります。
 
 この記事では、Azure App Service 上で SQLite を利用する際の注意点と構成方法について解説します。
 
@@ -39,6 +39,8 @@ App Service は基本的に アプリケーションファイルとデータを�
 ### /home フォルダの利用
 
 App Service の `/home`（Windowsでは、`D:\home`）は 単一インスタンス内では永続的ですが、複数インスタンス間では共有されません。スケールアウトやインスタンス再作成時にデータが失われる可能性があるため、本番用途には不向きです。
+
+とはいえ、スケールアウトするような環境で、App Service + SQLiteという構成にしたいという方はいないと思いますが...
 
 キャッシュやセッションデータなど、消えても問題ない用途なら以下のように設定可能です。
 
@@ -73,7 +75,7 @@ options.UseSqlite($"Data Source={dbPath}");
 
     - プライマリーサービス：Azure Files
     - パフォーマンス：Standard
-    - 冗長性：LRS（ローカル冗長）推奨
+    - 冗長性：LRS（ローカル冗長）ストレージ
 
     ![](https://storage.googleapis.com/zenn-user-upload/ac5bcb27e48c-20250807.png)
 
@@ -125,9 +127,7 @@ builder.Services.AddDbContext<MyBoxContext>(options =>
 
 > Windows プランでは `D:\home\mounts\sqlitedb\myapp.db` のようなパスになります。
 
-:::message
-Azure Files はネットワーク経由でアクセスするため、ローカルディスクに比べて遅延があります。高頻度の書き込みが発生するワークロードでは性能低下に注意してください。
-:::
+
 
 ---
 
@@ -186,15 +186,20 @@ services.AddDbContext<MyDbContext>(options =>
   }
 ```
 
+:::message alert
+実運用では、ソースコードやappsettings.jsonに接続文字列を記述するのではなく環境変数やKey Vaultなどから取得するようにしてください。
+:::
+
+
 ---
 
 ## まとめ
 
-- App Service でも SQLite は利用可能だが、永続性・スケーラビリティの制限を理解する必要がある
+- App Service でも SQLite は利用可能ですが、永続性・スケーラビリティの制限を理解する必要があります。
 
-- 本番利用では Azure Files をマウントする方法が有効
+- 本番利用では Azure Files をマウントする方法が有効です。
 
-- 高頻度書き込みや大規模アクセスには不向き
+- 高頻度書き込みや大規模アクセスには不向きです。
 
 SQLite にこだわらない場合は、Azure SQL Database や Azure Database for PostgreSQL/MySQL の利用を検討するのが望ましいです。
 
