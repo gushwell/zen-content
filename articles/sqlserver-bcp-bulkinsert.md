@@ -4,7 +4,7 @@ emoji: "👥"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["sqlserver", "db"]
 published: true
-published_at: 2025-10-27 21:05
+published_at: 2025-11-11 08:15
 publication_name: zead
 ---
 
