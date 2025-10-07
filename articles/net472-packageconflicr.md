@@ -194,7 +194,7 @@ Visual StudioのNuGetパッケージマネージャでMySqlConnectorのバージ
 ### 確認方法（確実で簡単）
 
 - nuget.org の MySqlConnector パッケージページを開く（使用するバージョンを選ぶ）。\
-  「依存関係（Dependencies）」や「Files」タブで lib フォルダの中身（net471 / netstandard2.0 / net6.0 など）を確認する。
+  「依存関係（Dependencies）」や「Files」タブで lib フォルダの中身（net471 / netstandard2.0 / net8.0 など）を確認する。
 - ローカルで確認する場合は、packages.config を使っているなら packages<MySqlConnector>.<version>\lib\ の下を見れば、どのターゲット向け DLL が入っているか分かる。
 
 ### よくあるマッピング例（一般論）
