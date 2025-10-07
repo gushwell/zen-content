@@ -183,4 +183,35 @@ Visual StudioのNuGetパッケージマネージャでMySqlConnectorのバージ
 
 .NET/.NET Frameworkのパッケージのバージョンを上げた時は、こういったパッケージのバージョン不一致で悩まされることもありますので、何かの参考になればと思い、この記事を公開しています。
 
+---
+
+## 補足：パッケージのバージョンはどうやって選ぶのか？
+
+
+重要なのは「パッケージがどのターゲットフレームワーク用のアセンブリを含んでいるか」です。例えば、今回問題になった MySqlConnector はバージョンによってサポートするターゲットが異なり、それが System.Net.Http などの依存関係に影響します。
+
+### 確認方法（確実で簡単）
+
+- nuget.org の MySqlConnector パッケージページを開く（使用するバージョンを選ぶ）。\
+  「依存関係（Dependencies）」や「Files」タブで lib フォルダの中身（net471 / netstandard2.0 / net6.0 など）を確認する。
+- ローカルで確認する場合は、packages.config を使っているなら packages<MySqlConnector>.<version>\lib\ の下を見れば、どのターゲット向け DLL が入っているか分かる。
+
+### よくあるマッピング例（一般論）
+
+- net4xx / net47x: .NET Framework 向けアセンブリ。フレームワークの API を直接利用。
+- netstandard2.0: .NET Framework 4.6.1 以降や .NET Core / .NET 5+ で利用可能な互換バイナリ。ただし netstandard ビルドは System.Net.Http などの依存が netstandard 用のアセンブリ参照になるため、.NET Framework 実行環境では追加のパッケージ参照や bindingRedirect が必要になる場合がある。
+- net8.0 / net9.0 等: .NET (Core) 向け。フレームワークの GAC 概念は無い。
+
+### 影響例
+
+- MySqlConnector が netstandard2.0 ビルドを提供しており、プロジェクトが .NET Framework 4.7.2 の場合、NuGet によって netstandard2.0 用アセンブリ（およびその依存）が解決されます。
+- その結果、プロジェクトに組み込まれた System.Net.Http（GAC のもの）と、パッケージ経由で解決された System.Net.Http（netstandard 用）が競合することがあります。これが今回の問題の典型パターンです。
+
+### 対処の基本
+
+- 可能なら、.NET Framework 向けのターゲット（例: lib\net471 等）を提供する MySqlConnector のバージョンを選ぶ。話がややこしくなるので、深入りしませんが、こうすることで、netstandard 経由で起きる System.Net.Http の競合は避けやすくなります。
+
+- もしパッケージが netstandard のみを提供する場合は、csproj の参照管理（HintPath / CopyLocal）や web.config の bindingRedirect、あるいは packages.config → PackageReference 移行で解決しやすくなる場合があります。（HintPath,CopyLocalについての説明は省略します）
+
+- どのバージョンを選ぶかは「ターゲットフレームワーク」「テスト済みの安定版」「互換性要件」で決めることになると思います。今回の記事では互換性が高い 0.57.0 を採用しましたが、利用の際は nuget.org の release notes を確認してください。
 
