@@ -2,7 +2,7 @@
 title: ".NET Frameworkで発生した『System.Net.Http が見つからない』問題を解決した話"
 emoji: "🧩"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: ["dotnet", "csharp", "nuget", "mysqlconnector", "systemnethttp"]
+topics: ["dotnetframework", "csharp", "nuget"]
 published: true
 published_at: 2025-10-07 21:05
 publication_name: zead
