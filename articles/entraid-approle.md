@@ -4,7 +4,7 @@ emoji: "🪪"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "aspnetcore", "azure",  "entraid"]
 published: true
-published_at: 2025-10-14 20:30
+published_at: 2025-10-20 20:30
 publication_name: zead
 ---
 
