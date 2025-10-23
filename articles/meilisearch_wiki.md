@@ -4,7 +4,7 @@ emoji: "🔍"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["meilisearch", "docker", "gitlab", "javascript"]
 published: true
-published_at: 2025-10-28 21:05
+published_at: 2025-11-04 21:05
 publication_name: zead
 ---
 

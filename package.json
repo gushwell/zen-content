@@ -9,7 +9,16 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gushwell/zen-content.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/gushwell/zen-content/issues"
+  },
+  "homepage": "https://github.com/gushwell/zen-content#readme",
   "dependencies": {
-    "zenn-cli": "^0.2.1"
+    "zenn-cli": "^0.1.160"
   }
 }
