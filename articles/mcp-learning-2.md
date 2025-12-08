@@ -262,7 +262,7 @@ dotnet publish -c Release
 作成されたexeファイルを実行するか、プロジェクトのあるフォルダで、`dotnet run`でMCPサーバーを起動します。
 
 ```
-p> dotnet run
+> dotnet run
 info: Microsoft.Hosting.Lifetime[14]
       Now listening on: http://localhost:5000
 info: Microsoft.Hosting.Lifetime[0]
