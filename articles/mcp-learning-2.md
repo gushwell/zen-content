@@ -20,6 +20,10 @@ publication_name: zead
 
 今回は HTTP 版ということで、ASP.NET Core を利用して HTTP 通信を行えるようにします。
 
+元となった Python コードは、以下のリポジトリで公開されています。
+
+https://github.com/gamasenninn/MCP_Learning
+
 ## .NET AI アプリ テンプレートをインストールする
 
 事前準備として、Microsoft.Extensions.AI.Templates パッケージをインストールします。インストール済みの場合は、この手順はスキップしてください。
