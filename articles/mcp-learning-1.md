@@ -1,5 +1,5 @@
 ---
-title: "書籍『MCP入門――生成AIアプリ本格開発』のソースをC#に移植してみた・其の1"
+title: "書籍『MCP入門 - 生成AIアプリ本格開発』のソースをC#に移植する・其の1"
 emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]
@@ -11,7 +11,7 @@ publication_name: zead
 
 ## はじめに
 
-今回から数回にわたり、『MCP入門――生成AIアプリ本格開発』（技術評論社）に掲載されている一部のソースコードを、C# に移植していく連載記事を書いていこうと思います。
+今回から数回にわたり、[『MCP入門――生成AIアプリ本格開発』（技術評論社）](https://www.amazon.co.jp/MCP%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E7%94%9F%E6%88%90AI%E3%82%A2%E3%83%97%E3%83%AA%E6%9C%AC%E6%A0%BC%E9%96%8B%E7%99%BA-%E5%B0%8F%E9%87%8E-%E5%93%B2-ebook/dp/B0FWBTVP6Q)に掲載されている一部のソースコードを、C# に移植していく連載記事を書いていこうと思います。
 なお、著者の小野哲さんからは、移植および掲載の許可をいただいています。
 
 本書は、
@@ -27,7 +27,8 @@ https://github.com/gamasenninn/MCP_Learning
 
 ## .NET AI アプリ テンプレートをインストールする
 
-事前準備として、Microsoft.Extensions.AI.Templates パッケージをインストールします。このパッケージは、Microsoft が提供する .NET 向けの AI チャット Web アプリテンプレートです。
+事前準備として、Microsoft.Extensions.AI.Templates パッケージをインストールします。
+このパッケージは、AI駆動型アプリケーションの開発を簡素化するために設計された Microsoftが提供する .NET テンプレートパッケージであり、MCPサーバーの開発もサポートしています。
 
 以下のコマンドを実行します。
 
@@ -159,10 +160,11 @@ using CalculatorServer.Tools;
 
 var builder = Host.CreateApplicationBuilder(args);
 
-// Configure all logs to go to stderr (stdout is used for the MCP protocol messages).
+// すべてのログを stderr に送信するように設定します (MCP プロトコル メッセージには stdout が使用されます)。
 builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
 
-// Add the MCP services: the transport to use (stdio) and the tools to register.
+// MCPサービスを追加します。使用するトランスポートは stdio です。
+// ツールは、CalculatorToolsクラスを利用します。
 builder.Services
     .AddMcpServer()
     .WithStdioServerTransport()
@@ -191,6 +193,10 @@ dotnet publish -c Release
 #### claude_desktop_config.json を編集する
 
 Claude Desktop からこの C# 製 MCP 電卓サーバーを利用できるように、「ローカル stdio MCP サーバー」として登録します。ここでは Windows の手順を紹介します。
+
+:::message
+『MCP入門 - 生成AIアプリ本格開発』では、Claude Desktop を利用してMCPサーバーに接続していますので、この記事でもClaude Desktop を利用しています。
+:::
 
 `%APPDATA%\Claude\claude_desktop_config.json` を開き、以下のように記述します（存在しない場合はファイルを作成してください）。
 
