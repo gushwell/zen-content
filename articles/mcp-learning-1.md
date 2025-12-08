@@ -4,7 +4,7 @@ emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]
 published: true
-published_at: 2025-12-09 20:45
+published_at: 2025-12-13 08:30
 publication_name: zead
 ---
 
@@ -46,7 +46,7 @@ dotnet new mcpserver -n CalculatorServer
 
 ## CalculatorTools クラスを定義する
 
-ここでは、MCP サーバーの本体となる CalculatorTools クラスを定義します。
+ここでは、MCP サーバーの本体となる CalculatorTools.csファイルをToolsフォルダに作成します。
 
 ```cs
 using System.ComponentModel;
@@ -58,7 +58,7 @@ namespace CalculatorServer.Tools;
 /// 電卓機能を提供するMCPツール
 /// AI対応電卓のツール群
 /// </summary>
-internal class CalculatorTools
+public class CalculatorTools
 {
     [McpServerTool]
     [Description("2つの数値を加算（足し算）します。整数・小数に対応。金額計算、合計値の算出、累積計算などに使用。例：価格の合計、スコアの加算、距離の合算など。")]
@@ -144,7 +144,7 @@ internal class CalculatorTools
 
 [McpServerTool]属性は、どのメソッドを MCP ツールとして公開するか」を示しています。
 
-[Description]属性は、「そのツールが何をするものか、どんな場面で呼び出すべきなのか、その引数はどんな値を設定するのか」を LLMに説明するためのメタデータです。これを元にLLMはどのツール（メソッド）を呼び出すべきなのかを判断します。
+[Description]属性は、「そのツールが何をするものか、どんな場面で呼び出すべきなのか、その引数はどんな値を設定するのか」を LLMに説明するためのメタデータです。これを基にLLMはどのツール（メソッド）を呼び出すべきなのかを判断します。
 
 
 
