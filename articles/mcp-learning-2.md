@@ -1,10 +1,10 @@
 ---
-title: "書籍『MCP入門 - 生成AIアプリ本格開発』のソースをC#に移植する・其の2"
+title: "書籍『MCP入門 - 生成AIアプリ本格開発』のコードをC#に移植する・其の2"
 emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]
 published: true
-published_at: 2025-12-17 08:30
+published_at: 2025-12-20 08:30
 publication_name: zead
 ---
 
@@ -13,16 +13,22 @@ publication_name: zead
 
 前回の記事の続きです。
 
+https://zenn.dev/zead/articles/mcp-learning-1
 
 今回は、[『MCP入門――生成AIアプリ本格開発』（技術評論社）](https://www.amazon.co.jp/MCP%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E7%94%9F%E6%88%90AI%E3%82%A2%E3%83%97%E3%83%AA%E6%9C%AC%E6%A0%BC%E9%96%8B%E7%99%BA-%E5%B0%8F%E9%87%8E-%E5%93%B2-ebook/dp/B0FWBTVP6Q)の第5章の掲載された`calculator_server_http.py' を C# へ移植します。
 
-要は、前回の stdio 版の calculator_server.py を HTTP 版にしてみよう、ということです。
+要は、前回の STDIO 版の `calculator_server.py` を HTTP 版にしてみよう、ということです。
+
 
 今回は HTTP 版ということで、ASP.NET Core を利用して HTTP 通信を行えるようにします。
 
 元となった Python コードは、以下のリポジトリで公開されています。
 
 https://github.com/gamasenninn/MCP_Learning
+
+:::message
+著者の小野哲さんからは、移植および掲載の許可をいただいています。
+:::
 
 ## .NET AI アプリ テンプレートをインストールする
 
@@ -91,7 +97,7 @@ dotnet new mcpserver -n CalculatorServerHttp
 </Project>
 ```
 
-変更点は以下のとおりです。
+主な変更点は以下のとおりです。
 
 - 1行目の`<Project Sdk="Microsoft.NET.Sdk">`を`<Project Sdk="Microsoft.NET.Sdk.Web">`に変更
 - PackageReferenceに`Include="ModelContextProtocol.AspNetCore"`を追加
@@ -254,7 +260,7 @@ dotnet publish -c Release
 この exe ファイルは、対象プラットフォーム用の .NET Runtime がインストールされていない環境でも実行できます。
 
 :::message
-今回は、csptojで、自己完結型の exe ファイルを生成するようにしています。
+今回は、csprojで、自己完結型の exe ファイルを生成するようにしています。
 :::
 
 ## MCPサーバーを起動する
@@ -307,7 +313,7 @@ npx @modelcontextprotocol/inspector
 
 接続したMCPサーバーにどんなツールがあるのか、一覧表示してみます。
 
-上部の[Tools]ボタンをクリックし、[List Tools] をクリックします。
+上部の [Tools] ボタンをクリックし、[List Tools] をクリックします。
 
 ![](https://storage.googleapis.com/zenn-user-upload/42401b2ce223-20251208.png)
 
@@ -322,7 +328,7 @@ npx @modelcontextprotocol/inspector
 
 右側にパラメータを入力する欄が現れますので、'a', 'b'に値を入れて、[Run Tool]ボタンをクリックします。
 
-Tool Resultに、"63"と表示されればOKです。
+Tool Resultに、結果が表示されればOKです。
 
 ![](https://storage.googleapis.com/zenn-user-upload/566904385914-20251208.png)
 
@@ -330,8 +336,15 @@ Tool Resultに、"63"と表示されればOKです。
 
 C# でも Http方式の MCP サーバーを実装できることが確認できました。
 
-今回は、『MCP入門――生成AIアプリ本格開発』の第5章に掲載されているMCPサーバーをC#に移植しました。書籍によると、Claude Desktopは、Streamable-HTTP の MCP サーバーに “直接” 接続できないとのことで、MCP Inspectorで確認をしました。
+今回は、『MCP入門――生成AIアプリ本格開発』の第5章に掲載されているMCPサーバーをC#に移植しました。書籍によると、Claude Desktopは、HTTP方式のMCP サーバーに “直接” 接続できないとのことで、MCP Inspectorで確認をしました。
 
 書籍には、mcp-proxy を使って HTTP MCP サーバーをローカル MCP として見せる方法で、Claude Desktopから利用する方法も解説しています。興味のある方はぜひ読んでみてください。
 
-次回は 第6章に掲載されている データベースと連携する MCP サーバー を C# に移植してみようと思います。
+次回は 第6章に掲載されている "データベースと連携するMCPサーバー" を C# に移植してみようと思います。
+
+
+---
+
+本記事は、Qiita アドベントカレンダー「MCP Advent Calendar 2025」の20日目の記事です。
+https://qiita.com/advent-calendar/2025/mcp
+
