@@ -1,5 +1,5 @@
 ---
-title: "書籍『MCP入門 - 生成AIアプリ本格開発』のコードをC#に移植する・其の2"
+title: "書籍『MCP入門―生成AIアプリ本格開発』のコードをC#に移植する (HTTP方式編)"
 emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]
@@ -17,7 +17,7 @@ https://zenn.dev/zead/articles/mcp-learning-1
 
 今回は、[『MCP入門――生成AIアプリ本格開発』（技術評論社）](https://www.amazon.co.jp/MCP%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E7%94%9F%E6%88%90AI%E3%82%A2%E3%83%97%E3%83%AA%E6%9C%AC%E6%A0%BC%E9%96%8B%E7%99%BA-%E5%B0%8F%E9%87%8E-%E5%93%B2-ebook/dp/B0FWBTVP6Q)の第5章の掲載された`calculator_server_http.py' を C# へ移植します。
 
-要は、前回の STDIO 版の `calculator_server.py` を HTTP 版にしてみよう、ということです。
+要は、前回の STDIO 版の `calculator_server.py` を HTTP 版（Streamable-HTTP）にしてみよう、ということです。
 
 
 今回は HTTP 版ということで、ASP.NET Core を利用して HTTP 通信を行えるようにします。
