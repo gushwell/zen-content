@@ -219,7 +219,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
 
 // MCPサービスを追加します。使用するトランスポートは HTTP です。
-// ツールは、CalculatorTools / RandomNumberTools クラスから明示的に登録します。
+// ツールは、CalculatorToolsクラスを利用します。
 builder.Services
     .AddMcpServer()
     .WithHttpTransport()
