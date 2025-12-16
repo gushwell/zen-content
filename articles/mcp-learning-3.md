@@ -603,7 +603,8 @@ Claude Desktopに組み込んで動作を確認します。
 
 ### claude_desktop_config.jsonを編集
 
-以下の例では、前回作成した、CalculatorServerも一緒に組み込んでいます。
+
+`%APPDATA%\Claude\claude_desktop_config.json` を開き、以下のように記述します（存在しない場合はファイルを作成してください）。
 
 
 ```json
@@ -620,6 +621,9 @@ Claude Desktopに組み込んで動作を確認します。
  }
 }
 ```
+
+上記の例では、前回作成した、CalculatorServerも一緒に組み込んでいます。
+
 
 ### Claude Desktopで確認
 
@@ -660,9 +664,12 @@ sequenceDiagram
 
 C# でデータベースと連携する MCP サーバーを実装しました。今回は MCP サーバーの安全性を確保するためにソースコードが少し長くなりましたが、やっていること自体はそれほど複雑ではありません。ぜひ AI の力も借りながら、ソースコードを読み解いてみてください。
 
-
-
 次回は、第7章に掲載されている "OpenWeatherMap API と連携する MCP サーバー" を C# に移植してみようと思います。
+
+**これまでの記事**
+
+[C#でMCP入門（HTTP方式編）- 書籍『MCP入門』のPythonコードを移植する](https://zenn.dev/zead/articles/mcp-learning-1)
+[C#でMCP入門（STDIO方式編）- 書籍『MCP入門』のPythonコードを移植する](https://zenn.dev/zead/articles/mcp-learning-2)
 
 ---
 
