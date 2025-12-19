@@ -446,9 +446,7 @@ dotnet publish -c Release
 ```
 
 `bin\Release\net10.0\win-x64\publish\`にexeファイルが作成されます。
-
-
-Claude Desktopに組み込んで動作を確認します。
+この exe ファイルは、対象プラットフォーム用の .NET Runtime がインストールされていない環境でも実行できます。
 
 ### 実行ファイルとデータベースファイルをコピー
 
@@ -459,6 +457,7 @@ Claude Desktopに組み込んで動作を確認します。
 
 ### claude_desktop_config.jsonを編集
 
+Claude Desktopに組み込んで動作を確認します。
 `%APPDATA%\Claude\claude_desktop_config.json` を開き、以下のように記述します（存在しない場合はファイルを作成してください）。
 
 "OPENWEATHER_API_KEY"には、事前に取得したAPIキーを設定します。
