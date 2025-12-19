@@ -10,7 +10,12 @@ publication_name: zead
 
 ## はじめに
 
-シリーズ第4回目の本記事では、今回は、[『MCP入門――生成AIアプリ本格開発』（技術評論社）](https://www.amazon.co.jp/MCP%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E7%94%9F%E6%88%90AI%E3%82%A2%E3%83%97%E3%83%AA%E6%9C%AC%E6%A0%BC%E9%96%8B%E7%99%BA-%E5%B0%8F%E9%87%8E-%E5%93%B2-ebook/dp/B0FWBTVP6Q)の第7章に掲載されているプログラム`external_api_server_weather.py`を C# に移植します。(著者の小野哲さんからは、移植および掲載の許可をいただいています)
+シリーズ第4回目の本記事では、[『MCP入門――生成AIアプリ本格開発』（技術評論社）](https://www.amazon.co.jp/MCP%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E7%94%9F%E6%88%90AI%E3%82%A2%E3%83%97%E3%83%AA%E6%9C%AC%E6%A0%BC%E9%96%8B%E7%99%BA-%E5%B0%8F%E9%87%8E-%E5%93%B2-ebook/dp/B0FWBTVP6Q)の第7章に掲載されているプログラム`external_api_server_weather.py`を C# に移植します。(著者の小野哲さんからは、移植および掲載の許可をいただいています)
+
+:::message
+『MCP入門―生成AIアプリ本格開発』を読んでいない方にも理解できる内容にしたつもりです。
+:::
+
 
 前回の記事では、データベースという「内部の情報」を扱いました。
 
@@ -20,10 +25,6 @@ https://zenn.dev/zead/articles/mcp-learning-3
 今回は、外部の世界と繋がるMCPサーバーを C# でどのように書くかを見ていきます。
 利用するWeb APIは、[OpenWeatherMap](https://openweathermap.org/) APIです。
 
-
-:::message
-『MCP入門―生成AIアプリ本格開発』を読んでいない方にも理解できる内容にしたつもりです。
-:::
 
 元となった Python コードは、以下のリポジトリで公開されています。
 
@@ -50,7 +51,7 @@ C# 側では、次のような構成になっています。
     - `.AddMcpServer().WithHttpTransport().WithTools<WeatherTools>()` で MCP を有効化
     - `/api/mcp` に MCP エンドポイントをマッピング
 - OpenWeatherMap 連携の MCP ツール群
-    - `WeatherToolsクラスに実装
+    - WeatherToolsクラスに実装
     - 現在の天気: `WeatherTools.GetWeather()`
     - 天気予報: `WeatherTools.GetWeatherForecast()`
     
@@ -223,7 +224,6 @@ public class WeatherTools
         Timeout = TimeSpan.FromSeconds(10)
     };
 
-
     private const string CurrentWeatherUrl = "https://api.openweathermap.org/data/2.5/weather";
     private const string ForecastUrl = "https://api.openweathermap.org/data/2.5/forecast";
 
@@ -294,7 +294,6 @@ public class WeatherTools
         }
     }
 
-
     // ==== MCP ツールメソッド ====
 
     [McpServerTool]
@@ -336,7 +335,6 @@ public class WeatherTools
         [Description("予報日数（1〜5日）。")] int days = 5,
         [Description("国コード（例: JP, US）。省略時は JP。")] string countryCode = "JP")
     {
-
         if (days < 1 || days > 5)
         {
             throw new ArgumentOutOfRangeException(nameof(days), "予報日数は1-5日の範囲で指定してください。");
@@ -405,7 +403,9 @@ WeatherTools クラスには以下のツールが実装されています：
 - `GetWeather`: 指定した都市の現在の天気を取得
 - `GetWeatherForecast`: 指定した都市の天気予報を取得
 
-これらのツールは OpenWeatherMap API を呼び出し、JSON レスポンスをパースして構造化されたデータを返します。
+ [McpServerTool]属性、[Description]属性を使うのはこれまでと同じです。
+
+これらのツールは OpenWeatherMap API を呼び出し、JSON レスポンスをパースして構造化されたデータを返します。元のコードには無い記述も加えてしまっているため、随分と長いコードになってしまいましたがご容赦を。
 
 ## エントリポイント: Program.cs
 
@@ -420,8 +420,11 @@ using WeatherServer.Tools;
 
 var builder = Host.CreateApplicationBuilder(args);
 
+// すべてのログを stderr に送信するように設定します (MCP プロトコル メッセージには stdout が使用されます)。
 builder.Logging.AddConsole(o => o.LogToStandardErrorThreshold = LogLevel.Trace);
 
+// MCPサービスを追加します。使用するトランスポートは stdio です。
+// ツールは、WeatherToolsクラスを利用します。
 builder.Services
     .AddMcpServer()
     .WithStdioServerTransport()
@@ -430,7 +433,6 @@ builder.Services
 var app = builder.Build();
 
 await app.RunAsync();
-
 ```
 
 ## ビルドと実行

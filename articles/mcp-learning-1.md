@@ -184,7 +184,7 @@ dotnet publish -c Release
 ```
 
 `bin/Release/net8.0/publish/` に exe ファイルが作成されます。
-この exe ファイルを実行するには、.NET Runtime が必要です。
+この exe ファイルを実行するには、.NET Runtime は不要です。
 
 ## Claude Desktop に MCP サーバーを組み込む
 
