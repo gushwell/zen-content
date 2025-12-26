@@ -1,5 +1,5 @@
 ---
-title: "C#でMCP入門（DB接続編）- 書籍『MCP入門』のPythonコードを移植する"
+title: "C#でMCP入門（DB接続編）- 書籍『MCP入門』のPythonコードを移植する(3)"
 emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]

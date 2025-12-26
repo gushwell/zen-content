@@ -1,5 +1,5 @@
 ---
-title: "C#でMCP入門（STDIO方式編）- 書籍『MCP入門』のPythonコードを移植する"
+title: "C#でMCP入門（STDIO方式編）- 書籍『MCP入門』のPythonコードを移植する(1)"
 emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]

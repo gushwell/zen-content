@@ -1,5 +1,5 @@
 ---
-title: "C#でMCP入門（WebAPI活用編）- 書籍『MCP入門』のPythonコードを移植する"
+title: "C#でMCP入門（Weather API連携編）- 書籍『MCP入門』のPythonコードを移植する(4)"
 emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]
@@ -38,19 +38,16 @@ https://github.com/gamasenninn/MCP_Learning
 ### 何をするサーバーか
 
 このサーバーは、OpenWeatherMap の REST API を叩いて、指定した都市の
-
 - 現在の天気
-- 最大 5 日分の天気予報（3 時間ごとの予報を日別にまとめたもの）
+- 最大5日分の天気予報（3時間ごとの予報を日別にまとめたもの）
 
-を取得し、その結果を **MCP ツールの戻り値として JSON で返す** 役割をします。
+を取得し、その結果を **MCPツールの戻り値として JSONで返す** 役割を担います。C# 側は、次のような構成になっています。
 
-C# 側では、次のような構成になっています。
-
-- HTTP 経由で MCP を提供するサーバー
+- HTTP経由で MCPを提供するサーバー
     - エントリポイントは `Program.cs`
-    - `.AddMcpServer().WithHttpTransport().WithTools<WeatherTools>()` で MCP を有効化
-    - `/api/mcp` に MCP エンドポイントをマッピング
-- OpenWeatherMap 連携の MCP ツール群
+    - `.AddMcpServer().WithHttpTransport().WithTools<WeatherTools>()` で MCPを有効化
+    - `/api/mcp` に MCPエンドポイントをマッピング
+- OpenWeatherMap 連携の MCPツール群
     - WeatherToolsクラスに実装
     - 現在の天気: `WeatherTools.GetWeather()`
     - 天気予報: `WeatherTools.GetWeatherForecast()`
@@ -303,7 +300,6 @@ public class WeatherTools
         [Description("国コード（例: JP, US）。省略時は JP。")] string countryCode = "JP")
     {
         var apiKey = GetOpenWeatherApiKey();
-
         var parameters = new Dictionary<string, string>
         {
             ["q"] = $"{city},{countryCode}",
@@ -311,7 +307,6 @@ public class WeatherTools
             ["units"] = "metric", // 摂氏温度
             ["lang"] = "ja"       // 日本語
         };
-
         var response = await MakeApiRequestAsync<Dtos.CurrentWeatherResponse>(CurrentWeatherUrl, parameters).ConfigureAwait(false);
 
         return new Dtos.CurrentWeatherResult(
@@ -341,7 +336,6 @@ public class WeatherTools
         }
 
         var apiKey = GetOpenWeatherApiKey();
-
         var parameters = new Dictionary<string, string>
         {
             ["q"] = $"{city},{countryCode}",
@@ -349,7 +343,6 @@ public class WeatherTools
             ["units"] = "metric",
             ["lang"] = "ja"
         };
-
         var response = await MakeApiRequestAsync<Dtos.ForecastResponse>(ForecastUrl, parameters).ConfigureAwait(false);
 
         var dailyForecasts = new List<Dtos.DailyForecast>();
@@ -358,7 +351,6 @@ public class WeatherTools
 
         // OpenWeather の 3時間刻みデータ：1日あたり最大8件を想定
         var maxItems = Math.Min(response.List.Count, days * 8);
-
         for (var i = 0; i < maxItems; i++)
         {
             var item = response.List[i];
@@ -371,7 +363,6 @@ public class WeatherTools
                 {
                     dailyForecasts.Add(currentDaily);
                 }
-
                 currentDate = dateOnly;
                 currentDaily = new Dtos.DailyForecast(
                     Date: dateOnly.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
@@ -389,7 +380,6 @@ public class WeatherTools
         {
             dailyForecasts.Add(currentDaily);
         }
-
         return new Dtos.WeatherForecastResult(
             City: response.City.Name,
             Country: response.City.Country,
@@ -403,9 +393,9 @@ WeatherTools クラスには以下のツールが実装されています：
 - `GetWeather`: 指定した都市の現在の天気を取得
 - `GetWeatherForecast`: 指定した都市の天気予報を取得
 
- [McpServerTool]属性、[Description]属性を使うのはこれまでと同じです。
+ `[McpServerTool]`属性、`[Description]`属性を使うのはこれまでと同じです。
 
-これらのツールは OpenWeatherMap API を呼び出し、JSON レスポンスをパースして構造化されたデータを返します。元のコードには無い記述も加えてしまっているため、随分と長いコードになってしまいましたがご容赦を。
+これらのツールは OpenWeatherMap API を呼び出し、JSON レスポンスをパースして構造化されたデータを返します。型定義したりして書籍のコードより随分と長いコードになってしまいましたがご容赦を。
 
 ## エントリポイント: Program.cs
 
@@ -446,7 +436,7 @@ dotnet publish -c Release
 ```
 
 `bin\Release\net10.0\win-x64\publish\`にexeファイルが作成されます。
-この exe ファイルは、対象プラットフォーム用の .NET Runtime がインストールされていない環境でも実行できます。
+この exe ファイルは、.NET Runtime がインストールされていない環境でも実行できます。
 
 ### 実行ファイルとデータベースファイルをコピー
 
@@ -471,16 +461,14 @@ Claude Desktopに組み込んで動作を確認します。
       "env": {
         "OPENWEATHER_API_KEY": "ここにAPIキーを書く"
       }
-      
    }
  }
 }
+```
 
 :::message
-Windows版のClaude Desktopは、OS側で設定した環境変数を正しく取得できないため、claude_desktop_config.jsonに環境変数を記述します。
+Windows版のClaude Desktopは、OS側で設定した環境変数を正しく取得できないようです。そのため、claude_desktop_config.jsonに環境変数を記述しています。
 :::
-
-```
 
 
 ### Claude Desktopで確認
@@ -513,17 +501,17 @@ sequenceDiagram
 
 ## 最後に
 
-この章では、C#を使用して外部 API と連携する MCPサーバーの作成方法について説明しました。
+この章では、C#を使用して外部 APIと連携する MCPサーバーの作成方法について説明しました。
 MCPツールが、何を受け取り何を返すべきなのかを見極めることができれば、あとは通常のWebAPIの呼び出しと変わりないことがわかりました。
 
 
-次回は、第7章に掲載されている "NEWS API と連携する MCPサーバー" を C#に移植してみようと思います。
+次回は、第7章に掲載されている "NEWS APIと連携する MCPサーバー" を C#に移植してみようと思います。
 
 ---
 
 **これまでの記事**
 
-[C#でMCP入門（HTTP方式編）- 書籍『MCP入門』のPythonコードを移植する](https://zenn.dev/zead/articles/mcp-learning-1)
-[C#でMCP入門（STDIO方式編）- 書籍『MCP入門』のPythonコードを移植する](https://zenn.dev/zead/articles/mcp-learning-2)
-[C#でMCP入門（DB接続編）- 書籍『MCP入門』のPythonコードを移植する](https://zenn.dev/zead/articles/mcp-learning-3)
+[C#でMCP入門（HTTP方式編）- 書籍『MCP入門』のPythonコードを移植する(1)](https://zenn.dev/zead/articles/mcp-learning-1)
+[C#でMCP入門（STDIO方式編）- 書籍『MCP入門』のPythonコードを移植する(2)](https://zenn.dev/zead/articles/mcp-learning-2)
+[C#でMCP入門（DB接続編）- 書籍『MCP入門』のPythonコードを移植する(3)](https://zenn.dev/zead/articles/mcp-learning-3)
 
