@@ -4,7 +4,7 @@ emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["csharp", "mcp", "mcpサーバー", "ai", "dotnet" ]
 published: true
-published_at: 2026-01-13 08:30
+published_at: 2026-01-19 21:00
 publication_name: zead
 ---
 

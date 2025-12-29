@@ -1,0 +1,153 @@
+以下に、\*\*「どのモデルが Azure Direct Models かを判別する一覧」\*\*を、  
+Microsoft の公式ドキュメントに基づいて作成しました。
+
+***
+
+# 📘 **Azure Direct Models 判別一覧**
+
+Azure Direct Models は、  
+**Microsoft が Azure 上で「直接販売・提供（sold directly by Azure）」するモデル群**で、  
+次のドキュメントに明記されています：
+
+*   Azure によって直接販売される Foundry Models 一覧（Microsoft Learn）    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   Foundry Models sold directly by Azure（English）    [\[learn.microsoft.com\]](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+これらは **Azure Direct Models に該当する**と判断できます。
+
+***
+
+# ✅ **Azure Direct Models に該当するモデル一覧**
+
+以下は、上記ドキュメントに列挙されている「Azure によって直接販売される Foundry Models」＝Azure Direct Models です。
+
+***
+
+## **1. Azure OpenAI 系（すべて Azure Direct Models）**
+
+（※Microsoft 公式に「Azure Direct Models には Azure OpenAI を含む」と記載）    [\[learn.microsoft.com\]](https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic)
+
+*   GPT‑5.2 シリーズ（gpt‑5.2, gpt‑5.2‑chat） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   GPT‑5.1 シリーズ（gpt‑5.1, gpt‑5.1‑chat, gpt‑5.1‑codex など） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   GPT‑5 シリーズ（gpt‑5, gpt‑5‑mini 等） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   GPT‑4.1 シリーズ（gpt‑4.1, 4.1‑mini, 4.1‑nano） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   GPT‑4o / GPT‑4o mini / GPT‑4 Turbo（マルチモーダル） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   GPT‑4 / GPT‑3.5 系列全般 [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   Embeddings（text-embedding 系列） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   画像生成モデル（DALL·E 系列） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+*   Video / Audio 系列（OpenAI 提供の Azure OpenAI モデル） [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+## **2. “選択された上位プロバイダーのモデル” で Azure Direct に含まれるもの**
+
+Microsoft は、Azure Direct Models に
+
+> 「上位プロバイダーから選択された特定のモデルを含む」    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+と明記しています。
+
+Azure Direct Models に分類されるのは、以下の一覧に記載されているモデル群です。
+
+***
+
+### **Black Forest Labs**
+
+（画像生成系）
+
+*   FLUX.2‑pro
+*   FLUX.1‑Kontext‑pro
+*   FLUX‑1.1‑pro    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+### **Cohere**
+
+*   Cohere‑command‑a
+*   embed‑v‑4‑0
+*   Cohere‑rerank‑v4.0‑pro
+*   Cohere‑rerank‑v4.0‑fast    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+### **DeepSeek**
+
+*   DeepSeek‑V3.2
+*   DeepSeek‑V3.2‑Speciale
+*   DeepSeek‑V3.1
+*   DeepSeek‑V3‑0324
+*   DeepSeek‑R1‑0528
+*   DeepSeek‑R1    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+### **Moonshot AI**
+
+*   Kimi‑K2‑Thinking    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+### **Meta（Llama 系列）**
+
+*   Llama‑4‑Maverick‑17B‑128E‑Instruct‑FP8
+*   Llama‑3.3‑70B‑Instruct    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+### **Microsoft（自社モデル）**
+
+*   MAI‑DS‑R1
+*   model‑router    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+### **Mistral AI**
+
+*   mistral‑document‑ai‑2505
+*   Mistral‑Large‑3    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+### **xAI（Grok 系列）**
+
+*   grok‑code‑fast‑1
+*   grok‑3
+*   grok‑3‑mini
+*   grok‑4‑fast‑reasoning
+*   grok‑4‑fast‑non‑reasoning
+*   grok‑4    [\[learn.microsoft.com\]](https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+***
+
+# ❗ Azure Direct Models **ではない** 代表例
+
+（比較のため）
+
+*   **Anthropic Claude 全シリーズ**  
+    → データ処理者は Anthropic。Azure Direct ではない。  
+    （Foundry ドキュメントに明記）citeturn1 Claude doc (previously fetched)
+
+*   その他、一部の “partner & community models”  
+    → 「sold directly by Azure」一覧に含まれないものは Azure Direct ではない。
+
+***
+
+# 📌 **まとめ：Azure Direct Models 判別方法（簡潔版）**
+
+### ✔ 「Azure によって直接販売される（sold directly by Azure）」一覧に載っている
+
+→ **Azure Direct Models**
+
+### ✔ Foundry Model Catalog で「Direct from Azure」フィルタに出てくる
+
+→ **Azure Direct Models**
+
+### ✔ データ処理者が Microsoft（Azure）である
+
+→ **Azure Direct**
+
+### ✘ 外部プロバイダーが入力データを処理する（例：Anthropic Claude）
+
+→ **Azure Direct ではない**
+
+***
+

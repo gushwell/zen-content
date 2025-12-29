@@ -1,0 +1,74 @@
+Azure Direct Models かどうかを調べる方法は、**Microsoft Foundry の「モデルカタログ」上で確認するのが最も確実**です。  
+以下に、実際に Microsoft のドキュメントに基づく “公式な判別方法” をまとめます。
+
+***
+
+# ✅ Azure Direct Models かどうかを確認する方法
+
+## **方法 1：Foundry Model Catalog で “Direct from Azure” コレクションを見る（公式推奨）**
+
+Microsoft は明確に次のように説明しています：
+
+> **Foundry Model Catalog で「Direct from Azure」コレクションを選択すると、Azure Direct Models だけを絞り込める**  
+> （“select the Direct from Azure collection to focus on Azure Direct models”）    [\[azure.github.io\]](https://azure.github.io/GPT-RAG/howto_azure_direct/)
+
+### 手順
+
+1.  **Microsoft Foundry の Model Catalog（モデルカタログ）を開く**  
+    <https://ai.azure.com/catalog/models>  
+    （※URLは検索結果の参考）
+
+2.  モデル一覧のフィルタ欄で  
+    **「Direct from Azure」** コレクションを選択する。
+
+3.  表示されているモデルはすべて **Azure Direct Models**。
+
+***
+
+## **方法 2：モデルの説明ページに “sold directly by Azure” と書かれているか確認**
+
+Microsoft の説明では：
+
+> “Models sold directly by Azure include all Azure OpenAI models and specific selected models …”    [\[learn.microsoft.com\]](https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic)
+
+とされており、モデル説明ページに **“モデルは Azure が直接販売（sold directly by Azure）”** と書かれている場合、それは **Azure Direct Models** に分類されます。
+
+***
+
+## **方法 3：モデルのプロバイダーが “Azure Direct Model provider” か確認**
+
+Azure Direct Models の定義は：
+
+> 「Foundry で “Azure Direct Model” として指定・展開された AI モデル」    [\[learn.microsoft.com\]](https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic)
+
+つまり、Azure OpenAI 系（GPT-5/4o など）や一部の Azure 直接提供モデルは Azure Direct Model になります。
+
+Anthropic Claude のように “外部プロバイダーが直接処理する” ものは Azure Direct Model ではありません（あなたが前のページで確認したとおり）。
+
+***
+
+## **方法 4：利用 API が Azure OpenAI ではなく「Foundry inference API（Entra ID 認証）」であるか**
+
+Azure Direct Models の仕様として：
+
+> “You call them via the Foundry inference APIs using Microsoft Entra ID–based authentication, instead of Azure OpenAI APIs.”    [\[azure.github.io\]](https://azure.github.io/GPT-RAG/howto_azure_direct/)
+
+となっています。
+
+つまり、
+
+*   **Foundry inference API を使うモデル** → Azure Direct Models
+*   **Anthropic など独自 API を使うモデル** → Azure Direct Models ではない
+
+***
+
+# 🔍 まとめ
+
+| 判別ポイント                | Azure Direct Models                                                                                                                                                             | 非 Azure Direct Models（例：Claude） |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------- |
+| Model Catalog のコレクション | **Direct from Azure に表示される** [\[azure.github.io\]](https://azure.github.io/GPT-RAG/howto_azure_direct/)                                                | 表示されない                          |
+| データ処理者                | **Microsoft（Azure）** [\[learn.microsoft.com\]](https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic) | Anthropic 等のモデル提供者              |
+| 利用 API                | Foundry inference API（Entra ID）                                                                                                                                                 | モデル提供者独自 API                    |
+| データの保護・学習への不使用保証      | **Microsoft が保証** [\[learn.microsoft.com\]](https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic)    | モデル提供者の規約に従う                    |
+
+***

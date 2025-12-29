@@ -4,7 +4,7 @@ emoji: "📍"
 type: "tech"
 topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "ip-api"]
 published: true
-published_at: 2026-02-09 21:00
+published_at: 2026-02-16 21:00
 publication_name: zead
 ---
 
