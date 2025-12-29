@@ -470,6 +470,10 @@ Claude Desktopに組み込んで動作を確認します。
 Windows版のClaude Desktopは、OS側で設定した環境変数を正しく取得できないようです。そのため、claude_desktop_config.jsonに環境変数を記述しています。
 :::
 
+:::message alert
+もし、うまく組み込めないようなら、タスクマネージャーからClaudeで検索して、タスクをすべて終了させてから、Claude Desktopを起動してください。
+:::
+
 
 ### Claude Desktopで確認
 
@@ -481,6 +485,8 @@ Claude Desktopを起動して、以下のような質問を投げてみます。
 WeatherServer のツールが使用され、天気情報が返されます。
 
 ![](https://storage.googleapis.com/zenn-user-upload/96b28be42e70-20251216.png)
+
+
 
 ## データの流れ
 
@@ -501,7 +507,7 @@ sequenceDiagram
 
 ## 最後に
 
-この章では、C#を使用して外部 APIと連携する MCPサーバーの作成方法について説明しました。
+この記事では、C#を使用して外部 APIと連携する MCPサーバーの作成方法について説明しました。
 MCPツールが、何を受け取り何を返すべきなのかを見極めることができれば、あとは通常のWebAPIの呼び出しと変わりないことがわかりました。
 
 
