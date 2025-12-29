@@ -24,6 +24,9 @@ https://ip-api.com/docs/legal
 『MCP入門―生成AIアプリ本格開発』を読んでいない方にも理解できる内容にしたつもりです。
 :::
 
+元となった Python コードは、以下のリポジトリで公開されています。
+
+https://github.com/gamasenninn/MCP_Learning
 
 ---
 
