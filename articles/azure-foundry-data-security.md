@@ -173,18 +173,11 @@ Foundry利用時のデータ取り扱いの大枠は、「モデル名」より�
 
 ## 参考リンク（公式）
 
-- Azure Direct Models のデータ・プライバシー：  
-  https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic  
-- Claude models のデータ・プライバシー：  
-https://learn.microsoft.com/ja-jp/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry 
-
-
 [1] Azure Direct Models データ・プライバシー:  
 https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic  
 
 [2] Claude models データ・プライバシー:  
-https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry-classic  
+https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry&preserve-view=true
 
 Models sold directly by Azure：  
-https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic  
-
+https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry&preserve-view=true&tabs=global-standard-aoai%2Cstandard-chat-completions%2Cglobal-standard&pivots=azure-openai
