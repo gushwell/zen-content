@@ -4,7 +4,7 @@ emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["azure", "foundry", "llm", "calude", "openai" ]
 published: true
-published_at: 2026-01-14 08:30
+published_at: 2026-01-13 21:30
 publication_name: zead
 ---
 
@@ -19,7 +19,7 @@ Microsoft Foundry（Azure AI Foundry / Foundry classic）は、複数の生成AI
 
 Microsoft Foundryでは以下のようなモデルが利用可能です（一部のみ掲載）
 
-
+![](https://storage.googleapis.com/zenn-user-upload/35d75ee8034f-20260113.png)
 
 ### この記事の目的
 
@@ -30,13 +30,14 @@ Microsoft Foundryで利用できる生成AIモデルは大きく「Azure Direct 
 - 入力したデータ（プロンプト／生成結果）は**モデルの学習に利用されるのか**  
 - 入力データは**どのリージョンで処理されるのか**（国外に送信される可能性はあるのか）
 
-性能や価格の比較の前に、これらの違いを理解することが重要です。
+性能や価格の比較の前に、これらの違いを理解することも大切です。
 
 ---
 
 ## まず押さえる用語：処理（processing）と保存（at rest）は別
 
-「海外に出る？」の議論がややこしくなるのは、**処理**と**保存**が混ざりやすいからです。  
+Microsoft Leanの記事を読んでいて、事前に理解しておく用語として処理（processing）と保存（at rest）があります。
+まずは、この２つの用語を整理したいと思います。
 
 - **処理（processing）**：返答（出力）を作る計算が行われる場所  
 - **保存（at rest）**：履歴やアップロードデータ等が“残る”場所（機能によって発生）
@@ -51,7 +52,7 @@ https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-pr
 ## 結論（短縮版）
 
 - **Azure Direct Models（Azureが直接提供）**  
-  Microsoftの文書では、Azure Direct Modelsに送られたプロンプトや出力は顧客の許可・指示なしに基盤モデルの学習・再学習・改善には使用されないと明記され、モデルはステートレスであると説明されています。ただし、FilesやStored completionsなど特定の機能ではデータがサービス内に保存され、監査や不正利用検知のためにサンプルが保存・人によるレビューされることがあります。  
+  Microsoftの文書では、Azure Direct Modelsに送られたプロンプトや出力は顧客の許可・指示なしに基盤モデルの学習・再学習・改善には使用されないと明記され、モデルはステートレスであると説明されています。ただし、FilesやStored completionsなど特定の機能ではデータがサービス内に保存され、監査や不正利用検知のためにサンプルが保存・人によるレビューがされることがあります。  
   処理は原則、顧客指定のgeography（地理）内で行われますが、GlobalやDataZoneといったデプロイ種別や運用上の例外により他地域で処理される可能性もあります。  
   出典：  
   https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic  
@@ -86,7 +87,7 @@ https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-pr
 モデル一覧とリージョン対応は以下のURLで確認できます。  
 https://learn.microsoft.com/azure/ai-foundry/openai/concepts/models#model-summary-table-and-region-availability  
 
-日本リージョンでは使えるモデルが少なく、処理場所にこだわると利用可能モデルがさらに限られる点にご注意ください。
+現時点(2026.01)では、日本リージョンでは使えるモデルが少なく、処理場所にこだわると利用可能モデルがさらに限られる点にご注意ください。
 
 ---
 
@@ -99,6 +100,24 @@ https://learn.microsoft.com/azure/ai-foundry/openai/concepts/models#model-summar
 
 参考：  
 https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic  
+
+
+### Model Routerについて
+
+以下は、私なりの解釈です。もし違っていたら指摘していただけるとありがたいです。
+
+Microsoft Foundry には、複数の AI モデルを自動的に切り替えて利用できる 「Model Router」 という仕組みがあります。
+
+https://learn.microsoft.com/ja-jp/azure/ai-foundry/openai/concepts/model-router?view=foundry&preserve-view=true
+
+Model Router は、リクエストの内容や条件に応じて、最適なモデルを内部で選択してくれるため、利用者から見ると 1 つのモデルのように振る舞います。
+
+Model Router がサポートするモデル一覧には、GPT 系モデルだけでなく、claude-sonnet-4-5 や claude-haiku-4-5 といった Anthropic の Claude 系モデル も含まれています。
+
+そのため、Model Router は一見すると Azure Direct（Direct for Azure）モデル のように見えます。しかし、Model Router 自体はあくまで「モデルを選択・振り分けるための仕組み」であり、ルーティング先のモデルの提供形態を変更するものではありません。
+
+つまり、Model Router 経由で Claude 系モデルが選択された場合でも、Claude は引き続き パートナー提供モデル として扱われます。
+Model Router を利用しているからといって、Claude 系モデルが Azure Direct モデルになるわけではない点には注意が必要です。
 
 ---
 
@@ -144,7 +163,7 @@ Azure Direct Modelsではアップロードデータは特定の機能（Files /
 
 ## 最後に
 
-Foundry利用時のデータ取り扱いの大枠は、「モデル名」より前に**“Azure Direct Models かどうか”**で決まります。  
+Foundry利用時のデータ取り扱いの大枠は、「モデル名」より前に **“Azure Direct Models かどうか”** で決まります。  
 迷ったらMicrosoft Learnのデータ・プライバシーページを根拠に、組織のポリシーに合うモデルを選ぶのが安全です。  
 
 
