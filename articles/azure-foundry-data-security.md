@@ -1,6 +1,6 @@
 ---
 title: "Azure Foundryで入力データは学習される？本当に安全？（Azure Direct と Foundry 経由 Claude の違い）"
-emoji: "🧰"
+emoji: "🧠"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["azure", "foundry", "llm", "calude", "openai" ]
 published: true
