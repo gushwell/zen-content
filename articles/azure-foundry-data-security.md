@@ -1,5 +1,5 @@
 ---
-title: "Foundry のモデル入力は学習に使われる？（Azure Direct と Foundry 経由 Claude の違い）"
+title: "Azure Foundryで入力データは学習される？本当に安全？（Azure Direct と Foundry 経由 Claude の違い）"
 emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["azure", "foundry", "llm", "calude", "openai" ]
@@ -8,136 +8,164 @@ published_at: 2026-01-13 08:30
 publication_name: zead
 ---
 
-## はじめに
 
-Microsoft Foundry（Azure AI Foundry / Foundry classic）で生成 AI を使うとき、気になるのはだいたいこの 2 つです。
+## はじめに  
 
-- 入力したデータ（プロンプト/出力）は **学習に使われるのか**
-- 入力したデータは **どこで処理され得るのか**（海外に出るのか）
+### Microsoft Foundryの生成AIモデルとは
 
-結論から言うと、Foundry のモデルは **“Azure Direct Models かどうか”**で前提が分かれます。  
+Microsoft Foundry（Azure AI Foundry / Foundry classic）は、複数の生成AIモデルを横断的に利用できるプラットフォームです。  
+機能面では、生成AIのモデルルーティングを提供するサービスとして、OpenRouterに近い位置づけとも言えます。  
+一方で、Microsoft Foundryはエンタープライズ利用を前提に設計されており、セキュリティ・データの取り扱い・リージョン制御に重点が置かれています。
 
-企業で、Foundry のどのモデルを利用したらよいのかを決める際は、性能や価格の比較に入る前に、まずここを確認するのが良いと考えます。
+Microsoft Foundryでは以下のようなモデルが利用可能です（一部のみ掲載）
 
----
 
-## 結論（最短）
 
-- **Azure Direct Models（Azure が直接提供）**  
-  Microsoft Learn に **「プロンプト/出力は基盤モデルの学習・再学習・改善に使わない」**、**「モデルはステートレス」**と明記されています。  
-  処理場所は原則 **顧客指定の geography（地理）**の範囲ですが、*Global / DataZone* などのデプロイ種別では“処理され得る場所”が広がり得ます。  
-  出典：  
-  https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic
+### この記事の目的
 
-- **Foundry 経由の Claude（Anthropic）**  
-  Microsoft Learn に **「Anthropic（Microsoft ではない）がデータ処理者」**、**「プロンプト/出力は世界中で処理され得る」**と明記されています。  
-  出典：  
-  https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry-classic
+Microsoft Foundryで利用できる生成AIモデルは大きく「Azure Direct Models」と「Foundry経由のモデル（例: Claude）」の2つに分かれます。  
+本記事では、企業環境でMicrosoft Foundryを利用する際に「どのモデル群を選択すべきか」判断するための**前提条件を整理すること**を目的としています。  
+
+具体的には以下の2点に焦点を当てて解説します。  
+- 入力したデータ（プロンプト／生成結果）は**モデルの学習に利用されるのか**  
+- 入力データは**どのリージョンで処理されるのか**（国外に送信される可能性はあるのか）
+
+性能や価格の比較の前に、これらの違いを理解することが重要です。
 
 ---
 
 ## まず押さえる用語：処理（processing）と保存（at rest）は別
 
-「海外に出る？」の議論がややこしくなるのは、**処理**と**保存**が混ざりやすいからです。
+「海外に出る？」の議論がややこしくなるのは、**処理**と**保存**が混ざりやすいからです。  
 
-- **処理（processing）**：返答（出力）を作る計算が行われる場所
+- **処理（processing）**：返答（出力）を作る計算が行われる場所  
 - **保存（at rest）**：履歴やアップロードデータ等が“残る”場所（機能によって発生）
 
 :::message
-Azure Direct Models でも、機能（例：Files / vector store / Threads / Stored completions 等）によっては保存が発生します。保存条件の確認は、まず公式ページを当たるのが安全です。  
-https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic
+Azure Direct Modelsでも、Files / vector store / Threads / Stored completions などの機能によっては保存が発生します。保存条件の確認は公式ページを参照してください。  
+https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic  
 :::
+
+---
+
+## 結論（短縮版）
+
+- **Azure Direct Models（Azureが直接提供）**  
+  Microsoftの文書では、Azure Direct Modelsに送られたプロンプトや出力は顧客の許可・指示なしに基盤モデルの学習・再学習・改善には使用されないと明記され、モデルはステートレスであると説明されています。ただし、FilesやStored completionsなど特定の機能ではデータがサービス内に保存され、監査や不正利用検知のためにサンプルが保存・人によるレビューされることがあります。  
+  処理は原則、顧客指定のgeography（地理）内で行われますが、GlobalやDataZoneといったデプロイ種別や運用上の例外により他地域で処理される可能性もあります。  
+  出典：  
+  https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic  
+
+- **Foundry経由の Claude（Anthropic）**  
+  Microsoft Learnによれば、Anthropicがデータ処理者であり、プロンプトや出力は世界中の地域で処理され得ると明記されています。  
+  出典：  
+  https://learn.microsoft.com/ja-jp/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry-classic  
 
 ---
 
 ## 早見表（どっちがどっち？）
 
-| 観点 | Azure Direct Models | Foundry 経由 Claude（Anthropic） |
-|---|---|---|
-| データ処理者 | Microsoft（Azure） | Anthropic（Microsoft ではない） |
-| 学習に使われる？ | **使わない**（公式明記。許可/指示がない限り） | Microsoft Learn では **「使わない」と断言しない**（詳細は Anthropic 文書参照の立て付け） |
-| 処理場所 | 原則 **顧客指定 geography 内**（ただし例外・デプロイ種別で広がり得る）<br >Azure内部で完結 | **世界中で処理され得る**（地域外含む） |
-| モデルが覚える？ | **ステートレス**（公式明記） | 保存/スクリーニング等は Anthropic 文書参照 |
-
-
+| 観点          | Azure Direct Models                                    | Foundry経由 Claude（Anthropic）                     |
+|---------------|-------------------------------------------------------|----------------------------------------------------|
+| データ処理者  | Microsoft（Azure）                                    | Anthropic（Microsoftではない）                     |
+| 学習に使われる？ | **顧客の許可なしでは使わない**（公式明記） [1]         | Microsoft Learnでは**断言しない**（Anthropic文書参照） [2] |
+| 処理場所      | 原則 **顧客指定 geography 内**（例外あり、Global/DataZone等）[1] | **世界中で処理され得る**（地域外含む） [2]          |
+| モデルが覚える？ | **ステートレス**（公式明記） [1]                      | 保存・スクリーニング等はAnthropic文書参照 [2]       |
 
 ---
 
-## チェックリスト（導入前に見るやつ）
+## チェックリスト（導入前に確認すべきポイント）
 
-社内利用・顧客データ取り扱いが絡む場合、最低限ここを確認しておくと後で揉めにくいです。
+1. 利用予定のモデルが**Azure Direct Models**かどうかを確認する  
+2. **処理場所の前提**（geography / Global / DataZone 等）が設計・監査要件と合致するか確認する  
+3. プロンプトや出力が**学習利用されないことの根拠**（公式文言や契約）を説明可能か  
+4. Files / vector store / Threads など**保存が発生する機能の有無と保存条件**を理解し説明可能か  
 
-1. 使いたいモデルが **Azure Direct Models** かどうか
-2. **処理場所**の前提（geography / Global / DataZone 等）を、設計・監査要件と照合できるか
-3. **学習利用しない**ことを、どの“根拠（公式文言/契約）”で説明するのか
-4. 保存が発生する機能（Files / vector store / Threads 等）を使う場合、**保存条件**も含めて説明できるか
+### Azure AI Foundry のモデル一覧とリージョン対応
+
+モデル一覧とリージョン対応は以下のURLで確認できます。  
+https://learn.microsoft.com/azure/ai-foundry/openai/concepts/models#model-summary-table-and-region-availability  
+
+日本リージョンでは使えるモデルが少なく、処理場所にこだわると利用可能モデルがさらに限られる点にご注意ください。
 
 ---
 
-## 「このモデルは Azure Direct Models なの？」を確かめる
+## 「このモデルは Azure Direct Models なの？」を確認する方法
 
-ざっくりの実務手順は次のどちらかです。
+実務的には以下いずれかの方法が有効です。  
 
-- Foundry のモデルカタログで **“Direct from Azure”** 相当の絞り込み（UI は変わる可能性あり）
-- 公式ドキュメントで **“sold directly by Azure”** に該当するか確認
+- Foundryのモデルカタログで「Direct from Azure」などの絞り込みを行う（UIは変更される可能性あり）  
+- 公式ドキュメントで「sold directly by Azure」に該当するか確認する  
 
 参考：  
-https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic
+https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic  
 
 ---
 
 ## FAQ
 
-### Q. 「Foundry から呼べる」＝「Microsoft が全部面倒を見る」じゃないの？
+### Q. 「Foundry から呼べる」＝「Microsoft が全部面倒を見る」ではない？
 
-違う場合があります。Foundry の UI から使えても、**データ処理者がモデル提供者（例：Anthropic）**になるモデルがあります。  
-Microsoft Learn のページで、**processor（処理者）**が誰かを先に確認するのが確実です。
+FoundryのUIから利用できても、データ処理者がモデル提供者（例：Anthropic）であることがあります。  
+Microsoft Learnのページで**processor（処理者）が誰か**を必ず確認してください。 [1][2]
 
-### Q. Azure Direct Models は “絶対に” geography の外で処理されない？
+### Q. Azure Direct Modelsは“絶対に”geography外で処理されない？
 
-“地域外処理なし”のような言い切りは危険です。公式は「顧客指定 geography 内が原則」＋「運用上の例外」＋「デプロイ種別で広がり得る」をセットで説明しています。  
+「地域外処理なし」と断言するのは危険です。  
+公式では「顧客指定のgeography内が原則」かつ「GlobalやDataZoneのデプロイ種別では他地域で処理される可能性がある」と説明しています。  
 
-以下、その根拠となる原文。
+> Prompts and responses are processed within the customer-specified geography (unless you are using a Global or DataZone deployment type), but may be processed between regions within the geography for operational purposes...  
+> For any deployment type labeled 'Global,' prompts and responses may be processed in any geography where the relevant Azure Direct Model is deployed...  
+> For any deployment type labeled 'DataZone,' prompts and responses may be processed in any geography within the specified data zone...
 
-> Prompts and responses are processed within the customer-specified geography (unless you are using a Global or DataZone deployment type), but may be processed between regions within the geography for operational purposes (including performance and capacity management). See below for information about location of processing when using a Global or DataZone deployment type.
+（引用：公式ドキュメント [1]）
 
-> In addition to standard deployments, Foundry offers Azure Direct Model deployment options labeled as 'Global' and 'DataZone.' For any deployment type labeled 'Global,' prompts and responses may be processed in any geography where the relevant Azure Direct Model is deployed (learn more about region availability of models). For any deployment type labeled as 'DataZone,' prompts and responses may be processed in any geography within the specified data zone, as defined by Microsoft.
+### Q. 「学習に使われない」ことのメリットは？
 
+企業利用においては説明責任が最も効きます。  
+監査や規制、顧客要件に対し、「学習に使われない」ことを**公式文言**で説明できるかで選定の難易度が変わります。  
 
-### Q. 「学習に使われない」って、具体的に何が嬉しいの？
-
-企業利用でよく効くのは **説明責任**です。  
-監査・規制・顧客要件に対し、「学習に使われない」ことを **公式文言**で説明できるかどうかで、選定の難易度が変わります。
-
-以下、その根拠となる原文。
-
-> are NOT used to train any generative AI foundation models without your permission or instruction
-
-> Customer Data, Prompts, and Completions are NOT used to improve Microsoft or third-party products or services without your explicit permission or instruction.
-
+> are NOT used to train any generative AI foundation models without your permission or instruction  
+> Customer Data, Prompts, and Completions are NOT used to improve Microsoft or third-party products or services without your explicit permission or instruction.  
 > The models are stateless: no prompts or completions are stored in the model. Additionally, prompts and completions are not used to train, retrain, or improve the base models.
+
+（引用：公式ドキュメント [1]）
 
 ### Q. アップロードしたファイルの扱いは？
 
-Azure Direct Modelsでは、推論処理のために一時的に保存されますが、長期保存はされません。保存する際は、暗号がされて保存されます。
-なお、Azure Direct Models では、Microsoft の安全性基準に基づき 不正利用監視のために一時的にデータが保存される場合があります。
-どのような場合であっても、長期保存はされませんし、他の顧客との共有は行われません。
+Azure Direct Modelsではアップロードデータは特定の機能（Files / vector store / Stored completions / Responses API / Threadsなど）によりサービス内のFoundryリソース（顧客指定geography）に保存される場合があります。  
+保存データはAES-256等で暗号化され、顧客による削除が可能です。  
+また、不正利用監視のためにサンプルが人によるレビュー用に保管されることもあります。  
+いかなる場合でも長期保存や他顧客との共有は行われません。  
 
+（詳細：公式ドキュメント [1]）
+
+---
+
+## 最後に
+
+Foundry利用時のデータ取り扱いの大枠は、「モデル名」より前に**“Azure Direct Models かどうか”**で決まります。  
+迷ったらMicrosoft Learnのデータ・プライバシーページを根拠に、組織のポリシーに合うモデルを選ぶのが安全です。  
+
+
+誤りや改善点があればコメントいただけると助かります。
 
 ---
 
 ## 参考リンク（公式）
 
 - Azure Direct Models のデータ・プライバシー：  
-  https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic
+  https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic  
 - Claude models のデータ・プライバシー：  
-  https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry-classic
-- Models sold directly by Azure：  
-  https://learn.microsoft.com/en-us/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic
+https://learn.microsoft.com/ja-jp/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry 
 
-## 最後に
 
-Foundry 利用時のデータ取り扱いは、「モデル名」より先に **“Azure Direct Models かどうか”**で大枠が決まります。  
-迷ったら Microsoft Learn のデータ・プライバシーのページを根拠にして、組織のポリシーに合うモデルを選ぶのが安全です。
+[1] Azure Direct Models データ・プライバシー:  
+https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/openai/data-privacy?view=foundry-classic  
 
-もし内容に誤りがあれば、コメントで教えていただけると助かります。
+[2] Claude models データ・プライバシー:  
+https://learn.microsoft.com/en-us/azure/ai-foundry/responsible-ai/claude-models/data-privacy?view=foundry-classic  
+
+Models sold directly by Azure：  
+https://learn.microsoft.com/ja-jp/azure/ai-foundry/foundry-models/concepts/models-sold-directly-by-azure?view=foundry-classic  
+
