@@ -4,7 +4,7 @@ emoji: "🧰"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics:  ["azure", "foundry", "llm", "calude", "openai" ]
 published: true
-published_at: 2026-01-13 08:30
+published_at: 2026-01-14 08:30
 publication_name: zead
 ---
 
