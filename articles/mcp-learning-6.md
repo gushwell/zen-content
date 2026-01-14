@@ -1,6 +1,6 @@
 ---
 title: "C#でMCP入門（IP情報連携編）- 書籍『MCP入門』のPythonコードを移植する(6)"
-emoji: "📍"
+emoji: "🧰"
 type: "tech"
 topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "ip-api"]
 published: true
@@ -217,14 +217,14 @@ Windows で Claude Desktop に組み込むときの `claude_desktop_config.json`
       "command": "C:\\mcp-learning\\mcpserver\\WeatherServer.exe",
       "args": [],
       "env": {
-        "OPENWEATHER_API_KEY": "96d08abc5902d7c343f94a4fd30eff80"
+        "OPENWEATHER_API_KEY": "ここにAPIキーを書く"
       }
     },
     "news_server": {
       "command": "C:\\mcp-learning\\mcpserver\\NewsServer.exe",
       "args": [],
       "env": {
-        "NEWSDATA_API_KEY": "pub_aa7aed9a31974babaddeaca44d5299ec"
+        "NEWSDATA_API_KEY": "ここにAPIキーを書く"
       }
     },
     "news_server": {

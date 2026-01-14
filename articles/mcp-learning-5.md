@@ -1,6 +1,6 @@
 ---
 title: "C#でMCP入門（NEWS API連携編）- 書籍『MCP入門』のPythonコードを移植する(5)"
-emoji: "📰"
+emoji: "🧰"
 type: "tech"
 topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "newsapi"]
 published: true
