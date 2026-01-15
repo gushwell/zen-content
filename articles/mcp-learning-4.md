@@ -25,7 +25,6 @@ https://zenn.dev/zead/articles/mcp-learning-3
 今回は、外部の世界と繋がるMCPサーバーを C# でどのように書くかを見ていきます。
 利用するWeb APIは、[OpenWeatherMap](https://openweathermap.org/) APIです。
 
-
 元となった Python コードは、以下のリポジトリで公開されています。
 
 https://github.com/gamasenninn/MCP_Learning
@@ -43,14 +42,14 @@ https://github.com/gamasenninn/MCP_Learning
 
 を取得し、その結果を **MCPツールの戻り値として JSONで返す** 役割を担います。C# 側は、次のような構成になっています。
 
-- HTTP経由で MCPを提供するサーバー
-    - エントリポイントは `Program.cs`
+- Program.cs
     - `.AddMcpServer().WithHttpTransport().WithTools<WeatherTools>()` で MCPを有効化
     - `/api/mcp` に MCPエンドポイントをマッピング
-- OpenWeatherMap 連携の MCPツール群
-    - WeatherToolsクラスに実装
-    - 現在の天気: `WeatherTools.GetWeather()`
-    - 天気予報: `WeatherTools.GetWeatherForecast()`
+
+- WeatherTools.cs
+    - OpenWeatherMap 連携の MCPツール群
+    - 現在の天気: `WeatherTools.GetWeatherAsync()`
+    - 天気予報: `WeatherTools.GetWeatherForecastAsync()`
     
 ---
 
@@ -295,7 +294,7 @@ public class WeatherTools
 
     [McpServerTool]
     [Description("指定した都市の現在の天気を取得します。OpenWeather の current weather API を利用し、気温・体感温度・湿度・気圧・天気概要・風速・視程などを返します。")]
-    public async Task<Dtos.CurrentWeatherResult> GetWeather(
+    public async Task<Dtos.CurrentWeatherResult> GetWeatherAsync(
         [Description("都市名（例: Tokyo, Osaka）")] string city,
         [Description("国コード（例: JP, US）。省略時は JP。")] string countryCode = "JP")
     {
@@ -325,7 +324,7 @@ public class WeatherTools
 
     [McpServerTool]
     [Description("指定した都市の天気予報（最大5日分）を取得します。3時間ごとの予報を日別にグループ化して返します。")]
-    public async Task<Dtos.WeatherForecastResult> GetWeatherForecast(
+    public async Task<Dtos.WeatherForecastResult> GetWeatherForecastAsync(
         [Description("都市名（例: Tokyo, Osaka）")] string city,
         [Description("予報日数（1〜5日）。")] int days = 5,
         [Description("国コード（例: JP, US）。省略時は JP。")] string countryCode = "JP")
@@ -390,8 +389,8 @@ public class WeatherTools
 
 WeatherTools クラスには以下のツールが実装されています：
 
-- `GetWeather`: 指定した都市の現在の天気を取得
-- `GetWeatherForecast`: 指定した都市の天気予報を取得
+- `GetWeatherAsync`: 指定した都市の現在の天気を取得
+- `GetWeatherForecastAsync`: 指定した都市の天気予報を取得
 
  `[McpServerTool]`属性、`[Description]`属性を使うのはこれまでと同じです。
 
@@ -467,7 +466,7 @@ Claude Desktopに組み込んで動作を確認します。
 ```
 
 :::message
-Windows版のClaude Desktopは、OS側で設定した環境変数を正しく取得できないようです。そのため、claude_desktop_config.jsonに環境変数を記述しています。
+Windows版のClaude Desktopは、OS側で設定した環境変数を正しく取得できないようです。そのため、苦肉の策でclaude_desktop_config.jsonに環境変数を記述しています。本番運用する場合には、別の対策を検討してください。
 :::
 
 :::message alert
@@ -498,7 +497,7 @@ sequenceDiagram
     participant OpenWeather API
 
     User->>Claude: 東京の天気を教えて
-    Claude->>MCP Server: GetWeather ツール呼び出し
+    Claude->>MCP Server: GetWeatherAsync ツール呼び出し
     MCP Server->>OpenWeather API: API リクエスト
     OpenWeather API-->>MCP Server: JSON レスポンス
     MCP Server-->>Claude: 構造化された天気データ

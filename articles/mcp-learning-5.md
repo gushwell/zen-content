@@ -4,7 +4,7 @@ emoji: "🧰"
 type: "tech"
 topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "newsapi"]
 published: true
-published_at: 2026-02-03 21:30
+published_at: 2026-01-26 21:00
 publication_name: zead
 ---
 
@@ -361,7 +361,7 @@ OPENWEATHER_API_KEY、NEWSDATA_API_KEYには、事前に取得したAPIキーを
 ```
 
 :::message
-Windows版のClaude Desktopは、OS側で設定した環境変数を正しく取得できないため、claude_desktop_config.jsonに環境変数を記述します。
+Windows版のClaude Desktopは、OS側で設定した環境変数を正しく取得できないようです。そのため、苦肉の策でclaude_desktop_config.jsonに環境変数を記述しています。本番運用する場合には、別の対策を検討してください。
 :::
 
 
