@@ -204,6 +204,7 @@ Toolsフォルダに、WeatherTools.csファイルを作成し、WeatherToolsク
 using System.ComponentModel;
 using System.Globalization;
 using System.Text.Json;
+using System.Net.Http.Json;
 using ModelContextProtocol.Server;
 
 namespace WeatherServer.Tools;
@@ -220,14 +221,17 @@ public class WeatherTools
         Timeout = TimeSpan.FromSeconds(10)
     };
 
+    // JsonSerializerOptions を共有で使う
+    private static readonly JsonSerializerOptions JsonOptions = new()
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
+
     private const string CurrentWeatherUrl = "https://api.openweathermap.org/data/2.5/weather";
     private const string ForecastUrl = "https://api.openweathermap.org/data/2.5/forecast";
 
-    /// <summary>
-    /// OpenWeatherMap の API キーを環境変数から取得します。
-    /// </summary>
-    /// <returns>API キー文字列</returns>
-    /// <exception cref="InvalidOperationException">API キー未設定の場合</exception>
+    // OpenWeatherMap の API キーを環境変数から取得します。
     private static string GetOpenWeatherApiKey()
     {
         // Python版と同じく OPENWEATHER_API_KEY 環境変数を利用
@@ -242,63 +246,30 @@ public class WeatherTools
         return apiKey;
     }
 
-    /// <summary>
-    /// 安全な API リクエスト実行（Python版 make_api_request 相当）。
-    /// </summary>
-    /// <typeparam name="T">デシリアライズする型</typeparam>
-    /// <param name="baseUrl">ベースURL</param>
-    /// <param name="queryParameters">クエリパラメーター</param>
-    /// <returns>デシリアライズされたオブジェクト</returns>
-    /// <exception cref="TimeoutException">タイムアウトの場合</exception>
-    /// <exception cref="HttpRequestException">HTTPエラーの場合</exception>
-    /// <exception cref="JsonException">JSONパースエラーの場合</exception>
-    private async Task<T> MakeApiRequestAsync<T>(
-        string baseUrl,
-        IDictionary<string, string> queryParameters)
+    // 安全な API リクエスト実行（Python版 make_api_request 相当）。
+    private async Task<T> MakeApiRequestAsync<T>(string url)
     {
-        try
-        {
-            // クエリ文字列を組み立て
-            var query = string.Join("&", queryParameters
-                .Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
+        using var resp = await HttpClient.GetAsync(url);
+        resp.EnsureSuccessStatusCode();
 
-            var uriBuilder = new UriBuilder(baseUrl) { Query = query };
+        var result = await resp.Content.ReadFromJsonAsync<T>(JsonOptions);
+        if (result is null)
+            throw new InvalidOperationException("APIレスポンスのデシリアライズに失敗しました");
 
-            using var response = await HttpClient.GetAsync(uriBuilder.Uri).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
-
-            var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-            return await JsonSerializer.DeserializeAsync<T>(
-                response.Content.ReadAsStream(), options).ConfigureAwait(false)
-                ?? throw new JsonException("デシリアライズ結果がnullです");
-        }
-        catch (TaskCanceledException ex) when (!ex.CancellationToken.IsCancellationRequested)
-        {
-            throw new TimeoutException("APIリクエストがタイムアウトしました", ex);
-        }
-        catch (HttpRequestException ex)
-        {
-            throw new HttpRequestException($"APIリクエストエラー: {ex.Message}", ex);
-        }
-        catch (JsonException ex)
-        {
-            throw new JsonException("APIレスポンスのJSONパースに失敗しました", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception($"ネットワークエラー: {ex.Message}", ex);
-        }
+        return result;
     }
+
 
     // ==== MCP ツールメソッド ====
 
     [McpServerTool]
     [Description("指定した都市の現在の天気を取得します。OpenWeather の current weather API を利用し、気温・体感温度・湿度・気圧・天気概要・風速・視程などを返します。")]
-    public async Task<Dtos.CurrentWeatherResult> GetWeatherAsync(
+    public async Task<Dtos.CurrentWeatherResult> GetWeather(
         [Description("都市名（例: Tokyo, Osaka）")] string city,
         [Description("国コード（例: JP, US）。省略時は JP。")] string countryCode = "JP")
     {
         var apiKey = GetOpenWeatherApiKey();
+
         var parameters = new Dictionary<string, string>
         {
             ["q"] = $"{city},{countryCode}",
@@ -306,7 +277,11 @@ public class WeatherTools
             ["units"] = "metric", // 摂氏温度
             ["lang"] = "ja"       // 日本語
         };
-        var response = await MakeApiRequestAsync<Dtos.CurrentWeatherResponse>(CurrentWeatherUrl, parameters).ConfigureAwait(false);
+
+        var query = string.Join("&", parameters
+            .Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
+        var fullUrl = $"{CurrentWeatherUrl}?{query}";
+        var response = await MakeApiRequestAsync<Dtos.CurrentWeatherResponse>(fullUrl);
 
         return new Dtos.CurrentWeatherResult(
             City: response.Name,
@@ -315,26 +290,28 @@ public class WeatherTools
             FeelsLike: response.Main.FeelsLike,
             Humidity: response.Main.Humidity,
             Pressure: response.Main.Pressure,
-            WeatherMain: response.Weather.Length > 0 ? response.Weather[0].Main : string.Empty,
-            WeatherDescription: response.Weather.Length > 0 ? response.Weather[0].Description : string.Empty,
+            WeatherMain: response.Weather.FirstOrDefault()?.Main ?? string.Empty,
+            WeatherDescription: response.Weather.FirstOrDefault()?.Description ?? string.Empty,
             WindSpeed: response.Wind?.Speed ?? 0d,
-            Visibility: response.Visibility.HasValue ? response.Visibility.Value / 1000.0 : 0d,
+            Visibility: (response.Visibility ?? 0) / 1000.0,
             Timestamp: DateTimeOffset.Now.ToString("o", CultureInfo.InvariantCulture));
     }
 
     [McpServerTool]
     [Description("指定した都市の天気予報（最大5日分）を取得します。3時間ごとの予報を日別にグループ化して返します。")]
-    public async Task<Dtos.WeatherForecastResult> GetWeatherForecastAsync(
+    public async Task<Dtos.WeatherForecastResult> GetWeatherForecast(
         [Description("都市名（例: Tokyo, Osaka）")] string city,
         [Description("予報日数（1〜5日）。")] int days = 5,
         [Description("国コード（例: JP, US）。省略時は JP。")] string countryCode = "JP")
     {
+
         if (days < 1 || days > 5)
         {
             throw new ArgumentOutOfRangeException(nameof(days), "予報日数は1-5日の範囲で指定してください。");
         }
 
         var apiKey = GetOpenWeatherApiKey();
+
         var parameters = new Dictionary<string, string>
         {
             ["q"] = $"{city},{countryCode}",
@@ -342,50 +319,41 @@ public class WeatherTools
             ["units"] = "metric",
             ["lang"] = "ja"
         };
-        var response = await MakeApiRequestAsync<Dtos.ForecastResponse>(ForecastUrl, parameters).ConfigureAwait(false);
 
-        var dailyForecasts = new List<Dtos.DailyForecast>();
-        DateOnly? currentDate = null;
-        Dtos.DailyForecast? currentDaily = null;
+        var query = string.Join("&", parameters
+            .Select(kvp => $"{Uri.EscapeDataString(kvp.Key)}={Uri.EscapeDataString(kvp.Value)}"));
+        var fullUrl = $"{ForecastUrl}?{query}";
+        var response = await MakeApiRequestAsync<Dtos.ForecastResponse>(fullUrl);
 
-        // OpenWeather の 3時間刻みデータ：1日あたり最大8件を想定
         var maxItems = Math.Min(response.List.Count, days * 8);
-        for (var i = 0; i < maxItems; i++)
-        {
-            var item = response.List[i];
-            var dateTime = DateTimeOffset.FromUnixTimeSeconds(item.Dt).ToLocalTime().DateTime;
-            var dateOnly = DateOnly.FromDateTime(dateTime);
 
-            if (currentDate is null || currentDate.Value != dateOnly)
+        var dailyForecasts = response.List
+            .Take(maxItems)
+            .Select(item =>
             {
-                if (currentDaily is not null)
-                {
-                    dailyForecasts.Add(currentDaily);
-                }
-                currentDate = dateOnly;
-                currentDaily = new Dtos.DailyForecast(
-                    Date: dateOnly.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
-                    Forecasts: new List<Dtos.ForecastItem>());
-            }
+                var dateTime = DateTimeOffset.FromUnixTimeSeconds(item.Dt).ToLocalTime().DateTime;
+                var dateOnly = DateOnly.FromDateTime(dateTime);
+                return (item, dateTime, dateOnly);
+            })
+            .GroupBy(x => x.dateOnly)
+            .Select(g => new Dtos.DailyForecast(
+                Date: g.Key.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture),
+                Forecasts: g.Select(x => new Dtos.ForecastItem(
+                    Time: x.dateTime.ToString("HH:mm", CultureInfo.InvariantCulture),
+                    Temperature: x.item.Main.Temp,
+                    Weather: x.item.Weather.Length > 0 ? x.item.Weather[0].Description : string.Empty,
+                    RainProbability: x.item.Pop.HasValue ? x.item.Pop.Value * 100.0 : 0d
+                )).ToList()
+            ))
+            .Take(days)
+            .ToList();
 
-            currentDaily!.Forecasts.Add(new Dtos.ForecastItem(
-                Time: dateTime.ToString("HH:mm", CultureInfo.InvariantCulture),
-                Temperature: item.Main.Temp,
-                Weather: item.Weather.Length > 0 ? item.Weather[0].Description : string.Empty,
-                RainProbability: item.Pop.HasValue ? item.Pop.Value * 100.0 : 0d));
-        }
-
-        if (currentDaily is not null)
-        {
-            dailyForecasts.Add(currentDaily);
-        }
         return new Dtos.WeatherForecastResult(
             City: response.City.Name,
             Country: response.City.Country,
             DailyForecasts: dailyForecasts.Take(days).ToList());
     }
-}
-```
+}```
 
 WeatherTools クラスには以下のツールが実装されています：
 

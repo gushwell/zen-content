@@ -90,78 +90,54 @@ Toolsフォルダに、Dtos.csファイルを作成し、Dtosクラスを定義�
 
 ```cs
 using System.Text.Json;
-using System.Text.Json.Serialization;
 
 namespace NewsServer.Tools;
 
 // newsdata.io の生レスポンスをそのまま扱うための DTO 群。
 // SearchNewsByKeyword / SearchNewsByCategory は Dtos.ApiResponse を返します。
-public static class Dtos {
+public static class Dtos
+{
     // API 内の source オブジェクト（{ id, name } の形）
     public record ApiSource(string? Id, string? Name);
 
-    // API の articles / results に対応する型（API サンプルに合わせてプロパティを拡張）
-    public record ApiArticle
-    {
-        public string? ArticleId { get; init; }
-
-        public string? Link { get; init; }
-
-        public string? Title { get; init; }
-
-        public string? Description { get; init; }
-
-        public string? Content { get; init; }
-
-        public List<string>? Keywords { get; init; }
-
+    // API の articles / results に対応する型（API サンプルに合わせてプライマリーコンストラクタを使用）
+    public record ApiArticle(
+        string? ArticleId = null,
+        string? Link = null,
+        string? Title = null,
+        string? Description = null,
+        string? Content = null,
+        List<string>? Keywords = null,
         // creator は文字列／配列／null が来るため JsonElement? のまま保持
-        public JsonElement? Creator { get; init; }
-
-        public string? Language { get; init; }
-
-        public List<string>? Country { get; init; }
-
-        public List<string>? Category { get; init; }
-
-        public string? Datatype { get; init; }
-
-        public string? PubDate { get; init; }
-
-        public string? PubDateTZ { get; init; }
-
-        public string? ImageUrl { get; init; }
-
-        public string? VideoUrl { get; init; }
-
-        public string? SourceId { get; init; }
-
-        public string? SourceName { get; init; }
-
-        public long? SourcePriority { get; init; }
-
-        public string? SourceUrl { get; init; }
-
-        public string? SourceIcon { get; init; }
-
-        public string? Sentiment { get; init; }
-
+        JsonElement? Creator = null,
+        string? Language = null,
+        List<string>? Country = null,
+        List<string>? Category = null,
+        string? Datatype = null,
+        string? PubDate = null,
+        string? PubDateTZ = null,
+        string? ImageUrl = null,
+        string? VideoUrl = null,
+        string? SourceId = null,
+        string? SourceName = null,
+        long? SourcePriority = null,
+        string? SourceUrl = null,
+        string? SourceIcon = null,
+        string? Sentiment = null
+    )
+    {
         // 互換プロパティ
         public string? Url => Link;
     }
 
     // API レスポンス全体（newsdata.io の構造に合わせる）
-    public record ApiResponse
-    {
-        public string? Status { get; init; }
-
-        public List<ApiArticle>? Results { get; init; }
-
-        public int? TotalResults { get; init; }
-
+    public record ApiResponse(
+        string? Status = null,
+        List<ApiArticle>? Results = null,
+        int? TotalResults = null,
         // サンプルに nextPage が含まれているため追加
-        public string? NextPage { get; init; }
-    }
+        string? NextPage = null
+    );
 }
 ```
 

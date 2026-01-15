@@ -55,53 +55,41 @@ namespace Chap08WebSearchServer.Tools;
 public static class Dtos
 {
     // 単一の検索結果を表す DTO
-    public record WebSearchResult
-    {
-        public string? Title { get; init; }
-        public string? Url { get; init; }
-        public string? Snippet { get; init; }
-    }
+    public record WebSearchResult(
+        string? Title,
+        string? Url,
+        string? Snippet
+    );
 
     // WebSearch の応答 DTO
-    public record WebSearchResponse
-    {
+    public record WebSearchResponse(
         // 成功フラグ
-        public bool Success { get; init; }
-
+        bool Success,
         // Tavily 等が返す要約的な answer（存在すれば）
-        public string? Answer { get; init; }
-
+        string? Answer,
         // 検索結果の配列
-        public List<WebSearchResult>? Results { get; init; }
-
+        List<WebSearchResult>? Results,
         // 元のクエリ
-        public string? Query { get; init; }
-
+        string? Query,
         // エラー発生時のメッセージ（Success=false のときにセット）
-        public string? Error { get; init; }
-    }
+        string? Error
+    );
 
     // GetWebpageContent の応答 DTO
-    public record WebpageContentResponse
-    {
+    public record WebpageContentResponse(
         // 成功フラグ
-        public bool Success { get; init; }
-
+        bool Success,
         // 取得元 URL
-        public string? Url { get; init; }
-
+        string? Url,
         // ページタイトル
-        public string? Title { get; init; }
-
+        string? Title,
         // 抽出した本文テキスト（必要であればトランケート済み）
-        public string? Content { get; init; }
-
+        string? Content,
         // 指定長で切り捨てられたか
-        public bool Truncated { get; init; }
-
+        bool Truncated,
         // エラー発生時のメッセージ（Success=false のときにセット）
-        public string? Error { get; init; }
-    }
+        string? Error
+    );
 }
 ```
 
