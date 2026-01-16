@@ -51,11 +51,13 @@ https://github.com/gamasenninn/MCP_Learning
     - 現在の天気: `WeatherTools.GetWeatherAsync()`
     - 天気予報: `WeatherTools.GetWeatherForecastAsync()`
     
+
+
 ---
 
 ## OpenWeatherMap の API キーを用意する
 
-事前に OpenWeatherMap のサイトから API キーを取得しておきます。
+では、さっそく開発を開始しましょう。まずは、事前に OpenWeatherMap のサイトから API キーを取得しておきます。
 
 https://openweathermap.org/
 
@@ -65,7 +67,7 @@ https://openweathermap.org/
 
 ## プロジェクトの作成
 
-以下のコマンドで、MCP サーバープロジェクトとして作成します。
+以下のコマンドで、MCP サーバープロジェクトを作成します。ここでは、プロジェクト名をWeatherServerとしました。
 
 ```bash
 dotnet new mcpserver -n WeatherServer
@@ -76,10 +78,10 @@ dotnet new mcpserver -n WeatherServer
 
 ## DTOクラスの定義
 
-まずは、MCP経由でJSONとして返却される公開DTOクラスを定義します。C#のレコード型を利用しています。
+MCP経由でJSONとして返却される公開DTOクラスを定義します。C#のレコード型を利用しています。
 元のPythonのコードは型定義をしていませんが、C#の良さを出すために、できるだけ忠実にC#の型に移植しています。
 
-Toolsフォルダに、Dtos.csファイルを作成し、Dtosクラスを定義します。
+Toolsフォルダに Dtos.csファイルを作成し、Dtosクラスを定義します。
 
 ```cs
 namespace WeatherServer.Tools;
@@ -259,7 +261,6 @@ public class WeatherTools
         return result;
     }
 
-
     // ==== MCP ツールメソッド ====
 
     [McpServerTool]
@@ -326,7 +327,6 @@ public class WeatherTools
         var response = await MakeApiRequestAsync<Dtos.ForecastResponse>(fullUrl);
 
         var maxItems = Math.Min(response.List.Count, days * 8);
-
         var dailyForecasts = response.List
             .Take(maxItems)
             .Select(item =>
@@ -353,7 +353,8 @@ public class WeatherTools
             Country: response.City.Country,
             DailyForecasts: dailyForecasts.Take(days).ToList());
     }
-}```
+}
+```
 
 WeatherTools クラスには以下のツールが実装されています：
 
