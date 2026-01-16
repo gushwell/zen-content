@@ -2,7 +2,7 @@
 title: "C#でMCP入門（NEWS API連携編）- 書籍『MCP入門』のPythonコードを移植する(5)"
 emoji: "🧰"
 type: "tech"
-topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "newsapi"]
+topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "NewsData"]
 published: true
 published_at: 2026-01-26 21:00
 publication_name: zead
@@ -57,14 +57,14 @@ https://newsdata.io/
 
 ## プロジェクトの作成
 
-以下のコマンドで、MCP サーバープロジェクトとして作成します。
+以下のコマンドで、MCP サーバープロジェクトを作成します。プロジェクト名は、NewsServerとしました。
 
 ```bash
 dotnet new mcpserver -n NewsServer
 ```
 
 :::message
-書籍『MCP入門』では、前回作成したWeatherServerに、NewsServerのツールを追加していますが、この記事では単独のNewsServer MCPサーバーを作成します。
+書籍『MCP入門』では、前回作成したWeatherServerに、NewsServerのツールを追加していますが、この記事ではNewsServer専用の MCPサーバーを作成します。
 :::
 
 
@@ -352,10 +352,7 @@ Claude Desktopを起動して、以下のような質問を投げてみます。
 
 「最新のテクノロジーニュースを教えて」
 
-「明日、シンガポールに行くので、シンガポールの天気とニュースを教えて」
-
-
-
+「明日、シンガポールに行くので、シンガポールの天気とニュースを教えて。どんな服装が良いかな」
 
 
 ## データフロー（概要）
@@ -384,9 +381,8 @@ sequenceDiagram
 
 ## 最後に
 
-この記事では、C#を使用して外部 API と連携する MCPサーバーの作成方法について説明しました。
-MCPツールが、何を受け取り何を返すべきなのかを見極めることができれば、あとは通常のWebAPIの呼び出しと変わりないことがわかりました。
-
+この記事では、C#を使用して外部 API（NewsData.io） と連携する MCPサーバーの作成方法について説明しました。
+前回のOpenWeatherMap APIを利用したMCPサーバとともに使えば、明日、シンガポールに行くので、シンガポールの天気とニュースを教えて」などの質問ができることがわかりました。
 
 次回は、第7章に掲載されている 位置情報API(IP-API)と連携する MCPサーバーを C#に移植してみようと思います。
 
