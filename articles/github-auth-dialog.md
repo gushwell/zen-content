@@ -10,130 +10,83 @@ publication_name: zead
 
 ## はじめに
 
-Visual Studio  を使っていると、ある日突然、
+Visual Studio や VS Code を使っていると、突然 「Select an account」 のような GitHub の認証ダイアログが何度も表示され続けることがあります。
+これは単なる不具合ではなく、GitHub Credential Manager（GCM） が複数の資格情報のどれを使うべきか判断できなくなることで発生します。
+この記事では、
 
-![](/images/github-auth-dialog/image.png)
+- なぜ認証ダイアログが何度も出るのか
+- どういう環境で起きやすいのか
+- どう対処すればよいのか
 
-といった **GitHub の認証ダイアログが頻繁に表示される**ようになってしまいました。
-
-GitHub Credential Manager（GCM）が、どのアカウント／トークンを使うか判断できずに、このダイアログが出るようになっていたようです。
-
-本記事では、GitHub の認証ダイアログが何度も出る理由と対処法を解説します。
+を、なるべく分かりやすく解説しようと思います。
 
 ---
 
-## どのような時にでるのか
+## どんな状況で発生しやすい？
 
+以下の条件が揃っていると、発生頻度が高くなるようです。
+
+- 仕事用・個人用など 複数の GitHub アカウント を同じ PC で利用
+- HTTPS と SSH の両方で clone したことがある
+- 複数の Git クライアントを併用（VS、VS Code、Git Bash など）
+- GitHub 拡張機能を VS Code で利用
+  （GitHub PRs、Repositories、Copilot など）
+
+これらにより、PC 内に 複数の GitHub 資格情報が蓄積され、GCM が選択に迷い始めます。
+
+### アカウントが一つでも発生するのか？
 
 仕事用アカウントと個人アカウントを同じPCで利用していると、この現象が出やすいですが、仕事用アカウントだけでもこの現象は起きるようです。
 
-以下のような状況の時に、この現象が発生しやすいようです。
+GitHub の資格情報は、「アカウント単位ではなく「ツール × 認証方式 × URL 形式」単位で保存される」という仕組みになっています。
+以下のように、同じアカウントでも別物として扱われます：
 
-- HTTPSとSSHの両方で、Cloneしたことがある
-- 複数のGitクライアントアプリを利用している
-- コマンドでもGitHubを操作している
-- Git Personal Access Tokenを利用
 
-このような時に、以下の状況になると、認証ダイアログが出ます。
+例 | 認証方式等
+-------|------
+https://github.com | 標準 HTTPS
+https://username@github.com | 埋め込みユーザー名
+git@github.com | SSH
+PAT / OAuth の違い | 認証方式が異なる
 
-#### 1. Visual Studio と VS Code で認証方式が異なる
+その結果、資格情報が次々と増え、最終的に GCM は
 
-Visual Studio と VS Code は 同じ GitHub Credential Manager を使います。両方で GitHub リポジトリにアクセス（git fetch / pull / 拡張機能の API 呼び出しなど）すると、どのアカウント／トークンを使うか判断できず、この「Select an account」ダイアログが頻繁に出ます。
+「どれを使えばいいんだ？」
 
-ツール	| 認証方式
----------|----------------
-Visual Studio |	GitHub アカウント（OAuth）
-VS Code	| PAT（または別アカウント）
-
-同じ Git 操作でも「どれを使う？」と毎回聞かれます。
-
-#### 2. GitHub 拡張機能が裏で API を叩いている
-
-VS Code 側で以下が有効だと、操作していなくても認証が走ります。
-
-- GitHub Pull Requests and Issues
-- GitHub Copilot
-- GitHub Repositories
-
-Visual Studio も同様に、起動時やソリューション読み込み時に GitHub へアクセスします。
-
----
-
-## なぜ利用するアカウントが一つなのに起きるのか
-
-GitHub の資格情報は、
-
-* アカウント単位
-* リポジトリ単位
-
-ではなく、
-
-**「ツール × 認証方式 × URL 形式」単位** で保存されます。
-
-そのため、同じ GitHub アカウントでも、使い方次第で資格情報がどんどん増えていくようです。
-
-この資格情報が増えていくと、GitHub Credential Manager はどれを使ったらよいのか判断できなくなり、**毎回アカウント選択ダイアログが表示される** ようになります。
-
-自動で整理してくれれば良いのですが、他ツールの資格情報を勝手に消すことはセキュリティ上できません。
-そのため、**使うほど資格情報は足されるだけ** になります。
-
----
+となり、毎回聞きにくる状態が発生します。
 
 ### 資格情報が増えていく典型パターン
 
-#### ① Visual Studio で GitHub にサインイン
+**① Visual Studio で GitHub にサインイン（OAuth）**
 
-* Visual Studio の「GitHub でサインイン」を使用
-* OAuth トークンが保存される
+- Visual Studio は GitHub OAuth を利用
+-「GitHub for Visual Studio」という名前で資格情報が保存される
 
-```
-GitHub for Visual Studio - https://github.com/
-```
+**② Git 操作で HTTPS を利用すると PAT を要求**
 
----
+- clone / push 時に GCM が PAT を保存
+- OAuth とは別枠として扱われる
 
-#### ② HTTPS で clone / push した
+**③ VS Code の GitHub 拡張が API を叩く**
 
-* GitHub が PAT（Personal Access Token）を要求
-* 入力すると Git が保存
+以下の拡張機能は内部で独自に API を叩くようです
 
-```
-git:https://github.com
-git:https://username@github.com
-```
+- GitHub Pull Requests and Issues
+- GitHub Repositories
+- GitHub Copilot
 
-OAuth があっても、別枠で保存される
+これらが追加で資格情報を保存。
 
----
+**④ URL 形式の違いでさらに分裂**
 
-#### ③ VS Code の Git 機能や GitHub 拡張を使った
+Git は、URL の書き方が少しでも違うと、完全に別のサーバーとして扱います。
 
-* GitHub Pull Requests
-* GitHub Repositories
-* GitHub Copilot
+- https://github.com
+- https://username@github.com
+- git@github.com
 
-これらは内部で API を呼び出すため、独自の資格情報を保存します。
-
-```
-gh:github.com:username
-```
-
-
----
-
-#### ④ URL の違いで別物として扱われる
-
-Git は以下を **すべて別物** として扱います。
-
-```
-https://github.com
-https://username@github.com
-git@github.com
-```
-
-同じアカウントでも資格情報が分裂してしまいます。
-
----
+Git は全部別物扱いです。
+結果、GCM の「同一アカウント」が内部ではバラバラに保存されます。
 
 
 ---
@@ -159,6 +112,7 @@ cmdkey /list | findstr github
 ターゲット: LegacyGeneric:target=git:https://Personal Access Token@github.com
 ```
 
+
 ### ② GitHub 関連資格情報を一度すべて削除
 
 ```
@@ -170,6 +124,8 @@ cmdkey /delete:LegacyGeneric:target=git:https://your-name@github.com
 cmdkey /delete:LegacyGeneric:target=git:https://Personal Access Token@github.
 ```
 
+**※ 実際の一覧を見て、github.com を含むものだけ削除してください。**
+
 ### ③ Visual Studio、 VS Code で GitHub に再ログイン
 
 1. Visual Studio を起動
@@ -180,13 +136,17 @@ cmdkey /delete:LegacyGeneric:target=git:https://Personal Access Token@github.
 
 1. VSCodeを起動
 2. 左下のアカウントアイコンをクリック
-3. 「Sign in with GitHub」または「Sign in to GitHub.com」を選択
+3. 「Sign in with GitHub」を選択
 4. ブラウザが自動で開くので、GitHubアカウントで通常のログイン
 
 
 ---
 
 ## おわりに
+
+GitHub の認証ダイアログが頻繁に表示される原因は、
+「資格情報の分裂と蓄積」 にあることがほとんどです。
+原因を理解して整理すれば、問題は高い確率で解決します。
 
 本記事が、
 
