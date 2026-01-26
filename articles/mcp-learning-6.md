@@ -2,9 +2,9 @@
 title: "C#でMCP入門（IP情報連携編）- 書籍『MCP入門』のPythonコードを移植する(6)"
 emoji: "🧰"
 type: "tech"
-topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "ip-api"]
+topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "ipapi"]
 published: true
-published_at: 2026-02-16 21:00
+published_at: 2026-02-02 21:00
 publication_name: zead
 ---
 
@@ -12,7 +12,7 @@ publication_name: zead
 
 シリーズ第6回目の本記事では、[『MCP入門――生成AIアプリ本格開発』（技術評論社）](https://www.amazon.co.jp/MCP%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E7%94%9F%E6%88%90AI%E3%82%A2%E3%83%97%E3%83%AA%E6%9C%AC%E6%A0%BC%E9%96%8B%E7%99%BA-%E5%B0%8F%E9%87%8E-%E5%93%B2-ebook/dp/B0FWBTVP6Q)の第7章に掲載されているプログラム`external_api_server_ipinfo`を C# に移植します。(著者の小野哲さんからは、移植および掲載の許可をいただいています)
 
-IPアドレスに関する情報を取得するAPIと連携させるMCPサーバーを作成します。
+IPアドレスに関する情報を取得するAPIと連携させるMCPサーバーです。
 
 なお、今回利用する[ip-api](https://ip-api.com/)は、APIキー不要で利用できるAPIですが、非商用目的および非営利環境での利用に制限されています。利用する際は注意してください。
 
@@ -67,7 +67,7 @@ public record IpInfoDto(
 
 ## 3. IpInfoTools の実装（外部 API 呼び出し）
 
-次に、実際に ip-api.com に問い合わせるツールを実装します。`Tools/IpInfoTools.cs` を作成して以下のコードを入れてください。
+次に、実際に ip-api.com に問い合わせるツールを実装します。`Tools/IpInfoTools.cs` を作成して以下のクラスを定義します。
 
 ```cs
 using System;
@@ -180,8 +180,8 @@ builder.Services
 ```
 
 説明:
-- `.WithStdioServerTransport()` によって、標準入出力ベースで MCP サーバーが動作します（Claude Desktop 等と連携しやすい）。
-- 複数のツールクラスを登録する場合は `.WithTools<First, Second>()` のように指定できます。
+- `.WithStdioServerTransport()` によって、標準入出力ベースで MCP サーバーが動作します。
+- `.WithTools<IpInfoTools>()`でIpInfoToolsクラスを登録しています。
 
 ---
 
@@ -201,30 +201,12 @@ dotnet build -c Release
 
 ## 6. Claude Desktop への組み込み（例）
 
-Windows で Claude Desktop に組み込むときの `claude_desktop_config.json` の例です。このシリーズで作成済みのWeatherServer、NewsServerも組み込んでいます。
+Windows で Claude Desktop に組み込むときの `claude_desktop_config.json` の例です。
 
 ```json
 {
   "mcpServers": {
-    "database_server": {
-      "command": "C:\\mcp-learning\\mcpserver\\DatabaseServer.exe",
-      "args": []
-    },
-    "weather_server": {
-      "command": "C:\\mcp-learning\\mcpserver\\WeatherServer.exe",
-      "args": [],
-      "env": {
-        "OPENWEATHER_API_KEY": "ここにAPIキーを書く"
-      }
-    },
-    "news_server": {
-      "command": "C:\\mcp-learning\\mcpserver\\NewsServer.exe",
-      "args": [],
-      "env": {
-        "NEWSDATA_API_KEY": "ここにAPIキーを書く"
-      }
-    },
-    "news_server": {
+    "ipinfo_server": {
       "command": "C:\\mcp-learning\\mcpserver\\IpInfoServer.exe",
       "args": []
     }
@@ -232,10 +214,10 @@ Windows で Claude Desktop に組み込むときの `claude_desktop_config.json`
 }
 ```
 
-注意:
-- Windows の Claude Desktop は OS の環境変数を引き継がないことがあるため、必要な設定は `claude_desktop_config.json` に直接書くことを検討してください（ip-api は API キー不要ですが、他の API では重要です）。
-- Claude を再起動（または関連プロセス終了→再起動）することで新しい MCP サーバーを認識します。
 
+:::message alert
+もし、うまく組み込めないようなら、タスクマネージャーからClaudeで検索して、タスクをすべて終了させてから、Claude Desktopを起動してください。
+:::
 ---
 
 ### Claude Desktopで確認
@@ -246,8 +228,8 @@ Claude Desktopを起動して、以下のような質問を投げてみます。
 
 「IPアドレス 8.8.8.0の情報を教えて」
 
+![](/images/mcp-learning-6/Claude.png)
 
-![alt text](image.png)
 ---
 
 ## 8. データフロー（概要）
@@ -273,7 +255,7 @@ sequenceDiagram
 ## 最後に
 
 今回は、C#を使用して位置情報API(IP-API)と連携する MCPサーバーを作成しました。
-シンプルな実装ですが、外部 API 呼び出しの堅牢化（タイムアウト、例外ハンドリング）にも考慮した実装にしてみました。
+シンプルな実装ですが、外部 API 呼び出しの時のタイムアウト、例外ハンドリングにも考慮した実装にしてみました。
 
 次回は、第8章に掲載されている Web検索をするMCPサーバーを C#に移植してみようと思います。
 

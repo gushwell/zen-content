@@ -326,10 +326,21 @@ Windows で Claude Desktop に組み込むときの `claude_desktop_config.json`
 ```
 
 :::message
-Claude Desktopで動作を検証する場合は、標準のWebサーチ機能が働かないように、「websearch_serverを使ってください」など質問を工夫して動作を確認してください。
+Claude Desktopで動作を検証する場合は、標準のWebサーチ機能が働かないように、Calude DesktopのWebサーチ機能は無効にしてください。
 :::
+
+
 ---
 
+### Claude Desktopで確認
+
+Claude Desktopを起動して、以下のような質問を投げてみます。
+
+「Pythonについて調べて300文字程度にまとめてください。」
+
+
+![](/images/mcp-learning-6/Claude.png)
+---
 ## 最後に
 
 今回は、C#を使用してWeb検索を行うMCPサーバーを作成しました。実際の運用では、robots.txtの制御やレート制限なども考慮した実装が必要になると思われます。

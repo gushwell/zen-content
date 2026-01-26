@@ -354,6 +354,15 @@ Claude Desktopを起動して、以下のような質問を投げてみます。
 
 「明日、シンガポールに行くので、シンガポールの天気とニュースを教えて。どんな服装が良いかな」
 
+:::message
+Claude Desktopで動作を検証する場合は、標準のWebサーチ機能が働かないように、Calude DesktopのWebサーチ機能は無効にしてください。
+:::
+
+
+
+![](/images/mcp-learning-5/Claude1.png)
+![](/images/mcp-learning-5/Claude2.png)
+
 
 ## データフロー（概要）
 
