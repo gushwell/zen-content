@@ -1,10 +1,10 @@
 ---
 title: "Visual StudioとVS CodeでGitHubの認証ダイアログが何度も出る原因と解決方法"
-emoji: "🔒"
+emoji: "💥"
 type: "tech"
 topics: ["VisualStudio", "github", "vscode"]
 published: true
-published_at: 2026-02-09 21:00
+published_at: 2026-02-16 21:00
 publication_name: zead
 ---
 
