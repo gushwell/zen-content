@@ -11,6 +11,9 @@ publication_name: zead
 ## はじめに
 
 Visual Studio や VS Code を使っていると、突然 「Select an account」 のような GitHub の認証ダイアログが何度も表示され続けることがあります。
+
+![](/images/github-auth-dialog/image.png)
+
 これは単なる不具合ではなく、GitHub Credential Manager（GCM） が複数の資格情報のどれを使うべきか判断できなくなることで発生します。
 この記事では、
 

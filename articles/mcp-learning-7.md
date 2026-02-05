@@ -340,18 +340,27 @@ Claude Desktopを起動して、以下のような質問を投げてみます。
 
 
 ![](/images/mcp-learning-6/Claude.png)
+
 ---
+
 ## 最後に
 
 今回は、C#を使用してWeb検索を行うMCPサーバーを作成しました。実際の運用では、robots.txtの制御やレート制限なども考慮した実装が必要になると思われます。
 また、長文のページを扱う場合の工夫も必要になるかもしれません。
 
+なお、「C#でMCP入門（Webサーチ編）- 書籍『MCP入門』のPythonコードを移植する」のリリーズは、今回の記事を最終回としたいと思います。
 
-次回は、第8章に掲載されている Pythonコードを実行するMCPサーバーを C#に移植してみようと思います。気が向いたらC#のコードを実行するMCPサーバーにするかもしれません。多分、次回が最終回となる予定です。
+書籍『MCP入門』では、
+
+- 第8章の後半で、MCPでPythonのコードを実行させるMCPサーバーの説明
+- 第9章で、MCPホストを自作する
+- 第10章で、MCPエージェント（AIエージェント）を作成する
+
+と続きます。興味のある方は、是非書籍を読んでいただければと思います。
 
 ---
 
-**これまでの記事**
+**記事目次**
 
 - [C#でMCP入門（HTTP方式編）- 書籍『MCP入門』のPythonコードを移植する(1)](https://zenn.dev/zead/articles/mcp-learning-1)
 - [C#でMCP入門（STDIO方式編）- 書籍『MCP入門』のPythonコードを移植する(2)](https://zenn.dev/zead/articles/mcp-learning-2)
@@ -359,3 +368,4 @@ Claude Desktopを起動して、以下のような質問を投げてみます。
 - [C#でMCP入門（Weather API連携編）- 書籍『MCP入門』のPythonコードを移植する(4)](https://zenn.dev/zead/articles/mcp-learning-4)
 - [C#でMCP入門（NEWS API連携編）- 書籍『MCP入門』のPythonコードを移植する(5)](https://zenn.dev/zead/articles/mcp-learning-5)
 - [C#でMCP入門（IP情報連携編）- 書籍『MCP入門』のPythonコードを移植する(6)](https://zenn.dev/zead/articles/mcp-learning-6)
+- [C#でMCP入門（Webサーチ編）- 書籍『MCP入門』のPythonコードを移植する(7)](https://zenn.dev/zead/articles/mcp-learning-7) 
