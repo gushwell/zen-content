@@ -12,7 +12,7 @@ publication_name: zead
 
 シリーズ第7回目（最終回）の本記事では、[『MCP入門――生成AIアプリ本格開発』（技術評論社）](https://www.amazon.co.jp/MCP%E5%85%A5%E9%96%80%E2%80%95%E2%80%95%E7%94%9F%E6%88%90AI%E3%82%A2%E3%83%97%E3%83%AA%E6%9C%AC%E6%A0%BC%E9%96%8B%E7%99%BA-%E5%B0%8F%E9%87%8E-%E5%93%B2-ebook/dp/B0FWBTVP6Q)の第8章に掲載されているプログラム`universal_tools_server_web_2.py`を C# に移植します。(著者の小野哲さんからは、移植および掲載の許可をいただいています)
 
-今回は、Web検索機能をMCPサーバーを作成します。利用するサービスは、Tavilyです。
+今回は、Web検索機能を持つMCPサーバーを作成します。利用するサービスは、Tavilyです。
 
 https://api.tavily.com/search
 
@@ -25,7 +25,7 @@ https://api.tavily.com/search
 
 https://github.com/gamasenninn/MCP_Learning
 
-なお、本記事では、プロジェクトの作成手順やセットアップ手順は過去回に委ね、本質的な設計決定と注意点に絞って説明します。
+なお、本記事では、プロジェクトの作成手順やセットアップ手順は過去回に委ね、 Web検索とページ取得を提供するツールクラスのソースコードに的を絞って説明します。
 
 過去の回へのリンクは、本記事の最後に掲載しています。
 
