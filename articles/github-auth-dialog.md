@@ -4,7 +4,7 @@ emoji: "💥"
 type: "tech"
 topics: ["VisualStudio", "github", "vscode"]
 published: true
-published_at: 2026-02-16 21:00
+published_at: 2026-02-24 21:00
 publication_name: zead
 ---
 
