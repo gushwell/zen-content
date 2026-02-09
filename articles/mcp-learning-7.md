@@ -4,7 +4,7 @@ emoji: "🧰"
 type: "tech"
 topics: ["csharp", "mcp", "mcpサーバー", "dotnet", "tavily"]
 published: true
-published_at: 2026-02-16 21:00
+published_at: 2026-02-09 21:00
 publication_name: zead
 ---
 
@@ -25,7 +25,8 @@ https://api.tavily.com/search
 
 https://github.com/gamasenninn/MCP_Learning
 
-なお、本記事では、プロジェクトの作成手順やセットアップ手順は過去回に委ね、 Web検索とページ取得を提供するツールクラスのソースコードに的を絞って説明します。
+なお、本記事では、プロジェクトの作成手順やセットアップ手順は過去回に委ね、 Web検索とページ取得を提供するツールクラスのソースコードに的を絞って説明します。今回は、これまで利用していなかった、`[McpServerResource]`属性を利用しています。
+
 
 過去の回へのリンクは、本記事の最後に掲載しています。
 
@@ -120,6 +121,7 @@ public class WebTools
 
     // Web検索を実行するMCPツールメソッド
     [McpServerTool]
+
     [Description("TavilyでWeb検索を実行します。")]
     public Dtos.WebSearchResponse WebSearch(
         [Description("検索クエリ")] string query,
@@ -191,8 +193,8 @@ public class WebTools
         }
     }
 
-        // Webページの内容をテキストとして取得するMCPツールメソッド
-    [McpServerTool]
+    // Webページの内容をテキストとして取得するMCPツールメソッド
+    [McpServerResource]
     [Description("Webページの内容を取得してテキストを返します（スクリプトやスタイル除去）。")]
     public Dtos.WebpageContentResponse GetWebpageContent(
         [Description("取得するページのURL")] string url, CancellationToken ct = default)
@@ -264,6 +266,22 @@ public class WebTools
 
 
 ### コードの解説
+
+### `[McpServerResource]`属性
+
+これまでは、メソッドに`[McpServerTool]`属性を指定していましたが、GetWebpageContentメソッドには、`[McpServerResource]`属性を付加しています。
+
+これまでは、説明してきませんでしたが、MCPサーバーは以下の３つに分類されます。
+
+役割 | 説明 | 対応するC#の属性
+-------|---------|---------
+Tool提供型サーバー | tools を提供するMCPサーバー<br>LLMが「関数呼び出し」感覚で使う | `[McpServerTool]`
+Resource提供型サーバー | resources を提供<br>読み取り専用の知識 | `[McpServerResource]`
+Prompt提供型サーバー | 定型 prompts を提供<br>「決まった質問テンプレート」をLLMに渡す | `[McpServerPrompt]`
+
+今回、実装したGetWebpageContentメソッドは、データ取得が主な役割のため、`[McpServerTool]` ではなく、`[McpServerResource]`を指定するのが適切です。
+
+天気予報やニュース検索のMCPサーバーの場合は、`[McpServerTool]` か `[McpServerResource]`か迷うところですが、その都度結果が変わる可能性があるため、`[McpServerTool]`が適切かなと思います。`[McpServerResourc]`にした場合は、この内容がキャッシュされる確率が高く、コスト効率が良くなります。
 
 ### 環境変数による API キー管理
 
