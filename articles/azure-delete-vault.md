@@ -45,7 +45,9 @@ publication_name: zead
 
 ---
 
-## 1. PowerShell で Azure にサインインする
+## 手順
+
+### 1. PowerShell で Azure にサインインする
 
 `.ps1` を扱うので、`bash` や `Git Bash` ではなく **PowerShell (`pwsh`)** で実行します。
 
@@ -68,7 +70,7 @@ Get-AzContext
 
 ---
 
-## 2. PowerShellスクリプトを作成する
+### 2. PowerShellスクリプトを作成する
 
 以下に示したスクリプトは記事用のサンプルとして、サブスクリプション、リソースグループ、Vault 名をサンプル値で埋めています。  
 実行前に読者が置き換える必要があるのは、これらの値と `<アカウントID>` だけです。
@@ -166,7 +168,7 @@ try {
 
 ---
 
-## 3. Storage Container の登録を解除する
+### 3. Storage Container の登録を解除する
 
 Recovery Services コンテナー が消せない原因になりやすいのが、Backup 用に登録された Storage Container です。  
 前述のPowerShellスクリプトを使って解除しました。
@@ -197,7 +199,7 @@ https://login.microsoft.com/device and enter the code H3K9CBPDE to authenticate.
 
 ---
 
-## 4. ポータルで Recovery Services コンテナー を削除する
+### 4. ポータルで Recovery Services コンテナー を削除する
 
 Storage Container の登録解除後、Azure Portal から対象 Recovery Services コンテナー を削除します。
 
@@ -213,7 +215,7 @@ Storage Container の登録解除後、Azure Portal から対象 Recovery Servic
 
 ---
 
-## 4. 削除完了を確認する
+### 5. 削除完了を確認する
 
 削除要求が通ったかどうかは、Azure Activity Log で確認できます。
 
