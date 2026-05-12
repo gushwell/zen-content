@@ -16,7 +16,7 @@ publication_name: zead
 
 詳しい原因までは突き止められませんでしたが、原因の多くは、**バックアップ対象の登録が残っている**ことのようです。
 
-この記事では、`AzureStorage` の登録を解除してから `Recovery Services コンテナー` を削除できた手順をまとめています。なお、保護済みデータやソフト削除済みデータが残っている場合は、別の依存関係も解除が必要です。
+この記事では、`AzureStorage` の登録を解除してから `Recovery Services コンテナー` を削除した手順をまとめています。なお、保護済みデータやソフト削除済みデータが残っている場合は、別の依存関係も解除が必要です。
 
 ※ Azure の日本語UIでは、英語の Recovery Services vault が「Recovery Services コンテナー」と翻訳されています。以降は Recovery Services コンテナー と書きます。
 
@@ -32,9 +32,12 @@ publication_name: zead
 - リソースグループ: `rg-example-backup`
 - Recovery Services コンテナー: `vault-example001`
 
+
 ---
 
-## 全体の流れ
+## 手順
+
+### 全体の流れ
 
 やることは次の 4 ステップです。
 
@@ -43,9 +46,6 @@ publication_name: zead
 3. ポータルで Recovery Services コンテナー を削除する  
 4. 削除完了を確認する  
 
----
-
-## 手順
 
 ### 1. PowerShell で Azure にサインインする
 
@@ -67,10 +67,81 @@ Set-AzContext -SubscriptionId "00000000-0000-0000-0000-000000000000"
 Get-AzContext
 ```
 
+---
+
+### 2. Storage Container の登録を解除する
+
+Recovery Services コンテナー が消せない原因になりやすいのが、Backup 用に登録された Storage Container です。  
+今回は、後述するPowerShellスクリプトを使って解除しました。
+
+ps1スクリプトを実行し、以下のように出れば成功です。
+
+```
+All Storage containers unregistered.
+```
+
+今回もこの状態になり、Storage Container の登録解除は完了しました。
+
+
+なお、Azureにログインしていない状態でこのスクリプトを実行したときは、以下のようなメッセージが出ます。
+
+```
+[Login to Azure] To sign in, use a web browser to open the page 
+https://login.microsoft.com/device and enter the code H3K9CBPDE to authenticate.
+```
+
+表示されているURLをブラウザで開き、このコード`H3K9CBPDE`を入れて、Azureにログインします。
+
+複数のサブスクリプションがある場合あｈ、サブスクリプションの選択が表示されますので、該当するサブスクリプションを選択します。
+
+選択すると、本来の削除処理が走ります。
+
 
 ---
 
-### 2. PowerShellスクリプトを作成する
+### 3. ポータルで Recovery Services コンテナー を削除する
+
+Storage Container の登録解除後、Azure Portal から対象 Recovery Services コンテナー を削除します。
+
+ここで大事なのは、**Recovery Services コンテナー の削除は非同期** だという点です。  
+削除ボタンを押しても、その場ですぐ消えるとは限りません。
+
+つまり、
+
+- ポータルで削除操作をした
+- でもリソースグループ内にしばらく残って見える
+
+というのは、**直後であれば正常なことがあります**。
+
+---
+
+### 4. 削除完了を確認する
+
+削除要求が通ったかどうかは、Azure Activity Log で確認できます。
+
+```powershell
+Get-AzLog -ResourceId "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example-backup/providers/Microsoft.RecoveryServices/vaults/vault-example001" | Select-Object EventTimestamp, OperationName, Status, SubStatus | Format-Table -AutoSize
+```
+
+途中では次のような状態になります。
+
+- `Delete Vault Started`
+- `Delete Vault Accepted`
+
+この段階では、**まだ削除完了ではありません**。
+
+その後、しばらくして実際にリソースが消えれば完了です。  
+存在確認は次でもできます。
+
+```powershell
+Get-AzResource -ResourceGroupName "rg-example-backup" -ResourceType "Microsoft.RecoveryServices/vaults" -Name "vault-example001"
+```
+
+何も返らなければ、コンテナーは削除されています。
+
+---
+
+## 今回使用したPowerShellスクリプト
 
 以下に示したスクリプトは記事用のサンプルとして、サブスクリプション、リソースグループ、Vault 名をサンプル値で埋めています。  
 実行前に読者が置き換える必要があるのは、これらの値と `<アカウントID>` だけです。
@@ -164,80 +235,6 @@ try {
          Unregister-AzRecoveryServicesBackupContainer -Container $item -Force -VaultId $vaultId
     }
 ```
-
-
----
-
-### 3. Storage Container の登録を解除する
-
-Recovery Services コンテナー が消せない原因になりやすいのが、Backup 用に登録された Storage Container です。  
-前述のPowerShellスクリプトを使って解除しました。
-
-
-実行結果として、以下のように出れば成功です。
-
-```
-All Storage containers unregistered.
-```
-
-今回もこの状態になり、Storage Container の登録解除は完了しました。
-
-
-なお、Azureにログインしていない状態でこのスクリプトを実行したときは、以下のようなメッセージが出ます。
-
-```
-[Login to Azure] To sign in, use a web browser to open the page 
-https://login.microsoft.com/device and enter the code H3K9CBPDE to authenticate.
-```
-
-表示されているURLをブラウザで開き、このコード`H3K9CBPDE`を入れて、Azureにログインします。
-
-複数のサブスクリプションがある場合あｈ、サブスクリプションの選択が表示されますので、該当するサブスクリプションを選択します。
-
-選択すると、本来の削除処理が走ります。
-
-
----
-
-### 4. ポータルで Recovery Services コンテナー を削除する
-
-Storage Container の登録解除後、Azure Portal から対象 Recovery Services コンテナー を削除します。
-
-ここで大事なのは、**Recovery Services コンテナー の削除は非同期** だという点です。  
-削除ボタンを押しても、その場ですぐ消えるとは限りません。
-
-つまり、
-
-- ポータルで削除操作をした
-- でもリソースグループ内にしばらく残って見える
-
-というのは、**直後であれば正常なことがあります**。
-
----
-
-### 5. 削除完了を確認する
-
-削除要求が通ったかどうかは、Azure Activity Log で確認できます。
-
-```powershell
-Get-AzLog -ResourceId "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg-example-backup/providers/Microsoft.RecoveryServices/vaults/vault-example001" | Select-Object EventTimestamp, OperationName, Status, SubStatus | Format-Table -AutoSize
-```
-
-途中では次のような状態になります。
-
-- `Delete Vault Started`
-- `Delete Vault Accepted`
-
-この段階では、**まだ削除完了ではありません**。
-
-その後、しばらくして実際にリソースが消えれば完了です。  
-存在確認は次でもできます。
-
-```powershell
-Get-AzResource -ResourceGroupName "rg-example-backup" -ResourceType "Microsoft.RecoveryServices/vaults" -Name "vault-example001"
-```
-
-何も返らなければ、コンテナーは削除されています。
 
 ---
 
